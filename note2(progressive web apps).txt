@@ -1,0 +1,1074 @@
+# Progressive Web Apps #ff0000
+
+## Pengantar Progressive Web Apps 
+! Pada modul kali ini, kita akan belajar bagaimana cara membangun website yang progressive. Artinya website yang akan kita bangung selangkah lebih maju dari website biasanya. Karena website yang progressive memiliki sifat-sifat layaknya aplikasi native. Contohnya memiliki kerangka aplikasi, dapat diakses secara offline, dapat dipasang di homescreen perangkat selular dan desktop, hingga menampilkan notifikasi.
+
+
+## Mengenal Progressive Web Apps (PWAs)
+! Google mendefinisikan PWA sebagai berikut:
+  “Progressive Web Apps use modern web capabilities to deliver an app-like user experience. They evolve from pages in browser tabs to immersive, top-level apps, maintaining the web's low friction at every moment.”
+
+! Tujuan hadirnya PWA adalah memungkinkan web developer mengubah web yang sudah ada agar bisa berperilaku layaknya aplikasi mobile native tanpa banyak perubahan atau menambah programmer khusus. Tujuan ini bisa dicapai berkat kumpulan teknologi web. Ia bisa memanfaatkan kelebihan-kelebihan web dan aplikasi mobile native sekaligus. Kumpulan teknologi ini memungkinkan aplikasi web tradisional mampu diakses tanpa koneksi internet (offline), bisa dipasang di homescreen seperti aplikasi native, bisa melakukan sinkronisasi data ke server, bisa mengirim push notification dan lain-lain. Berikut detail dari karakteristik PWA:
+  - Progresif - Bekerja untuk setiap pengguna. Tak peduli apapun browsernya, tidak masalah. PWA dibangun dengan peningkatan progresif sebagai intinya.
+  - Responsif - Mampu menyesuaikan dengan berbagai perangkat. Baik itu desktop, seluler, tablet, atau yang lainnya.
+  - Konektivitas independen - Service Worker membantu mengikatkan proses load time ketika internet memiliki kualitas rendah, bahkan dapat diakses dalam keadaan offline.
+  - Seperti Aplikasi Native - Experience yang diberikan tak kalah dengan aplikasi native, karena PWA dibangun dengan struktur Application Shell.
+  - Aman - PWA mewajibkan web untuk berjalan pada HTTPS. Ini tentu membuat web aman dari berbagai ancaman.
+  - Dapat ditemukan - Terdefinisi sebagai “Aplikasi” berkat Web App Manifest dan service worker. Dan dapat mudah ditemukan oleh search engine seperti Google. 
+  - Re-engageable - Dengan fitur pemberitahuan seperti push notification, dapat mengajak (engaged) kembali pengguna untuk menggunakan aplikasi.
+  - Dapat dipasang - Memungkinkan pengguna untuk “memasang” di layar beranda tanpa melalui application store.
+  - Bisa ditautkan - Dapat dengan mudah dibagikan melalui URL.
+
+! berikut daftar website yang menerapkan sifat PWA yang mungkin Anda ketahui.
+  - Twitter - Salah satu situs media sosial terbesar dunia.
+  - Tokopedia - Salah satu marketplace terbesar di Indonesia.
+  - BookMyShow - Situs pemesanan tiket (bioskop, konser, dan event lain) asal India.
+  - Google Developer  - Situs komunitas developer yang disediakan oleh Google.
+
+
+## Kelebihan dan Kekurangan PWAs 
+
+### Kelebihan
+  - Tidak membutuhkan toko aplikasi - Berbeda dengan aplikasi native, di mana pengguna harus mengunduh melalui toko (store) ketika ingin memasang sebuah aplikasi. Karena PWA merupakan web, untuk menggunakanya cukup menggunakan browser saja.
+  - Tidak perlu melakukan update - Ketika terjadi pembaharuan, pengguna tidak perlu melakukan update melalui store secara manual. Untuk melakukan update pada PWA, pengguna cukup melakukan refresh layaknya web biasa pada browser.
+  - Mudah dipublikasi, diakses dan dibagikan - Developer tak lagi repot mempublikasi suatu aplikasi pada Store. Untuk berbagi, cukup kirimkan tautan atau URL aplikasi dan pengguna lainnya bisa mengaksesnya dengan cepat.
+  - Bisa memanfaatkan fitur native - Meski integrasi dengan perangkat tidak sesempurna aplikasi native. Terdapat beberapa fitur native yang dapat diintegrasikan dengan PWA. Contohnya seperti notifikasi, lokasi, orientation, gesture, dan masih banyak lagi. Kita bisa melihat fitur-fitur apa saja yang dapat diakses oleh web saat ini pada tautan: https://whatwebcando.today/.
+  - Mengurangi penggunaan data - Load time PWA dapat lebih cepat dibandingkan dengan aplikasi native. Ini terbukti pada website e-commerce Konga yang berhasil mengurangi transaksi data sebesar 92% pada koneksi yang lambat.
+
+
+### Kekurangan 
+  - Belum semua fitur native dapat dimanfaatkan pada PWA - Masih ada beberapa fitur penting yang belum bisa dipakai. Mayoritas berkaitan dengan masalah keamanan seperti kontak, SMS, telepon, bluetooth, NFC, dan lainnya.
+  - Tidak didukung browser lama - Beberapa pengguna menggunakan browser Google Chrome, Firefox, atau browser lain dalam versi lama. Ini membuat web yang menerapkan sifat PWA, tidak dapat dimanfaatkan dengan baik.
+
+
+## Komponen Pembentuk PWAs
+! Ada beberapa komponen wajib dan ada juga komponen opsional. Komponen wajib adalah komponen yang selalu digunakan setiap kali membuat PWA, sedangkan komponen opsional adalah komponen yang tidak mempengaruhi kinerja PWA namun dapat digunakan untuk memperkaya fitur PWA.
+
+Berikut komponen wajib yang dimaksud:
+
+### Application Shell 
+! Application Shell atau bisa disingkat dengan app shell adalah kerangka antarmuka aplikasi yang dibangun oleh beberapa komponen halaman dan aset lainnya. Mereka disimpan lebih dahulu di dalam cache sehingga dapat tampil secara instan saat aplikasi dibuka. Umumnya komponen halaman yang menjadi bagian dari app shell adalah komponen yang selalu ada untuk semua halaman seperti header, sidebar, dan footer. Adapun komponen dari konten halaman akan dimuat secara dinamis dan asinkron.
+
+
+### Web App Manifest 
+! Web App Manifest adalah file JSON sederhana yang mengontrol bagaimana aplikasi ditampilkan dan dijalankan di sisi pengguna. Umumnya file ini diberi nama manifest.json. Saat aplikasi pertama kali dibuka di browser, browser akan membaca file manifest, mengunduh resource dan menampilkan konten.
+
+
+### Service Worker 
+! Service worker adalah script yang dijalankan oleh browser di latar belakang, yang terpisah dengan script lain di halaman web browser. Service Worker ditulis menggunakan bahasa pemrograman JavaScript, namun dipanggil dengan cara yang berbeda dari kode JavaScript pada umumnya. Dengan menggunakan service worker, kita dapat memanfaatkan resource yang telah disimpan di dalam cache untuk menampilkan konten bahkan dalam mode jaringan offline. 
+
+
+### Cache API 
+! Cache API adalah tempat penyimpanan lokal yang digunakan browser untuk menyimpan resource agar dapat digunakan kembali sehingga pada pemanggilan selanjutnya tak perlu mengirim permintaan (request) lagi ke jaringan. Cache API ini berbeda dengan cache yang terdapat pada browser (Browser-managed cache). Browser Cache dikelola oleh browser dan melakukan pekerjaannya secara otomatis. Sedangkan Cache API merupakan teknologi baru yang dapat kita kelola secara leluasa dan dapat dimanfaatkan dalam keadaan offline. Cache jenis inilah yang digunakan untuk menyimpan hasil request yang dilakukan melalui service worker.
+
+
+### Fetch API 
+! Saat ini Fetch API menjadi interface standar yang digunakan browser dalam melakukan permintaan (request). Untuk membentuk aplikasi PWA pastikan kita gunakan Fetch API ketika melakukan permintaan agar dapat dievaluasi oleh service worker sehingga permintaan yang dilakukan bisa diteruskan ke Cache API.
+
+
+! Selain 5 (lima) komponen wajib yang sudah disebutkan di atas, terdapat komponen lain yang bisa membuat PWA lebih powerful lagi. Berikut komponen lain yang akan kita bahas pada kelas ini.
+
+### IndexedDB 
+! IndexedDB merupakan sistem penyimpanan lokal berbasis NoSQL di browser yang bisa menyimpan data apapun dalam bentuk object JavaScript. IndexedDB bisa kita manfaatkan sebagai peran cache, bisa juga digunakan untuk menyimpan objek tertentu. 
+
+
+### Web Socket 
+! Web Socket menjadi standar baru untuk komunikasi real time pada web ataupun aplikasi mobile. Saat ini banyak kasus yang memanfaatkan web socket sebagai pembentuk aplikasi realtime chatting, news feeds, hingga game multiplayer online sekalipun. Pada Browser sendiri, Websocket menjadi standar dan bagian dari HTML5.
+
+
+### Notification 
+! Notification adalah pesan popup yang muncul pada sebuah perangkat. Web yang dibangun menerapkan PWA, mendukung munculnya notifikasi. Ini penting untuk memberitahu pengguna terkait informasi apapun. Notification menjadi strategi yang cukup jitu untuk mengajak kembali pengguna mengunjungi sebuah web.
+
+
+
+
+## Web Architecture
+! Ada dua arsitektur yang digunakan dalam membangun sebuah web bila ditinjau dari bagaimana server mengembalikan konten halaman, yakni Server Side Rendering (SSR) dan Client Side Rendering (CSR)
+! SSR adalah pola di mana setiap halaman di-render pada sisi server dan dikembalikan ke browser dalam bentuk HTML yang siap ditampilkan. Sedangkan CSR adalah pola di mana server hanya mengembalikan data (biasanya dalam format JSON atau XML) untuk olah dan di-render pada sisi client (browser) oleh JavaScript.
+
+! Selain istilah SSR dan CSR, dikenal juga pola arsitektur web yang ditinjau dari bagaimana sebuah konten dimuat, yaitu Multi-Page App (MPA) dan Single-Page App (SPA). MPA adalah nama arsitektur yang digunakan saat website kita terdiri dari beberapa halaman HTML. Misalkan, apabila website kita memiliki pola halaman seperti ini:
+  - domain.com/home.html -> Halaman Home
+  - domain.com/profile.html -> Halaman Profil
+  - domain.com/timeline.html -> Halmaan Timeline
+
+
+! Berbeda dengan SPA, sejatinya SPA hanya menggunakan satu berkas HTML. Satu berkas HTML ini menjadi tempat banyak komponen yang menyusun keseluruhan halaman web. Saat berpindah URL, halaman tidak dimuat ulang secara keseluruhan. Hanya mengganti bagian tertentu saja dari konten menggunakan JavaScript. Kita ambil contoh dengan skenario yang sama seperti sebelumnya, bila menerapkan SPA maka web akan memiliki pola halaman seperti ini:
+  - domain.com/#/home -> Halaman Home
+  - domain.com/#/profile -> Halaman Profil
+  - domain.com/#/timeline -> Halaman Timeline
+
+! Sebenarnya pola tersebut tidak wajib seperti itu, namun intinya, perpindahan halaman dengan pola SPA tidak langsung menuju berkas HTML yang lain, cukup mengubah konten yang perlu berubah saja. Semua perubahan konten pada halaman dilakukan secara dinamis menggunakan JavaScript. Dengan menerapkan pola SPA beban server akan jauh lebih ringan sehingga proses request akan lebih cepat. Kenapa demikian? Tentunya karena server tidak mengirimkan berkas HTML, CSS, JS secara langsung berulang-ulang
+
+
+!! Saat membuat aplikasi web, kita dapat menggunakan kombinasi dari beberapa pola arsitektur yang ada. Namun untuk menerapkan PWA, sangat disarankan untuk menerapkan pola CSR + SPA. Karena prosesnya ringan dan tidak membutuhkan banyak resource statis yang perlu dimasukkan ke cache API.
+
+
+! PWA bukanlah framework. Justru PWA dapat meningkatkan fungsionalitas dari Web App yang sudah ada, baik itu dibangun menggunakan framework, ataupun murni dengan JavaScript (Vanilla JS). Bahkan bila Anda sudah memiliki website aktif saat ini, Anda bisa menambahkan sifat PWA tanpa banyak mengubah kode yang dituliskan.
+
+
+
+## Application Shell 
+! link : https://www.dicoding.com/academies/219/tutorials/9411?from=9406
+! Pada antarmuka web tradisional masing-masing halaman akan memiliki berkas HTML-nya sendiri. Dengan demikian, saat akan pindah dari satu halaman ke lainnya, ada jeda waktu di mana pengguna harus menunggu sampai halaman tersebut termuat dan menampilkan sesuatu. Hal ini berbeda dengan perilaku aplikasi native pada umumnya. Contoh, saat menggunakan aplikasi Twitter di perangkat mobile tanpa koneksi, kita tidak bisa melihat konten timeline karena tidak ada koneksi internet untuk mengunduh data tersebut. Namun demikian kita masih bisa melihat beberapa komponen UI-nya.
+
+! Hal ini menunjukkan bahwa aplikasi native hanya mengunduh datanya saja dari server, sedangkan komponen UI lainnya sudah terpasang sejak awal dan akan langsung muncul saat aplikasi dibuka.
+
+! Di awal modul kita pernah membahas bahwa salah satu tujuan PWA adalah memberikan pengalaman yang semirip mungkin dengan aplikasi native. Apabila website kita masih memuat masing-masing halaman sebelum ditampilkan kepada user, artinya kita belum memberikan sebuah pengalaman yang mirip dengan aplikasi native. Dan tentu PWA tidak dapat diraih bila seperti itu. 
+
+!! Untuk meraih PWA, website harus mampu menyimpan komponen UI aplikasi pada perangkat, sehingga bila terjadi pergantian halaman, cukup dengan memuat konten yang diperlukan saja, tidak keseluruhan halamannya. Nah, teknik inilah yang dinamakan dengan Application Shell.
+
+
+### Apa itu Application Shell 
+! Application Shell atau disingkat App Shell adalah salah satu teknik dalam Progressive Web Apps untuk membuat komponen UI termuat secara instan tanpa menunggu response dari server. App Shell sejatinya hanya terdiri dari HTML, CSS dan JavaScript yang disimpan di dalam cache pada request pertama agar request selanjutnya tidak perlu mengambil dari server lagi.
+
+
+! App shell hanyalah sebuah teknik, bukan library ataupun framework. Jika Anda sudah pernah membangun sebuah Single-Page App (SPA), itu berarti Anda sudah menerapkan konsep yang serupa dengan App Shell. Kita pun bisa membuat App Shell tanpa bantuan framework. Penasaran? Ayo kita mulai buat App Shell dengan model Single Page App tanpa bantuan framework.
+
+
+## Latihan: Application Shell 
+! ada di folder : 2. movie-catalogue 
+
+
+## Membuat Struktur Folder 
+! ada di folder : 2. movie-catalogue 
+! Di dalam folder scripts, kita banyak membuat folder lagi seperti data, globals, routes, utils, dan views. Ini bertujuan agar mudah dalam memelihara dan mengorganisir kode JavaScript yang kita tuliskan. Dengan memecahnya menjadi beberapa folder seperti ini juga membuat penulisan JavaScript lebih terstruktur dan fokus terhadap tanggung jawabnya masing-masing. Folder public akan menyimpan aset statis yang digunakan pada proyek, seperti aset gambar, icon, favicon, termasuk web app manifest. Folder public ini tidak akan diproses oleh webpack seperti pada folder lainnya, webpack hanya menyalin seluruh aset yang ada di dalamnya (menggunakan copy-webpack-plugin) ke output directory ketika menjalankan atau mem-build proyek.
+
+
+
+## Membuat URL Router Sederhana 
+! Kita telah berhasil membuat drawer berfungsi dengan baik. Selanjutnya mari kita buat router sederhana untuk menampilkan page secara dinamis berdasarkan URL. Seperti yang sudah kita ketahui, web app yang dibangun dengan arsitektur SPA, ketika berpindah halaman, ia tidak mengubah keseluruhan halaman yang tampak. Melainkan hanya pada sebagian konten saja dan component App Shell seperti <header>, <navigation>, dan <footer> yang tetap dibiarkan tampak sama.
+
+! Inti dari konsep router yang akan kita buat adalah dengan memanfaatkan tanda # (hash). Ketika browser membaca karakter # pada url, ia akan mengabaikan tulisan apapun setelahnya. Tanda hash sejatinya pada url berfungsi untuk mengidentifikasikan bagian dari konten. Untuk paham lebih detail terkait ini, silakan baca berikut ini: Fragment Identifier. Nah dengan fungsi hash ini kita bisa memanfaatkannya agar url menjadi “mati”, dan menambahkan teks setelahnya sebagai indikator halaman mana yang perlu ditampilkan.
+
+
+
+## Web App Manifest 
+
+! Add to Home Screen atau yang sering disebut juga dengan web app install prompt dibuat untuk mempermudah pengguna memasang Web App di perangkat mobile atau desktop. Tak hanya mempermudah pengguna untuk membuka kembali aplikasi kita, menambahkan aplikasi ke home screen juga memiliki pengaruh yang besar yakni memperkuat ikatan dengan pengguna.
+
+! Seperti yang sudah kita ketahui, salah satu kelebihan PWA(s) adalah tampak seperti aplikasi native. Bila seseorang mengakses web yang menerapkan PWA(s), maka ia dapat menambahkan shortcut ke halaman depan dari perangkat yang ia digunakan. Sehingga untuk membuka kembali web, cukup melalui shortcut tersebut. Tampilannya pun sudah seperti aplikasi native, di mana tidak ada lagi address bar dan tombol-tombol lain seperti layaknya kita membuka website menggunakan browser. Lalu bagaimana bisa PWA(s) memiliki sifat tersebut? Jawabanya adalah melalui Web App Manifest.
+
+! Web App Manifest merupakan komponen penting setelah pembuatan Application Shell dalam menerapkan PWA(s). Tanpa adanya Web App Manifest, website kita tidak pernah dianggap sebagai “aplikasi” dan tidak dapat ditambahkan ke homescreen.
+
+! Web App Manifest menyediakan informasi mengenai web app dalam bentuk berkas JSON. Informasi yang tertulis pada berkas tersebut digunakan untuk keperluan identitas ketika web app ditambahkan pada homescreen, seperti nama aplikasi, author, ikon, versi, deskripsi, dan sumber daya lainnya sehingga web app tampak identik dengan aplikasi native ketika ditambahkan ke homescreen handphone.
+
+! Berkas Web App Manifest biasanya dituliskan dengan nama manifest.json
+
+!! Kemudian untuk memasang Web App Manifest pada web cukup mudah, yakni dengan menambahkan element <link> dengan atribut relation (rel) bernilai “manifest” di dalam elemen <head>.
+    - <link rel="manifest" href="manifest.json">
+
+    ! Dengan catatan, berkas manifest berada di root folder dengan index.html.
+
+! Web yang berhasil menerapkan Web App Manifest akan memiliki identitas nama, warna tema, ikon dan lain sebagainya bila dilihat menggunakan DevTools pada bagian Application -> Manifest.
+
+
+
+## Latihan: Web App Manifest 
+
+! Berikut beberapa tools yang dapat Anda manfaatkan untuk membantu membuat Web App Manifest secara otomatis.
+
+https://app-manifest.firebaseapp.com/ : Web App Manifest generator.
+webpack-pwa-manifest (Webpack Plugin) (https://github.com/arthurbergmz/webpack-pwa-manifest) : Web App Manifest generator untuk pengguna Webpack.
+
+
+
+## Service Worker 
+
+! Sebuah website tidak bisa dikatakan sebagai PWA(s) tanpa mengaplikasikan teknologi PWA itu sendiri. Fitur paling dasar dari PWA setelah Application Shell dan Web App Manifest adalah Offline Capability, atau mampu diakses dalam keadaan tidak ada internet (offline). Jadi website dengan PWA(s) tak akan lagi memunculkan sosok dinosaurus yang biasanya muncul saat internet bermasalah.
+! tentu penggunaannya dibantu dengan Cache API dan beberapa fitur lainnya. Dengan demikian web app yang kita buat, tetap tampil dengan komponen UI dan mampu menampilkan data yang sudah pernah kita akses sebelumnya walau dalam keadaan offline.
+
+
+### Apa itu Service Worker 
+
+! Service Worker merupakan sebuah berkas JavaScript yang diproses oleh browser di background. Berkas ini dieksekusi secara terpisah tak seperti berkas JavaScript biasa yang membentuk website. Service Worker menjadi gerbang bagi berbagai fitur browser yang tidak memerlukan tampilan atau interaksi dengan pengguna. Kemampuan utama dari Service Worker adalah mengambil alih seluruh urusan request pada browser.
+
+
+! Bila browser tidak terhubung internet, itu berarti browser tidak dapat terhubung juga dengan server. Ketika browser melakukan request dalam keadaan offline, request tidak akan sampai ke server, melainkan hanya menampilkan indikasi bahwa tidak terdapat koneksi internet.
+
+! Nah, apa yang sudah diceritakan tadi sekarang bukanlah masalah yang serius lagi. Saat ini sudah ada fitur dari API HTML5 yakni Service Worker yang dapat menangani masalah ini. Dengan menerapkan service worker, permintaan yang dilakukan browser tidak lagi ditujukan pada server secara langsung, melainkan melalui Service Worker terlebih dahulu.
+
+! Karena Service Worker memegang posisi penting dalam jalur transaksi data, service worker hanya dapat dijalankan pada protokol HTTPS. Pemaksaan ini bertujuan untuk meningkatkan kemanan aplikasi. Bila tidak seperti itu, sangat rentan terhadap serangan yang disebut “man-in-the-middle”. Namun selama proses pengembangan, service worker dapat berjalan pada localhost.
+
+
+## Apa yang Bisa Dilakukan Service Worker
+
+! Service Worker ditulis dengan kode JavaScript, namun dijalankan berbeda dengan JavaScript biasa kita tulis pada halaman web. Service Worker berjalan mandiri di thread yang terpisah dari thread utama browser dan tidak boleh terkait dengan halaman web manapun. Oleh karena itu, Service Worker tidak bisa memodifikasi elemen yang ada di sebuah halaman web (mengakses DOM). Namun service worker memiliki method postMessage() untuk mengirimkan sebuah “pesan” ke event listener untuk berkomunikasi dengan JavaScript yang berjalan di halaman web.
+
+! Agar dapat melakukan tugasnya dengan baik, service worker membutuhkan setidaknya 2 API lain, yakni Fetch API dan Cache API. Fetch API digunakan oleh service worker untuk mengambil konten dari internet, dan Cache API digunakan untuk penyimpanan konten yang telah diakses oleh pengguna. Itulah mengapa Cache API dan Fetch API menjadi komponen wajib ketika menerapkan PWA(s).
+
+! Service Worker akan mengatur jalur setiap permintaan yang masuk. Bila konten yang diminta sudah pernah disimpan di dalam cache, maka ia tak akan melanjutkan request ke server, melainkan menggunakan cache tersebut. Bila konten yang diminta tidak ada pada cache, atau konten sudah kadaluarsa, barulah Service Worker akan melanjutkan permintaan ke server untuk mendapatkan pembaruan konten.
+
+! Service Worker juga dapat melakukan sinkronisasi di belakang layar (background sync) yang berguna untuk menunda sebuah aksi dan menjalankannya saat pengguna mendapatkan koneksi yang stabil. Fitur ini sangat penting dalam penerapan offline application untuk memastikan setiap data yang dikirim oleh pengguna benar-benar terkirim dan tidak hilang gara-gara koneksi lambat atau terputus. Sinkronisasi ini juga berguna untuk mengirimkan pembaharuan dari server agar aplikasi selalu berada pada status terbaru ketika pengguna membuka aplikasi di lain waktu.
+
+
+
+## Registration 
+
+! Sebelum menggunakan service worker kita perlu memberitahu browser service worker mana yang akan kita gunakan pada web. Proses inilah yang dinamakan registration.Proses inilah yang dinamakan registration. Untuk registrasi service worker, kita tuliskan kode berikut pada main JS thread:
+  ! main.js
+  const swRegister = async () => {
+	  if (!('serviceWorker' in navigator)) {
+	    console.log('Browser tidak mendukung Service Worker');
+	    return;
+	  }
+	 
+	  try {
+	    await navigator.serviceWorker.register('./sw.js');
+	    console.log('Service worker registered');
+	  } catch (error) {
+	    console.log('Failed to register service worker', error);
+	  }
+	};
+
+  ! Kode di atas diawali dengan pengecekan dukungan browser, yakni dengan mencari properti serviceWorker di dalam global objek navigator (browser). Bila browser mendukung adanya Service Worker, baru kita daftarkan Service Worker dengan menggunakan method navigator.serviceWorker.register(). Method register() menerima satu parameter, di sinilah kita tentukan letak berkas service worker yang akan digunakan, untuk kemudian dilanjutkan pada tahap selanjutnya (install). 
+
+  ! Proses inilah yang membedakan Service Worker dengan berkas JavaScript lainnya. Secara umum kita menggunakan JavaScript melalui tag <script> yang dilampirkan pada berkas HTML. Sedangkan Service Worker pendaftarannya tidak menggunakan tag <script>, melainkan pada main JS thread, di mana kita dapat melakukan registrasi pada berkas JavaScript lainnya.
+
+
+
+## Siklus Hidup Service Worker
+! Setelah berhasil mendaftarkan Service Worker, proses selanjutnya akan dilakukan oleh Service Worker itu sendiri. Service worker memiliki siklus hidup yang berbeda dan terpisah dari web. Terdapat 3 (tiga) pada siklus hidup yang dapat dilalui oleh service worker, yakni  installation, activation, dan idle.
+
+
+### Installation 
+
+! Pada tahap ini, kita dapat mengontrol atau menetapkan logika dengan menuliskan kode JavaScript. Untuk melakukannya, tambahkan event install pada berkas sw.
+  self.addEventListener('install', (event) => {
+    // Kode proses instalasi
+  });
+
+! Karena Service Worker terpisah dari DOM, untuk menambahkan event kita bisa gunakan self, bukan window ataupun document. Selama proses instalasi, kita dapat melakukan apapun. Umumnya, pada proses ini kita melakukan penyimpanan resource App Shell pada Caches API. 
+  const version = '1.0.0';
+  const CACHE_NAME = `mypwa-${version}`;
+  const assetsToCache = [
+    '/',
+    '/index.html',
+    '/manifest.json',
+    '/main.js',
+    // .......
+  ]
+  
+  self.addEventListener('install', (event) => {
+    console.log('Installing service worker....');
+  
+    // menyimpan appshell ke caches API
+    event.waitUntil(
+      caches.open(CACHE_NAME)
+        .then((cache) => caches.addAll(assetsToCache)),
+    );
+  });
+
+
+### Activate 
+
+! Setelah instalasi service worker berhasil, siklus hidup selanjutnya Service Worker akan mengalami proses aktivasi. Sama seperti proses instalasi, kita dapat mengontrol dan menetapkan logika melalui kode JavaScript.
+
+! Pada proses ini kita bisa manfaatkan untuk mengelola cache lama. Contohnya kita bisa menghapus cache lama bila terdapat penambahan app shell atau perubahan versi aplikasi. Hal ini penting, karena bila tidak dilakukan cache lama akan menumpuk dan membebani storage browser.
+  ! sw.js
+  const version = '1.0.0';
+  ...
+  
+  self.addEventListener('install', (event) => {
+    console.log('Installing service worker....');
+    ....
+  });
+  self.addEventListener('activate', (event) => {
+    console.log('Activating service worker...');
+  
+    // menghapus caches lama
+    event.waitUntil(
+      caches.keys()
+        .then((cacheNames) => Promise.all(
+          cachesNames.filter((name) => name !== CACHE_NAME)
+            .map((filteredName) => caches.delete(filteredName))
+        )),
+    );
+  });
+
+
+! Sebelum proses aktivasi selesai, Service Worker belum dapat mengontrol browser, dalam arti ia belum bisa menjalankan tugasnya.
+
+
+! Namun perlu diingat untuk proses aktivasi Service Worker baru (karena terdapat perubahan kode pada service worker), tak akan langsung dieksekusi bila terdapat Service Worker lama sedang aktif mengontrol browser. Service Worker baru akan menunggu (waiting) diaktivasi setelah Service Worker lama sudah tidak lagi mengontrol browser. Service Worker lama akan berhenti mengontrol ketika tab atau browser web ditutup. Setelah web dibuka kembali, barulah Service Worker baru akan diaktivasi.
+
+! Namun proses menunggu bisa kita lewati bila menambahkan kode self.skipWaiting() pada proses instalasi.
+  ! sw.js
+  self.addEventListener('install', (event) => {
+    self.skipWaiting();
+  
+    event.waitUntil(
+      // caching etc
+    );
+  });
+
+
+! Atau bila kita menginginkan proses skipWaiting() pada tahap development saja, kita cukup mengaktifkan Update on Reload pada DevTools -> Application -> Service Worker di Google Chrome.
+
+
+
+### Idle 
+! Setelah Service Worker berhasil dipasang dan diaktifkan, maka status Service Worker akan mengalami idle atau bisa kita sebut bersiap. Bersiap untuk apa nih? Tepatnya bersiap untuk melakukan tugas utamanya, yaitu mengontrol event fetch, message, atau push yang terjadi pada browser. Tak seperti proses install ataupun aktivasi, pada proses idle kita tidak dapat mengontrol atau menambahkan kode apapun.
+
+! Selain ketiga siklus hidup yang sudah diberikan, Service Worker juga dapat mengalami status eror bila proses instalasi gagal. Kegagalan pada proses instalasi biasanya disebabkan oleh gagalnya resource app shell yang dimasukkan ke caches, entah itu karena resource-nya tidak ditemukan, atau ukurannya terlalu besar.
+
+! Untuk lebih memahami lagi siklus hidup service worker, Anda bisa lihat bagan alur berikut:
+  No Service -> (activated | error): if activated -> idle -> (terminated | fetch/message) -> idle
+
+
+## Event Pada Service Worker 
+! Service worker bersifat event-driven, yang berarti kode service worker dijalankan pada saat terjadi suatu event. Kita sudah mengenal event yang sekaligus menjadi siklus hidup dari Service Worker, yakni
+  - install, event ini terjadi setelah service worker berhasil didaftarkan. Event ini dapat kita gunakan untuk membuat cache dan menyimpan berkas aset ke dalamnya.
+  - activate, event ini terjadi setelah service worker berhasil diinstal. Event ini dapat kita gunakan untuk mengelola aset dari cache, membuang cache yang kedaluwarsa atau mengirim permintaan untuk aset dan konten baru ke server.
+
+! Selain itu ada juga event fungsional lain yang dapat kita gunakan pada service worker, diantaranya adalah fetch, message, sync dan push.
+
+
+### Event Fetch 
+
+! Event fetch akan terpanggil setiap kali sebuah permintaan (request) dilakukan oleh client. Kita dapat mengontrol request dan juga response pada event ini. 
+  // contoh : 
+    ! sw.js
+    self.addEventListener('fetch', (event) => {
+      // service worker bisa menampilkan, bahkan memanipulasi request yang dilakukan client
+      console.log(event.request);
+      
+    
+      // sebelum akhirnya mengirim request ke server.
+      event.respondWith(
+        fetch(event.request),
+      );
+    });
+
+  ! Pada contoh kode di atas, Service Worker hanya melakukan pemantauan dengan menampilkan request pada console sebelum akhirnya dikirim ke server. Sebenarnya kita bisa melakukan hal lain yang lebih berguna, contohnya mengecek apakah request yang dilakukan sudah terdapat pada Cache API atau belum.
+
+
+### Event Message 
+
+! Event ini terjadi saat client yang memanggil method postMessage() pada Service Worker yang sedang aktif. Event in dapat kita manfaat untuk menerima informasi dari client ke Service Worker.
+
+// contoh : 
+  ! main.js 
+  navigator.serviceWorker.ready.then( registration => { 
+  registration.active.postMessage("Hi service worker"); });
+
+  ! sw.js 
+  self.addEventListener('message', (event) => {
+    // menampilkan data/pesan yang dikirim client
+    console.log(`Client mengirim pesan: ${event.data}`);
+  });
+
+
+### Event Sync
+! Kita dapat memantau event sync sesuai dengan background sync yang telah kita daftarkan di bagian awal proses registrasi service worker. Background sync adalah web API yang dapat kita gunakan untuk menunda sebuah aksi sampai perangkat terhubung dengan stabil ke jaringan internet. Background sync dapat kita daftarkan pada bagian awal pendaftaran service worker sesaat setelah service worker siap digunakan.
+
+// contoh : 
+  ! main.js 
+  navigator.serviceWorker.register('/sw.js');
+    navigator.serviceWorker.ready.then((swRegistration) => {
+    return swRegistration.sync.register('foo');
+  })
+
+  ! Pada contoh kode di atas misalkan kita mendaftarkan background sync dengan nama 'foo'. Kita dapat memberi nama apapun untuk background sync. Nama ini akan menjadi identitas saat kita memantau event sync pada service worker.
+
+  ! sw.js 
+  self.addEventListener('sync', function(event) {
+    if (event.tag === 'foo') {
+      event.waitUntil(doSomething());
+    }
+  });
+
+  ! Pada contoh kode event listener sync di atas, kita mengecek bila tag event sync bernama 'foo' , maka kita jalankan fungsi doSomething() dan menunggu hasilnya. Bila doSomething() berhasil dijalankan, maka proses sync berhasil, dan bila terjadi kesalahan pada eksekusi fungsi tersebut, maka proses sync akan dijalankan ulang pada permintaan selanjutnya.
+
+
+### Event Push 
+
+! Event push diinisiasi oleh backend server dan melewati push service yang ada di browser. Service worker dapat memantau setiap event push yang datang ke browser.
+
+// contoh : 
+  const options = {
+    // ...
+  }
+  self.addEventListener('push', (event) => {
+    event.waitUntil(
+      self.registration.showNotification('Halo Coder!', options),
+    );
+  });
+
+  ! Pada contoh di atas kita menerima event push dari server dan menampilkan notifikasi browser dengan judul pesan 'Halo Coder!'. variabel options adalah objek yang berisi properti yang kita atur untuk mengkustomisasi tampilan notifikasi. Selain menampilkan notifikasi browser pada event ini Anda juga dapat melakukan hal lain seperti memperbaharui data lama yang sudah ada di penyimpanan browser, atau memperbaharui tampilan browser.
+
+
+
+## Latihan: Service Worker 
+! Karena kita menggunakan environment Webpack, jadi agak sedikit sulit untuk menerapkan service worker dengan cara biasa (seperti yang sudah kita ketahui pada teori). Kita akan menggunakan bantuan webpack plugin bernama serviceworker-webpack-plugin untuk menciptakan runtime yang dapat diakses oleh service worker. Selain itu terdapat benefit lain bila menggunakan plugin ini, seperti tak perlu menuliskan daftar aset statis secara manual.
+
+// cara install serviceworker-webpack-plugin 
+  - npm install serviceworker-webpack-plugin 
+
+! Setelah berhasil memasang plugin tersebut, kita lanjutkan dengan menggunakannya pada konfigurasi webpack. Buka berkas webpack.common.js, pada properti plugins tambahkan plugin berikut.  
+  module.exports = {
+    ......,
+    plugins: [
+      .....,
+      new ServiceWorkerWebpackPlugin({
+        entry: path.resolve(__dirname, 'src/scripts/sw.js'),
+      }),
+    ],
+  };
+
+! Nilai entry yang dimasukkan pada constructor ServiceWorkerWebpackPlugin merupakan path dari berkas Service Worker yang akan kita buat. Jadi mari kita buat berkas sw.js pada src -> scripts -> sw.js.
+  self.addEventListener('install', (event) => {
+    console.log('Installing Service Worker ...');
+
+  // TODO: Caching App Shell Resource
+  });
+
+  self.addEventListener('activate', (event) => {
+    console.log('Activating Service Worker ...');
+
+  // TODO: Delete old caches
+  });
+
+  self.addEventListener('fetch', (event) => {
+    console.log(event.request);
+
+  event.respondWith(fetch(event.request));
+  // TODO: Add/get fetch request to/from caches
+  });
+
+
+! Selanjutnya kita registrasikan service worker yang sudah dibuat pada browser. Buatlah berkas JavaScript baru pada folder pada src -> scripts -> utils dengan nama sw-register.js.
+  import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+ 
+  const swRegister = async () => {
+    if ('serviceWorker' in navigator) {
+      await runtime.register();
+      return;
+    }
+    console.log('Service worker not supported in this browser');
+  };
+  
+  export default swRegister;
+
+! Terakhir, panggil fungsi swRegsiter pada entry point, lebih tepatnya di dalam callback event load.
+  ! src -> scripts -> index.js
+  import 'regenerator-runtime';
+  import '../styles/style.css';
+  import '../styles/responsive.css';
+  import App from './views/app';
+  import swRegister from './utils/sw-register';
+  ...
+
+  window.addEventListener('load', () => {
+    app.renderPage();
+    swRegister();
+  });
+
+
+!! Karena kita dalam masa pengembangan, jangan lupa untuk mengaktifkan “Update on Reload” pada DevTools -> Application -> Service Worker.
+
+! Dengan menerapkan service worker ini seharusnya perintah “add to homescreen” sudah muncul. Kita bisa melihat itu ketika diakses pada perangkat mobile.
+
+
+## Cache API 
+! Untuk menyimpan resource agar dapat diakses dalam keadaan offline, kita perlu sebuah wadah untuk menyimpannya. Maka dari itu, saatnya kita berkenalan dengan Cache API.
+
+! Seperti yang sudah kita ketahui sebelumnya, Cache API adalah tempat penyimpanan lokal yang digunakan browser untuk menyimpan resource agar dapat digunakan kembali sehingga pada pemanggilan selanjutnya tak perlu mengirim permintaan (request) lagi ke jaringan. 
+
+
+
+## Dasar Penggunaaan Cache API 
+! Cache API dapat digunakan melalui global objek caches. Seluruh modern browser saat ini seharusnya sudah mendukung adanya Cache API. Untuk memastikannya, kita bisa menggunakan sintaks berikut: 
+  - const cacheAvailable = 'caches' in self; // true or false
+
+! Cache API dapat diakses melalui window, iframe, worker, ataupun service worker.
+
+! Untuk membuat dan membuka Cache, kita dapat menggunakan method caches.open(name). Method tersebut menerima satu parameter yang merupakan nama dari cache tersebut. Jika cache dengan nama yang ditetapkan belum tersedia, ia akan otomatis terbuat. Method open() akan mengembalikan promise yang membawa objek cache pada resolves.
+  caches.open('my-cache')
+    .then((cache) => {
+      // do something with cache
+  });
+
+
+## Menambahkan Resource ke Cache 
+! Terdapat tiga cara untuk menambahkan resource yang berasal dari request ke dalam cache, yakni add, addAll, dan put. Ketiga metode tersebut mengembalikan sebuah promise. Namun pada penerapan PWA nanti, kita hanya menggunakan dua method saja, yaitu add dan addAll. Mari kita bahas satu persatu.
+
+### Cache.add 
+! Yang pertama menggunakan cache.add(). Method ini hanya membutuhkan satu parameter, bisa sebuah request, atau URL dalam bentuk string. Method add() membuat request dikirimkan ke server dan menyimpan response ke dalam cache. Jika request gagal, atau response tidak menghasilkan kode 200, maka tidak ada yang disimpan pada cache, dan promise yang dikembalikan oleh method ini berstatus rejected.
+
+// contoh : 
+  ! request arguments
+  // Retreive data.json from the server and store the response.
+  cache.add(new Request('/data.json'));
+
+  ! url arguments
+  // Retreive data.json from the server and store the response.
+  cache.add('/data.json');
+
+
+### Cache.addAll 
+! Selanjutnya adalah method cache.addAll(). Cara kerjanya sama seperti add(), namun sesuai namanya ia dapat memasukkan banyak Request atau URL String sekaligus. Jika salah satu request gagal, maka tak ada satupun resource yang akan disimpan. Dan Promise yang dikembalikan oleh method ini berstatus rejected
+
+// contoh : 
+  const urls = ['/weather/today.json', '/weather/tomorrow.json'];
+  cache.addAll(urls);
+
+
+
+### Mengambil Resource dari Cache 
+
+! Untuk mencari dan mengambil resource dari cache, kita gunakan method match.
+
+// contoh : 
+  cache.match(request)
+    .then((response) => {
+      // do something with response
+  });
+
+! Method tersebut mengembalikan promise di mana membawa nilai response bila status resolved. Bila resource tidak ditemukan pada cache, maka response akan bernilai undefined.
+
+! Pada method ini, kita dapat menerapkan options di parameter kedua. Options digunakan bila kita ingin pencarian cache terhadap request tidak memperdulikan beberapa query, parameter, atau attribution lainnya pada request.
+
+// contoh : 
+  const options = {
+    ignoreSearch: true,
+    ignoreMethod: true,
+    ignoreVary: true,
+  };
+  
+  cache.match(request, options)
+    .then((response) => {
+    // do something with response
+  });
+
+
+## Mencari dan Menghapus Cache 
+
+### Mencari Cache 
+
+! Pada Cache API kita dapat membuat lebih dari satu cache. Kadangkala jika sudah banyak cache yang dibuat, kita kesulitan untuk mengorganisir-nya. Ketika membuka sebuah cache menggunakan method open(), kita memerlukan nama cache tersebut. Untuk menampilkan seluruh nama atau keys yang tersedia pada cache, kita dapat menggunakan method keys.
+
+// contoh : 
+  caches.keys()
+  .then((cacheNames) => {
+    cacheNames.forEach((cacheName) => {
+      if (cachesNames !== 'my-cache') {
+        // do something
+      }
+    });
+  });
+
+
+### Menghapus Cache 
+
+! Untuk menghapus cache, kita dapat menggunakan method caches.delete(). Method tersebut membutuhkan satu parameter yakni nama dari cache yang akan dihapus. Biasanya ketika menghapus cache, kita kombinasikan dengan penggunaan keys. Contohnya seperti ini:
+
+// contoh : 
+  caches.keys()
+  .then((cacheNames) => {
+    cacheNames.forEach((cacheName) => {
+      if (cachesNames !== 'my-cache') {
+        caches.delete(cacheName);
+      }
+    });
+  });
+
+
+## Caching Strategies 
+! link : https://www.dicoding.com/academies/219/tutorials/9521?from=9516
+! Ada beberapa pola yang dapat kita terapkan untuk melakukan cache di Caches API dan service worker, berikut macam-macamnya
+
+
+### Cache Only 
+
+! Pola cache only merupakan pola caching di mana aplikasi hanya mengembalikan aset yang ada di dalam cache, tanpa mengirim request ke jaringan. Cache only cocok digunakan pada aset statis yang sangat jarang berubah seperti aset untuk app shell. 
+
+! Untuk tahapannya, diawali dengan melakukan precaching yaitu menyimpan aset ke dalam cache pada saat instalasi service worker. Sehingga untuk request selanjutnya, kita sama sekali tidak membutuhkan lagi request ke internet. Satu-satunya cara untuk memperbaharui aset adalah dengan menghapus cache lama dan melakukan preaching ulang untuk aset yang baru. Strategi ini jarang kita gunakan secara spesifik,
+
+// contoh : 
+  self.addEventListener('fetch', (event) => {
+      event.respondWith(caches.match(event.request));
+  });
+
+
+### Network Only 
+
+! Network only sesuai dengan namanya berarti hanya mengirimkan permintaan ke internet tanpa menggunakan penyimpanan cache. Inilah yang kita lakukan pada penerapan event fetch di service worker saat ini. Strategi ini cocok diterapkan pada data yang selalu berubah dan pengguna harus selalu mendapatkan data terbaru, seperti request non-GET, jumlah stock product, kuota kursi, dan sebagainya. Strategi ini sebenarnya sama seperti pola request konvensional di mana setiap request selalu diarahkan ke internet.
+
+// contoh : 
+  self.addEventListener('fetch', (event) => {
+    event.respondWith(fetch(event.request));
+  });
+
+
+
+### Cache First (Cache Fallback to Network)
+
+! Ini adalah strategi yang paling sering digunakan dalam membuat PWA. Request akan diambil dari cache dulu, namun bila request tidak ditemukan pada cache, ia akan mengambil resource dari internet.
+
+// contoh : 
+  self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request).then((response) => {
+          return response || fetch(event.request);
+        })
+    );
+  });
+
+
+### Network First
+
+! Network first berarti selalu mengirim request ke internet. Apabila request berhasil maka selain menampilkan pada DOM, response akan dimasukan ke dalam cache. Namun bila request gagal karena jaringan terputus atau koneksi lambat, ia langsung dialihkan menggunakan cache. Strategi ini cocok untuk aset atau data yang selalu diperbaharui secara berkala namun tidak terlalu krusial.
+
+// contoh :
+  self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        fetch(event.request)
+        .catch(() => {
+          return caches.match(event.request);
+        })
+    );
+  });
+
+
+### Stale While Revalidate 
+
+! Pada strategi Stale while revalidate kita mengembalikan dulu data dari cache bila ada, sambil mengirim juga permintaan ke jaringan untuk memperbaharui data di dalam cache. Sehingga untuk permintaan selanjutnya, data yang diambil dari cache adalah data yang terbaru. 
+
+! Strategi ini merupakan strategi yang cukup rumit namun menjadi solusi terbaik saat ini. Strategi ini akan terasa lebih cepat di sisi pengguna dibanding pada penerapan strategi network first. Karena pengguna tidak harus melalui jaringan gagal dulu untuk mendapatkan konten cache.
+
+// contoh : 
+  self.addEventListener('fetch', (event) => {
+    event.respondWith(revalidateCache(event.request));
+  });
+  
+  const revalidateCache = async (request) => {
+    const response = await caches.match(request);
+  
+    if (response) {
+      _fetchRequest(request);
+      return response;
+    }
+    return _fetchRequest(request);
+  };
+  
+  const _fetchRequest = async (request) => {
+    const response = await fetch(request);
+  
+    if (!response || response.status !== 200) {
+      return response;
+    }
+    _addToCache(request);
+    return response;
+  };
+  
+  const _addToCache = async (request) => {
+  const cache = await caches.open(CACHE_NAME);
+  cache.add(request);
+};
+
+
+
+## Latihan : Cache API 
+
+
+## Menerapkan Cache pada Service Worker 
+! Berikut beberapa automate tools yang bisa Anda eksplorasi lagi agar lebih mudah dalam membuat dan menggunakan service worker serta Cache API.
+  - Workbox (https://developers.google.com/web/tools/workbox): Workbox is a set of libraries and Node modules that make it easy to cache assets and take full advantage of features used to build Progressive Web Apps.
+  - workbox-webpack-plugin (https://webpack.js.org/guides/progressive-web-application/): an easy way to implement a workbox in webpack.
+
+
+
+## IndexedDB 
+! IndexedDB adalah built-it database yang terdapat di dalam web browser modern saat ini. Karena tersedia secara lokal pada browser, untuk memanfaatkan IndexedDB kita tidak membutuhkan koneksi internet. Kehadiran IndexedDB dapat membantu aplikasi PWA yang dibangun dapat menyimpan data dengan sederhana, cepat, dan mudah untuk dikelola.
+
+! Berbeda dengan database SQL seperti MySQL atau PostgreSQL, IndexedDB merupakan database basis NoSQL, artinya kita tidak perlu melakukan SQL query setiap kali melakukan transaksi data. Cukup dengan perintah JavaScript mirip seperti Cache API. Data yang disimpan di dalam indexedDB berupa JavaScript Object, di mana kita dapat menyimpan data walau memiliki struktur yang kompleks sekalipun.
+
+! IndexedDB tersedia pada browser secara unik berdasarkan domain. Maksudnya, sebuah domain memiliki database-nya sendiri, dan tidak bisa mengakses database yang berada pada situs lain, meskipun IndexedDB tersedia dalam lokal pada browser. Dengan begitu data terjaga secara aman dan terhindar dari transaksi yang tidak diinginkan.
+
+
+### Istilah dalam IndexedDB 
+! Karena IndexedDB sedikit berbeda dengan sistem database yang umum kita ketahui, ada baiknya untuk mengenal beberapa istilah yang sering dipakai sebelum tahu cara penggunaannya.
+  - Database - Database merupakan tempat tertinggi dalam penyimpanan data. Di dalam database kita dapat membuat banyak object store. Kita pun dapat membuat banyak database, namun umumnya satu aplikasi biasanya cukup membuat satu database saja.
+  - Object Store - Object store merupakan tempat penyimpanan satu jenis kumpulan data. Jika Anda sudah familiar dengan SQL Database, object store ini menduduki posisi yang sama seperti tabel meskipun data yang disimpan tak sama seperti tabel pada SQL (Karena object store menyimpan objek JavaScript). Kita dapat membuat banyak object store di dalam database.
+  - Index - Index merupakan object store khusus yang dipakai untuk mengorganisir object store lain berdasarkan salah satu (atau beberapa) propertinya. Dengan membuat index, kita dapat lebih leluasa mendapatkan nilai berdasarkan properti yang diinginkan. Contoh, pada aplikasi Movie Catalogue, kita bisa mendapatkan data film berdasarkan judul, tanggal rilis, rating atau lainnya.
+  - Operation - Operation adalah istilah yang dipakai saat kita berurusan dengan database (baik itu membaca atau menulis data).
+  - Transaction - Transaction adalah pembungkus sebuah operation atau sekelompok operation untuk menjaga integritas data. Jika ada operation yang gagal ditengah jalan, isi database akan dikembalikan seperti saat sebelum transaction dilakukan. Semua operation di IndexedDB harus dibungkus oleh transaction agar tidak terjadi tumpang tindih dalam proses penulisan data di dalam database. 
+  - Cursor - Cursor adalah objek yang bisa dimanfaatkan untuk melakukan iterasi pada kumpulan data di dalam database (membaca data satu persatu).
+
+
+
+## Dasar Penggunaan IndexedDB 
+! Sebelum itu, ada yang perlu kita ketahui dulu. Sejatinya, indexedDB merupakan low level API yang butuh banyak konfigurasi dan penyesuaian sebelum menggunakannya. Proses tersebut sangatlah melelahkan dan membuat frustasi walau tujuannya sekedar melakukan penyimpanan data yang sederhana. Karena IndexedDB tidak seperti modern Web API lainnya yang memanfaatkan promise, namun ia masih menggunakan event atau callback.
+
+! Syukurlah berkat bantuan Jake Archibald (Google Engineer) kita dapat menggunakan IndexedDB secara promise based. Ia membuat node package bernama idb (IndexedDB, but with promises) sehingga penggunaan IndexedDB tidak lagi sesulit aslinya. 
+
+// cara install idb 
+  - npm install idb
+
+  -> Kemudian untuk menggunakannya, kita tinggal lakukan import seperti ini:
+    - import * as idb from 'idb';
+
+  -> Atau kita dapat melakukan named import sesuai dengan operations yang kita inginkan saja.
+    - import { openDB, deleteDB } from 'idb';
+
+
+
+## Membuat/Membuka Database dan Object 
+
+! Untuk membuat atau membuka database, kita dapat melakukannya dengan method openDB. Contohnya seperti berikut:
+  import { openDB } from 'idb';
+  
+  const DATABASE_NAME = 'my-pwa-database';
+  
+  const dbPromise = openDB(DATABASE_NAME, 1, {
+  upgrade(database) {
+    // do something with database
+  },
+  });
+
+! Fungsi openDB membutuhkan 3 (tiga) buah parameter, yang pertama adalah nama database yang akan dibuka (atau dibuat bila belum terdapat), versi database-nya, dan sebuah objek yang dapat terdiri dari callback upgrade, blocked, blocking, atau terminated. Jangan terlalu khawatir terhadap 4 (empat) callback yang ada, kita cukup fokus dan gunakan satu callback saja yakni upgrade.
+
+! Di dalam callback upgrade kita dapat memanfaatkan nilai database (parameternya) untuk membuat, menghapus object store ataupun index pada database.
+
+! Untuk membuat object store baru, kita gunakan method database.createObjectStore(). 
+  ...
+  const dbPromise = openDB(DATABASE_NAME, 1, {
+  upgrade(database) {
+    database.createObjectStore(OBJECT_STORE_NAME, { keyPath: 'id' });
+  },
+  });
+
+
+! Method tersebut dapat menerima dua parameter yakni nama, dan optional parameter. Pada optional parameter kita dapat menentukan opsi-opsi yang akan diterapkan pada object store. Seperti menentukan keyPath ataupun lainnya. 
+
+! Properti keyPath mirip seperti primary key bila pada SQL Database. keyPath menjadi nilai standar sebagai acuan pencarian data. Bila object store menetapkan keyPath, maka kita tidak bisa memasukkan data yang memiliki keyPath yang sama. Ini sangat membantu untuk menghindari duplikasi data pada database.
+
+! Method openDB mengembalikan promise yang nilai resolve nya dapat dimanfaatkan untuk membuat operasi CRUD. dengan begitu kita bisa meng-assignnya pada variabel. Pada contoh kode di atas, variabel tersebut adalah dbPromise.
+
+
+
+## Operasi CRUD Pada IndexedDB 
+
+### Get Data 
+
+! Untuk mendapatkan data di dalam database, kita gunakan method get melalui nilai dbPromise yang sudah kita buat sebelumnya.
+  - const movie = (await dbPromise).get(OBJECT_STORE_NAME, id);
+
+  ! Method get() akan mengembalikan promise dengan satu objek yang berada pada database. Objek yang dipilih sesuai nilai keyPath (id) yang dimasukkan pada parameter-nya. 
+
+! Bila kita ingin mendapatkan seluruh nilai yang terdapat pada database, jangan lakukan looping dengan memberikan nilai id satu-persatu secara manual. Manfaatkanlah getAll(). Method getAll() mengembalikan seluruh nilai objek pada database yang sedang dibuka. Kita tidak membutuhkan parameter id untuk menggunakannya.
+  - const movies = (await dbPromise).getAll(OBJECT_STORE_NAME);
+
+
+### Input Data 
+
+! Untuk memasukan data pada database, gunakan method add. 
+  - (await dbPromise).add(OBJECT_STORE_NAME, movie);
+
+! Selain nama object store, pada parameter kedua method add kita perlu menetapkan data (JavaScript objek) yang hendak kita masukkan. Contohnya seperti ini.
+  const movie = {
+    id: 1,
+    title: 'Spiderman',
+    description: 'Lorem ipsum dolor sit amet',
+  };
+
+! Jika pada object store kita menetapkan keyPath, maka objek yang dimasukkan wajib memiliki properti dari keyPath tersebut, dan nilainya harus unik. Bila tidak, data akan gagal dimasukkan.
+
+
+
+### Update Data 
+
+! Untuk melakukan update data, gunakan method put.
+  - (await dbPromise).put(OBJECT_STORE_NAME, movie);
+
+! Parameter yang dibutuhkan method put sama seperti add, selain itu perilakunya juga sama. Namun bedanya objek yang dimasukkan bila memiliki nilai keyPath yang sama, ia akan me-replace data, tidak menghasilkan sinyal gagal atau eror.
+
+
+### Delete Data 
+
+! Terakhir, untuk menghapus data gunakanlah method delete.
+  - (await dbPromise).delete(OBJECT_STORE_NAME, id);
+
+! Parameter yang dibutuhkan sama seperti method get, namun berfungsi sebaliknya, yakni untuk menghapus data sesuai dengan nilai yang diberikan pada parameternya.
+
+! Agar lebih memudahkan penggunaan IndexedDB, kita bisa membuat semacam objek helper yang di dalamnya terdapat fungsi dari operasi CRUD. Kurang lebih akan tampak seperti ini, bila seluruh operation database dilakukan pada satu buah berkas JavaScript.
+// contoh : 
+  import { openDB } from 'idb';
+  
+  const STORE_NAME = 'movies-store';
+  const OBJECT_STORE_NAME = 'movies';
+  
+  const dbPromise = openDB(STORE_NAME, 1, {
+    upgrade(database) {
+      database.createObjectStore(OBJECT_STORE_NAME, { keyPath: 'id' });
+    },
+  });
+  
+  const Database = {
+    async getMovie(id) {
+      return (await dbPromise).get(OBJECT_STORE_NAME, id);
+    },
+    async getAllMovies() {
+      return (await dbPromise).getAll(OBJECT_STORE_NAME);
+    },
+    async putMovie(movie) {
+      return (await dbPromise).add(OBJECT_STORE_NAME, movie);
+    },
+    async updateMovie(movie) {
+      return (await dbPromise).put(OBJECT_STORE_NAME, movie);
+    },
+    async deleteMovie(id) {
+      return (await dbPromise).delete(OBJECT_STORE_NAME, id);
+    },
+  };
+  
+  export default Database;
+
+
+
+## Latihan: IndexedDB 
+
+
+## Menyiapkan Fungsi Operations DB 
+
+
+## memberikan Fungsionalitas pada tombol like 
+! Kita dapat melihat data yang dimasukkan ke indexedDB pada DevTools -> Application -> IndexedDB.
+
+
+
+## Menampilkan Data dari Database 
+! Setelah berhasil memasukan movie pada database, terakhir kita tinggal menampilkannya dengan membuat halaman baru yakni Likes Page. Prosesnya akan sangat mudah karena kita menerapkan pola yang baik.
+
+
+
+
+## WebSocket 
+! Standarnya komunikasi client ke server berlangsung dua arah dengan pola request dan response. Server akan mengirimkan data hanya ketika client melakukan permintaan. Dengan pola yang kaku seperti inilah konten website ditampilkan. Sebelum adanya AJAX, setiap kali melakukan request browser perlu me-reload untuk menampilkan data atau halaman baru.
+
+! Saat ini terdapat teknologi modern yang dapat membuat komunikasi client ke server berjalan dua arah secara aktif. Maksudnya untuk mengirimkan data ke client, server tidak perlu menunggu permintaan dari client, server bisa langsung mengirimkan data kapan saja. Begitu juga dengan client. Ia dapat mengirimkan data ke server tanpa server harus menanggapi balik apa data yang ia kirimkan. Teknologi tersebut dinamakan WebSocket.
+
+!! Dengan pola komunikasi aktif secara dua arah (full-duplex) seperti ini client dan server perlu selalu terhubung agar dapat menerima sinyal komunikasi dari tiap pihak. Karena selalu terhubung, kita dapat menciptakan komunikasi yang real-time. WebSocket cocok untuk digunakan pada kasus real-time chatting, live feed, multiplayer gaming, live progress.
+
+! Untuk menggunakan WebSocket, tentu perlu persiapan pada server dan client. Untuk sisi server, agar websocket dapat berjalan pada protokol HTTP, diperlukan proses Handshake. Proses Handshake menggunakan HTTP Upgrade header sehingga membutuhkan HTTP 1.1. Tapi Anda tak perlu khawatir akan ini, kita akan fokus menggunakan WebSocket dari sisi client bukan dari sisi server.
+
+
+
+## Membuka Koneksi WebSocket
+
+! Untuk memanfaatkan WebSocket pada browser, gunakan WebSocket API yang tersedia pada HTML5 Communication Specification(https://html.spec.whatwg.org/#toc-comms). 
+  - const webSocket = new WebSocket(url, protocols);
+
+  ! Objek WebSocket menerima satu parameter wajib (url) dan satu parameter optional (protocols).
+
+
+### Url 
+! Properti url merupakan alamat URL WebSocket server yang akan dikoneksikan. Nilai url harus menggunakan skema wss://, atau ws:// bila client memperbolehkan komunikasi dilakukan pada jaringan yang tidak aman (insecure).
+// contoh : 
+  ! secure connection 
+  const webScoket = new WebSocket('wss://www.example.com/socketserver');
+
+  ! insecure connection 
+  const webScoket = new WebSocket('ws://www.example.com/socketserver');
+
+
+### Protocols (optional)
+! WebSocket dapat menyesuaikan interaksinya berdasarkan protokol yang diinginkan. Untuk menetapkan protokol yang diinginkan, kita manfaatkan parameter ini. Parameter ini kita dapat memberikan nilai string yang terdiri dari satu atau lebih (dalam bentuk array string) nama protokol.
+// contoh : 
+  ! single protocol
+  const new WebSocket('wss://www.example.com/socketserver', 'protocolOne');
+
+  ! multi protocol 
+  new WebSocket('wss://www.example.com/socketserver', ['protocolOne', 'protocolTwo']);
+
+! Jika kita tidak menetapkan nilai protokol, secara default akan bernilai string kosong (“”).
+
+
+
+## Mengirim Data ke WebSocket Server 
+
+! Setelah membuat objek dan membuka koneksi WebSocket, kita bisa langsung mengirimkan data ke WebSocket server. Untuk melakukanya cukup mudah, gunakan method send() pada webSocket objek yang sudah dibuat.
+// contoh : 
+  // Menghubungkan ke WebSocket
+  const webSocket = new WebSocket('wss://www.example.com/socketserver');
+  // Mengirim data ke WebSocket server
+  webSocket.send('Some text that the server is urgently awaiting!');
+
+  ! Di dalam method send() kita dapat memberi nilai String, Blob, ataupun ArrayBuffer.
+
+
+! Karena menghubungkan koneksi selalu berjalan dengan asynchronous, untuk menghindari kegagalan dalam mengirimkan data ke WebSocket server, lakukan pengiriman data setelah client berhasil terhubung dengan WebSocket server. Caranya, manfaatkan event callback onopen pada objek WebSocket.
+// contoh : 
+  const webSocket = new WebSocket('wss://www.example.com/socketserver');
+  
+  webSocket.onopen = (event) => {
+    webSocket.send('Some text that the server is urgently awaiting!');
+  };
+
+
+! Bila kita ingin mengirim data yang kompleks seperti JavaScript objek melalui WebSocket, kita bisa manfaatkan JSON.stringify untuk mengubahnya dalam bentuk string.
+// contoh : 
+  const webSocket = new WebSocket('wss://www.example.com/socketserver');
+  
+  webSocket.onopen = (event) => {
+  const data = {
+    type: 'message',
+    text: document.querySelector('#text'),
+    date: Date.now(),
+  };
+  
+  webSocket.send(JSON.stringify(data));
+  };
+
+
+
+## Mendapatkan Data dari WebSocket Server
+
+! WebSocket API mengarahkan kita untuk menggunakan event dalam setiap aksi (event-driven API). Termasuk ketika mengirimkan data, sebaiknya dilakukan di dalam event onopen. Nah, untuk mendapatkan data/pesan dari server kita juga melakukannya melalui event. Event message akan terpanggil setiap kali server mengirimkan data/pesan pada client. Untuk menangkap datanya kita gunakan onmessage event handler pada objek webSocket
+// contoh : 
+  const webSocket = new WebSocket('wss://www.example.com/socketserver');
+  
+  webSocket.onmessage = (event) => {
+    console.log(event.data);
+  };
+
+! Bila server mengirimkan data yang kompleks seperti JSON, gunakan JSON.parse() untuk mengubahnya ke JavaScript objek.
+// contoh : 
+  const webSocket = new WebSocket('wss://www.example.com/socketserver');
+  
+  webSocket.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+    console.log(data);
+  };
+
+
+
+## Menutup Koneksi WebSocket 
+
+! Jika kita sudah selesai memanfaatkan WebSocket, hentikan atau tutup koneksinya menggunakan method close().
+  - webSocket.close();
+
+! Sebelum menutup koneksi alangkah lebih baik selalu melakukan pengecekan untuk memastikan tidak ada data berjalan yang sedang dikirim oleh server. Untuk melakukannya, kita bisa manfaatkan properti bufferedAmount. Bila nilai bufferedAmount lebih dari 0, itu berarti masih ada data yang ter-pending dan kita seharusnya menunggu data selesai ditransaksikan sebelum menutup koneksi.
+// contoh : 
+  const closeWebSocket = (webSocket) => {
+  if (!webSocket.bufferedAmount) {
+    webSocket.close();
+    return;
+  }
+  throw new Error('Pending data is still available');
+  };
+
+
+! Kita juga bisa memanfaatkan event close bila ingin menambahkan logika ketika koneksi WebSocket telah ditutup. 
+// contoh : 
+  webSocket.onclose = (event) => {
+    console.log('WebSocket connection was close');
+  };
+
+
+! Koneksi WebSocket juga akan tertutup otomatis bila tab atau browser web ditutup.
+
+
+
+## Latihan: WebSocket 
+
+
+
+
+## Notifikasi 
+
+! Salah satu keuntungan ketika menerapkan PWA adalah kita dapat mengaktifkan fitur notifikasi. Notifikasi membantu untuk menarik ulang pengguna untuk mengunjungi kembali website kita. Dengan adanya service worker dan Notification API, fitur notifikasi tak hanya dapat dimanfaatkan oleh aplikasi native saja, namun bisa juga kita manfaatkan untuk aplikasi web. Pada materi kali ini kita akan belajar cara penggunaan Notification API mulai dari meminta izin, hingga menampilkan notifikasi dengan fungsi yang berbeda.
+
+
+### Meminta Izin Menampilkan Notifikasi 
+
+! Sebelum menampilkan notifikasi, pengguna harus mengizinkan fitur notifikasi berjalan pada web. Untuk meminta izin jalannya notifikasi pada web, gunakan method requestPermission() dari global object Notification
+// contoh : 
+  const requestPermission = async () => {
+  // meminta ijin memunculkan notification
+  const result = await Notification.requestPermission();
+  if (result === 'denied') {
+    console.log('Fitur Notification tidak diijinkan');
+    return;
+  }
+  
+  if (result === 'default') {
+    console.log('Pengguna Menutup kotak dialog permintaan ijin');
+    return;
+  }
+  
+  console.log('Fitur notification diijinkan');
+  };
+  
+  requestPermission();
+
+! Method requestPermission() mengembalikan Promise dengan nilai resolve string yang mengindikasikan hasil otorisasi dari pengguna. Hasil otorisasi bisa berupa denied (penolakan), default (diabakan), dan granted (diizinkan). Notifikasi hanya dapat muncul bila otorisasi bernilai granted.
+
+! Karena notifikasi merupakan teknologi baru yang hadir pada versi Google Chrome 42 ke atas, alangkah baiknya sebelum meminta izin, kita perlu mengecek apakah browser mendukung notifikasi atau belum (karena browser versi lama, atau memang tidak support). Untuk melakukannya bisa dengan cara berikut:
+// contoh : 
+  if ('Notification' in window) {
+    requestPermission();
+  }
+
+  ! Bila permohonan izin berhasil dijalankan, pengguna akan mendapatkan pesan permohonan seperti ini: 
+    ! gambar : popup : http://.... show notification [block][allow], [] = button d popup
+
+
+### Menampilkan Notifikasi 
+
+! Setelah meminta izin dan pengguna memperbolehkan fitur notifikasi berjalan, kita bisa memulai mengirimkan notifikasi. Perlu kita ingat, bahwa menampilkan notifikasi dapat dilakukan bila web kita sudah menerapkan Service Worker. Karena untuk menampilkan notifikasi dilakukan melalui nilai registration dari Service Worker yang aktif, dan menggunakan method showNotification() dari nilai registration tersebut.
+// contoh : 
+  navigator.serviceWorker.ready.then((registration) => {
+    registration.showNotification(title, options);
+  });
+
+  ! Method showNotification() menerima dua parameter. Parameter pertama bertipe string yang merupakan judul dari notifikasi yang hendak ditampilkan. Parameter kedua bertipe objek (options) yang digunakan mengatur bagaimana tampilan dan perilaku dari notifikasinya.
+
+! Banyak properti yang bisa kita terapkan pada objek options. Salah satu properti yang paling penting diterapkan adalah body.
+// contoh : 
+  navigator.serviceWorker.ready.then((registration) => {
+    const title = 'Judul Notifikasi';
+    const options = { body: 'Ini merupakan konten dari notifikasi' };
+    
+    registration.showNotification(title, options);
+  });
+
+! Properti body pada options digunakan untuk menampilkan konten extra pada notifikasi, atau bisa kita sebut sebagai konten dari notifikasi
+
+! Masih banyak properti yang bisa digunakan pada options, kita bisa menetapkan icon atau gambar, menetapkan aksi, vibration, dan lain sebagainya. Untuk lebih detailnya, Anda bisa eksplorasi lebih dalam fungsi dan penjelasannya pada tautan berikut:
+  ! https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/showNotification
+
+
+
+
+
+
+
+
+!! NOTES !! #ff0000
+
+! Bila Anda merasa pusing dan menganggap bahwa penulisan kode dengan membuat banyak membuat berkas, class, fungsi (sekecil mungkin), dan aturan-aturan lainnya malah membuat kita sulit. Percayalah, hal-hal tersebut akan membantu Anda dalam pengembangan ke depannya. Anda akan banyak memakan waktu untuk bugs fixing, maintenancing, refactoring bila tidak mempersiapkannya dari awal. Mari kita bersusah payah di awal, dan merasakan nikmatnya di akhir.
+
+
+! parameter lebih dari 2 tidak direkomendasikan oleh Clean Code, maka pakailah object destructuring
+
+
+!!! yang dipakai di latihan dicoding ini memakai package(webpack, copy-webpack-plugin, html-webpack-plugin, style-loader, css-loader) versi lama : 
+    "devDependencies": {
+      "@babel/core": "^7.16.0",
+      "@babel/preset-env": "^7.16.0",
+      "babel-loader": "^8.2.3",
+      "css-loader": "^5.2.7",
+      "eslint": "^8.1.0",
+      "html-webpack-plugin": "^4.3.0",
+      "style-loader": "^2.0.0",
+      "webpack-cli": "^4.9.1",
+      "webpack-dev-server": "^4.4.0",
+      "webpack-merge": "^5.8.0"
+    },
+    "dependencies": {
+      "copy-webpack-plugin": "^6.0.2",
+      "regenerator-runtime": "^0.13.9",
+      "serviceworker-webpack-plugin": "^1.0.1",
+      "webpack": "^4.43.0"
+    }

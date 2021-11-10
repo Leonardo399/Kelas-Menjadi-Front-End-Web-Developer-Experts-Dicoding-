@@ -1,0 +1,633 @@
+# langkah langkah membuat pwa 
+1. buat folder project
+2. npm init 
+3. install package yang diperlukan (di materi pke versi ini)
+    "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "babel-loader": "^8.1.0",
+    "copy-webpack-plugin": "^6.0.2",
+    "css-loader": "^3.6.0",
+    "eslint": "^7.3.1",
+    "html-webpack-plugin": "^4.3.0",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
+  },
+  "dependencies": {
+    "regenerator-runtime": "^0.13.5"
+  }
+
+  -> kemudian jalankan perintah 'npm install'
+
+
+4. configurasi eslint (opsional)
+5. buat struktur folder berikut : 
+  src
+  ├── public // untuk menyimpan assets (gambar,dll)
+  ├── scripts
+  │ ├── data
+  │ ├── globals
+  │ ├── routes 
+  │ ├── utils
+  │ └── views
+  │   ├── pages
+  │   └── templates
+  ├── styles // berisi file" css
+  └── templates // berisi template html
+
+
+6. buat configurasi webpack 
+  - webpack.common.js 
+      const HtmlWebpackPlugin = require('html-webpack-plugin');
+      const CopyWebpackPlugin = require('copy-webpack-plugin');
+      const path = require('path');
+      
+      module.exports = {
+        entry: path.resolve(__dirname, 'src/scripts/index.js'),
+        output: {
+          path: path.resolve(__dirname, 'dist'),
+          filename: 'bundle.js',
+        },
+        module: {
+          rules: [
+            {
+              test: /\.css$/,
+              use: [
+                {
+                  loader: 'style-loader',
+                },
+                {
+                  loader: 'css-loader',
+                },
+              ],
+            },
+          ],
+        },
+        plugins: [
+          new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, 'src/templates/index.html'),
+            filename: 'index.html',
+          }),
+          new CopyWebpackPlugin({
+            patterns: [
+              {
+                from: path.resolve(__dirname, 'src/public/'),
+                to: path.resolve(__dirname, 'dist/'),
+              },
+            ],
+          }),
+        ],
+      };  
+
+  - webpack.dev.js 
+      const { merge } = require('webpack-merge');
+      const path = require('path');
+      const common = require('./webpack.common');
+      
+      module.exports = merge(common, {
+        mode: 'development',
+        devServer: { 
+          // di webpack 5 property contentBase ini sudah tidak ada dan digantikan dengan static
+          contentBase: path.resolve(__dirname, 'dist'),
+        },
+      });
+
+  - webpack.prod.js
+      const { merge } = require('webpack-merge');
+      const common = require('./webpack.common');
+      
+      module.exports = merge(common, {
+        mode: 'production',
+        module: {
+          rules: [
+            {
+              test: /\.js$/,
+              exclude: '/node_modules/',
+              use: [
+                {
+                  loader: 'babel-loader',
+                  options: {
+                    presets: ['@babel/preset-env'],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      });
+
+
+7. tambahkan script di file package.json 
+    "scripts": {
+      "start-dev": "webpack-dev-server --config webpack.dev.js",
+      "build": "webpack --config webpack.prod.js"
+    },
+
+
+8. buat file di src -> scripts -> index.js , dan src -> templates -> index.html
+  - index.js 
+    import 'regenerator-runtime';
+    
+    console.log('Hello Coders!');
+
+  - index.html 
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Free movie catalogue for you">
+        <link rel="icon" href="favicon.png">
+        <title>Movie Catalogue</title>
+    </head>
+    <body>
+      <h1>Movie Catalogue</h1>
+    </body>
+    </html>
+
+9. cari dan simpan gambar favicon.png di folder public
+
+10. coba npm run start-dev 
+    ! jika sebelumnya telah mencoba service worker maka unregister dulu service workernya di tab application -> service workers, cache storage, dan indexedDB
+
+11. mari mulai membuat application shell nya
+    -> pertama kita buat tampilan websitenya terlebih dahulu 
+      - src/templates/index.html 
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="Free movie catalogue for you">
+            <link rel="icon" href="favicon.png">
+            <title>Movie Catalogue</title>
+        </head>
+        <body>
+          <header class="app-bar">
+            <div class="app-bar__menu">
+              <button id="hamburgerButton">☰</button>
+            </div>
+            <div class="app-bar__brand">
+              <h1>Movie Catalogue</h1>
+            </div>
+            <nav id="navigationDrawer" class="app-bar__navigation">
+              <ul>
+                <li><a href="#/now-playing">Now Playing</a></li>
+                <li><a href="#/upcoming">Upcoming</a></li>
+              </ul>
+            </nav>
+          </header>
+          <main id="mainContent"></main>
+          <footer>
+            <p>All data obtained from <a href="https://themoviedb.org" target="_blank" rel="noreferrer">TheMovieDB</a></p>
+          </footer>
+        </body>
+        </html>  
+    
+    -> buat file style.css dan responsive.css yg nantinya disematkan di index.html
+      - src/styles/style.css 
+      - src/styles/responsive.css 
+
+    -> import kedua berkas css tersebut ke index.js
+      - src/scripts/index.js
+        import '../styles/style.css';
+        import '../styles/responsive.css';
+
+    -> mari buat humburger menunya(drawer) supaya aktif 
+        // konfigurasi drawer 
+        -> buat file di src -> scripst -> views -> app.js untuk menginisiasikan komponen" dari application shell, disini contoh komponennya adalah humberger menu(drawer)
+          - app.js
+            import DrawerInitiator from '../utils/drawer-initiator';
+            
+            class App {
+              constructor({ button, drawer, content }) {
+                this._button = button;
+                this._drawer = drawer;
+                this._content = content;
+            
+                this._initialAppShell();
+              }
+            
+              _initialAppShell() {
+                DrawerInitiator.init({
+                  button: this._button,
+                  drawer: this._drawer,
+                  content: this._content,
+                });
+            
+                // kita bisa menginisiasikan komponen lain bila ada
+              }
+            }
+            
+            export default App;      
+
+        -> buat file src -> scripts -> utils -> drawer-initiator.js untuk logika humberger menu(drawer)
+          - drawer-initiator.js 
+            const DrawerInitiator = {
+              init({ button, drawer, content }) {
+                button.addEventListener('click', (event) => {
+                  this._toggleDrawer(event, drawer);
+                });
+            
+                content.addEventListener('click', (event) => {
+                  this._closeDrawer(event, drawer);
+                });
+              },
+            
+              _toggleDrawer(event, drawer) {
+                event.stopPropagation();
+                drawer.classList.toggle('open');
+              },
+            
+              _closeDrawer(event, drawer) {
+                event.stopPropagation();
+                drawer.classList.remove('open');
+              },
+            };
+              
+            export default DrawerInitiator;          
+
+        -> import file di src/scripts/views/app.js ke src/scripts/index.js dan instasiasi class App
+            import 'regenerator-runtime';
+            import '../styles/style.css';
+            import '../styles/responsive.css';
+            import App from './views/app';
+            
+            const app = new App({
+              button: document.querySelector('#hamburgerButton'),
+              drawer: document.querySelector('#navigationDrawer'),
+              content: document.querySelector('#mainContent'),
+            });    
+
+        -> done seharusnya fungsi humberger menu(drawer) sudah berjalan 
+
+12. Membuat URL Router 
+    -> pertama kita buat file detail.js, now-playing.js, dan upcoming.js di folder src/scritps/views/pages 
+      - now-playing.js 
+        const NowPlaying = {
+          async render() {
+            return `
+              <h2>Now Playing Page</h2>
+            `;
+          },
+        
+          async afterRender() {
+            // Fungsi ini akan dipanggil setelah render()
+          },
+        };
+        
+        export default NowPlaying;            
+
+      - upcoming.js 
+        const NowPlaying = {
+          async render() {
+            return `
+              <h2>Now Playing Page</h2>
+            `;
+          },
+        
+          async afterRender() {
+            // Fungsi ini akan dipanggil setelah render()
+          },
+        };
+        
+        export default NowPlaying;      
+
+      - detail.js 
+        const Detail = {
+          async render() {
+            return `
+              <h2>Detail Page</h2>
+            `;
+          },
+        
+          async afterRender() {
+            // Fungsi ini akan dipanggil setelah render()
+          },
+        };
+        
+        export default Detail;
+
+    -> selanjutnya kita buat file src/scripts/routes/url-parser.js yang berfungsi untuk menguraikan (parsing) URL yang sedang aktif menjadi nilai yang kita butuhkan dalam menentukan route 
+      - url-parser.js 
+        const UrlParser = {
+          parseActiveUrlWithCombiner() {
+            const url = window.location.hash.slice(1).toLowerCase();
+            const splitedUrl = this._urlSplitter(url);
+            return this._urlCombiner(splitedUrl);
+          },
+        
+          parseActiveUrlWithoutCombiner() {
+            const url = window.location.hash.slice(1).toLowerCase();
+            return this._urlSplitter(url);
+          },
+        
+          _urlSplitter(url) {
+            const urlsSplits = url.split('/');
+            return {
+              resource: urlsSplits[1] || null,
+              id: urlsSplits[2] || null,
+              verb: urlsSplits[3] || null,
+            };
+          },
+        
+          _urlCombiner(splitedUrl) {
+            return (splitedUrl.resource ? `/${splitedUrl.resource}` : '/')
+            + (splitedUrl.id ? '/:id' : '')
+            + (splitedUrl.verb ? `/${splitedUrl.verb}` : '');
+          },
+        };
+        
+        export default UrlParser;      
+
+    -> buat satu file lagi src/scripts/routes/routes.js yang berfungsi untuk menyimpan daftar route view
+      - routes.js
+        import NowPlaying from '../views/pages/now-playing';
+        import Upcoming from '../views/pages/upcoming';
+        import Detail from '../views/pages/detail';
+        
+        const routes = {
+          '/': NowPlaying, // default page
+          '/now-playing': NowPlaying,
+          '/upcoming': Upcoming,
+          '/detail/:id': Detail,
+        };
+        
+        export default routes;
+
+    -> selanjutnya tambahkan asynchronous fungsi baru untuk me-render halaman berdasarkan URL yang aktif di file src/scripts/views/app.js
+      - app.js
+        ...
+        async renderPage() {
+          const url = UrlParser.parserActiveUrlWithCombiner();
+          const page = routes[url];
+          this._content.innerHTML = await page.render();
+          await page.afterRender();
+        }
+        ...
+
+    -> kemudian kita tambahkan dua event listener yakni, hashchange (ketika url hash diubah), dan load (ketika halaman dimuat) di file src/scripts/index.js 
+      - index.js 
+        ...
+        window.addEventListener('hashchange', () => {
+          app.renderPage();
+        });
+        
+        window.addEventListener('load', () => {
+          app.renderPage();
+        });
+
+    -> done sekarang jika kita klik setiap link di navigation maka akan berubah sesuai viewnya
+      - src/templates/index.html 
+          <li><a href="#/now-playing">Now Playing</a></li>
+          <li><a href="#/upcoming">Upcoming</a></li>
+          <li><a href="#/like">Liked Movies</a></li> 
+      ! tanda hash disini penting untuk membuat url mati sehingga tidak melakukan reload browser, dan untuk dapat mengambil url selanjutnya setelah slash(/) dengan menggunakan object window.location.hash
+
+13. disini dalam menampilkan content kita akan fetch data API themoviedb
+  -> buat file di src/scripts/globals/config.js untuk menyimpan configurasi data
+    - config.js 
+      const CONFIG = {
+        KEY: 'YOUR_API_KEY', // 7705cf962c57d72269442a0a9d1ce641
+        BASE_URL: 'https://api.themoviedb.org/3/',
+        BASE_IMAGE_URL: 'https://image.tmdb.org/t/p/w500/',
+        DEFAULT_LANGUAGE: 'en-us',
+      };
+      
+      export default CONFIG;    
+
+  -> kemudian buat file lagi di src/scripts/globals/api-endpoint.js 
+    - api-endpoint.js 
+      import CONFIG from './config';
+      
+      const API_ENDPOINT = {
+        NOW_PLAYING: `${CONFIG.BASE_URL}movie/now_playing?api_key=${CONFIG.KEY}&language=${CONFIG.DEFAULT_LANGUAGE}&page=1`,
+        UPCOMING: `${CONFIG.BASE_URL}movie/upcoming?api_key=${CONFIG.KEY}&language=${CONFIG.DEFAULT_LANGUAGE}&page=1`,
+        DETAIL: (id) => `${CONFIG.BASE_URL}movie/${id}?api_key=${CONFIG.KEY}`,
+      };
+      
+      export default API_ENDPOINT;
+
+  -> selanjutnya buat file di src/scripts/data/themoviedb-source.js untuk menampung fungsi" request API menggunakan fetch 
+    - themoviedb-source.js 
+      import API_ENDPOINT from '../globals/api-endpoint';
+      
+      class TheMovieDbSource {
+        static async nowPlayingMovies() {
+          const response = await fetch(API_ENDPOINT.NOW_PLAYING);
+          const responseJson = await response.json();
+          return responseJson.results;
+        }
+      
+        static async upcomingMovies() {
+          const response = await fetch(API_ENDPOINT.UPCOMING);
+          const responseJson = await response.json();
+          return responseJson.results;
+        }
+      
+        static async detailMovie(id) {
+          const response = await fetch(API_ENDPOINT.DETAIL(id));
+          return response.json();
+        }
+      }
+      
+      export default TheMovieDbSource;    
+
+  -> kemudian import file src/scripts/data/themoviedb-source.js ke setiap view pages (src/scripts/views/pages)
+    - now-playing 
+      import TheMovieDbSource from '../../data/themoviedb-source';
+      ...
+      async render() {
+        return `
+          <div class="content">
+            <h2 class="content__heading">Now Playing in Cinema</h2>
+            <div id="movies" class="movies">
+    
+            </div>
+          </div>
+        `;
+      },
+
+      async afterRender() {
+        const movies = await TheMovieDbSource.nowPlayingMovies();
+        console.log(movies);
+      }
+      ...
+
+    - upcoming.js 
+      import TheMovieDbSource from '../../data/themoviedb-source'; 
+      async render() {
+        return `
+          <div class="content">
+            <h2 class="content__heading">Upcoming in Cinema</h2>
+            <div id="movies" class="movies">
+      
+            </div>
+          </div>
+        `;
+      }, 
+      async afterRender() {
+          const movies = await TheMovieDbSource.upcomingMovies();
+          console.log(movies);
+      
+          // TODO: tampilkan movies di dalam DOM
+        },
+      ...
+
+    - detail.js
+      import TheMovieDbSource from '../../data/themoviedb-source';
+      
+      const Detail = {
+        async render() {
+          return `
+            <div id="movie" class="movie"></div>
+          `;
+        },
+      
+        async afterRender() {
+          const url = UrlParser.parseActiveUrlWithoutCombiner();
+          const movie = await TheMovieDbSource.detailMovie(url.id);
+          console.log(movie);
+      
+          // TODO: tampilkan movie di dalam DOM
+        },
+      };
+      ...
+
+
+
+14. membuat template html content
+  -> buat file di src/scripts/templates/template-creator.js untuk menyimpan view template content 
+    - template-creator.js
+      import CONFIG from '../../globals/config';
+      
+      const createMovieDetailTemplate = (movie) => `
+        <h2 class="movie__title">${movie.title}</h2>
+        <img class="movie__poster" src="${CONFIG.BASE_IMAGE_URL + movie.poster_path}" alt="${movie.title}" />
+        <div class="movie__info">
+        <h3>Information</h3>
+          <h4>Tagline</h4>
+          <p>${movie.tagline}</p>
+          <h4>Release Date</h4>
+          <p>${movie.release_date}</p>
+          <h4>Duration</h4>
+          <p>${movie.runtime} minutes</p>
+          <h4>Rating</h4>
+          <p>${movie.vote_average}</p>
+        </div>
+        <div class="movie__overview">
+          <h3>Overview</h3>
+          <p>${movie.overview}</p>
+        </div>
+      `;
+      
+      const createMovieItemTemplate = (movie) => `
+        <div class="movie-item">
+          <div class="movie-item__header">
+              <img class="movie-item__header__poster" alt="${movie.title}"
+                  src="${movie.backdrop_path ? CONFIG.BASE_IMAGE_URL + movie.backdrop_path : 'https://picsum.photos/id/666/800/450?grayscale'}">
+              <div class="movie-item__header__rating">
+                  <p>⭐️<span class="movie-item__header__rating__score">${movie.vote_average}</span></p>
+              </div>
+          </div>
+          <div class="movie-item__content">
+              <h3><a href="${`/#/detail/${movie.id}`}">${movie.title}</a></h3>
+              <p>${movie.overview}</p>
+          </div>
+        </div>
+        `;
+      
+      export { createMovieItemTemplate, createMovieDetailTemplate };
+
+
+  -> kemudian kita render hasil fetch api pada function afterRender() di setiap view pages
+    - now-playing 
+      ...
+      import { createMovieItemTemplate } from '../templates/template-creator';
+      ...
+      async afterRender() {
+          const movies = await TheMovieDbSource.nowPlayingMovies();
+          const moviesContainer = document.querySelector('#movies');
+          movies.forEach((movie) => {
+            moviesContainer.innerHTML += createMovieItemTemplate(movie);
+          });
+        },    
+      ...
+
+    - upcoming.js
+      ...
+      import { createMovieItemTemplate } from '../templates/template-creator';
+      ...
+      async afterRender() {
+          const movies = await TheMovieDbSource.upcomingMovies();
+          const moviesContainer = document.querySelector('#movies');
+          movies.forEach((movie) => {
+            moviesContainer.innerHTML += createMovieItemTemplate(movie);
+          });
+        },
+      ...
+
+    - detail.js
+      ...
+      import UrlParser from '../../routes/url-parser';
+      import { createMovieDetailTemplate } from '../templates/template-creator';
+      ...
+      async afterRender() {
+          const url = UrlParser.parseActiveUrlWithoutCombiner();
+          const movie = await TheMovieDbSource.detailMovie(url.id);
+          const movieContainer = document.querySelector('#movie');
+          movieContainer.innerHTML = createMovieDetailTemplate(movie);
+        },
+      ...
+
+
+
+
+
+
+!! NOTES !!
+
+! isi property window.location 
+  Location {ancestorOrigins: DOMStringList, href: 'http://localhost:8080/#/upcoming', origin: 'http://localhost:8080', protocol: 'http:', host: 'localhost:8080', …}
+    ancestorOrigins: DOMStringList {length: 0}
+    assign: ƒ assign()
+    hash: "#/upcoming"
+    host: "localhost:8080"
+    hostname: "localhost"
+    href: "http://localhost:8080/#/upcoming"
+    origin: "http://localhost:8080"
+    pathname: "/"
+    port: "8080"
+    protocol: "http:"
+    reload: ƒ reload()
+    replace: ƒ replace()
+    search: ""
+    toString: ƒ toString()
+    ...
+
+
+! '/url1/'.split('/'); // output : ['','url1',''];
+
+! async function bisa digunakan untuk await
+  // contoh : 
+    async function asinkron() {
+      console.log('clog langsung pindah ke sinkron(stack) jika nilainya terpenuhi');
+      return 'hello world';
+    }
+
+    async function jalankan() {
+      console.log(await asinkron());
+    }
+
+    jalankan();
+    console.log('selesai');  
+
+    /*
+      output : 
+        clog langsung pindah ke sinkron(stack) jika nilainya terpenuhi
+        selesai
+        hello world
+    */

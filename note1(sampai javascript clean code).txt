@@ -1,0 +1,1037 @@
+# Persiapan Belajar #ff0000 
+
+## Glosarium 
+
+### Automation Testing
+Proses pengujian web atau kode secara otomatis menggunakan kode testing. Automation Testing bertujuan untuk memastikan fungsionalitas yang dibuat berjalan dengan semestinya baik dalam level kode maupun aplikasi (web).
+
+### Babel 
+Code Transpiler yang dapat mengubah sintaks ES6 menjadi sintaks yang dapat digunakan oleh browser secara luas.
+
+### Deploy
+Singkatan dari istilah Deployment merupakan aktivitas yang membuat software dapat digunakan.
+
+### Endpoint
+Lokasi akhir yang menunjukkan di mana client dapat mengakses sumber daya dari API.
+
+### Framework
+Abstraksi dari sebuah teknologi yang sudah ada yang dibuat untuk memudahkan proses pengembangan dengan cara menyediakan fungsi-fungsi umum, tools, ataupun library.
+
+### Path
+Dikenal juga sebagai Endpoint, merupakan lokasi yang menunjukkan di mana client dapat mengakses sumber daya dari API.
+
+### PWA (Progressive Web App)
+Merupakan aplikasi web yang memiliki kemampuan lebih dari website biasanya. Ia memiliki kemampuan layaknya aplikasi native seperti tersedia secara offline, dapat dipasang, dan dapat menampilkan notifikasi.
+
+
+# Pengenalan Kelas #ff0000
+
+! Berikut rincian detail dari materi yang akan kita pelajari:
+    - Responsive Layout with Mobile First Approach 
+    - Web Accessibility
+    - JavaScript Clean Code 
+    - Progressive Web Apps 
+    - Testing and Debugging
+    - Web Performance
+
+
+
+# Mobile First Approach #ff0000 
+
+## Mengatur Viewport, Penggunaan Relative Unit, dan Ukuran Elemen 
+
+### Viewport
+! Langkah kecil yang menjadi langkah awal dalam menerapkan tampilan yang responsif pada mobile devices adalah menetapkan ukuran untuk viewport
+! Viewport merupakan area yang dapat dilihat oleh pengguna pada browser. Ukuran viewport bervariasi berdasarkan perangkat apa yang digunakan.
+
+! Untuk menetapkan ukuran viewport yang tepat pada halaman website cukuplah mudah. Kita hanya perlu menambahkan meta tag dengan atribut name bernilai viewport dan atribut content dengan nilai lebar viewport yang diinginkan. Contohnya:
+    - <meta name="viewport" content="width=800px">
+
+    ! Dengan meletakan tag tersebut di dalam elemen <header> itu berarti kita menetapkan lebar viewport dengan nilai 800px. 
+
+    ! Untuk mendapatkan nilai lebar dari perangkat yang digunakan, perhitungannya pun simpel. Kita cukup mengubah nilai 800px menjadi device-width. Dengan begitu, nilai lebar viewport akan menyesuaikan dengan ukuran layar dari perangkat yang digunakan
+        - <meta name="viewport" content="width=device-width">
+        
+    ! Agar lebih memastikan lagi tampilan agar responsif di setiap ukuran layar, sebaiknya kita juga menetapkan zoom level ketika pertama kali website tampil di browser. Caranya dengan menetapkan initial-scale dengan nilai 1.0
+        - <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+### Relative Size 
+! Langkah selanjutnya untuk membuat tampilan responsif adalah dengan memperhatikan fluiditas dan proporsionalitas
+
+### Target Touch Size
+! Ketika membuat sebuah tombol atau komponen apapun yang dapat digunakan oleh pengguna, pastikan ia memiliki ruang yang cukup untuk diakses. Ruang minimal sebuah tombol, termasuk yang dibuat menggunakan element <a>, harus memiliki minimal 44px lebar dan 44px tinggi agar mudah diakses menggunakan jari. Maka dari itu, kita perlu menetapkan nilai panjang dan lebar sebuah tombol melalui CSS
+
+
+## Responsive Layout 
+
+### Desktop First Approach
+berikut kriteria website yang cocok untuk menerapkan konsep ini:
+    - Mayoritas pengunjung web, atau sebanyak 80 %  di antaranya adalah pengguna perangkat desktop.
+    - Website sangat kaya akan fitur. Contoh: Website dalam kategori produktivitas yang digunakan sebagai tools di kantor.
+    - Website dengan tampilan sangat kompleks yang menjadi nilai jual dari website tersebut.  Dan tampilan tersebut butuh ukuran layar yang lebar seperti desktop.
+
+
+### Mobile First Approach 
+
+
+## Media Query 
+
+### Menggunakan Tag Html Link 
+! Terdapat dua cara dalam menetapkan media query. Yang pertama kita bisa menerapkannya melalui tag <link/> (layaknya impor berkas CSS eksternal), dengan menambahkan properti media dan nilai lebar layar yang menjadi patokan kapan aturan styling ditetapkan. Contohnya seperti ini:
+    - <link href="medium.css" rel="stylesheet" media="screen and (min-width: 480px)"/>
+
+    ! Dengan menetapkan atribut media dengan nilai seperti kode di atas, itu berarti aturan styling yang berada di dalam medium.css hanya akan diterapkan jika ukuran layar atau viewport memiliki lebar minimal 480px. Dan kita juga dapat menetapkan lebih dari satu styling yang menerapkan media query.
+
+    <!-- Mobile first, mendahulukan ukuran layar kecil terlebih dahulu -->
+    <link href="small.css" rel="stylesheet"/>
+    <link href="medium.css" rel="stylesheet" media="screen and (min-width: 480px)" />
+    <link href="large.css" rel="stylesheet" media="screen and (min-width: 768px)" />
+
+! Dengan menggunakan teknik ini, alih-alih kita membuat berkas CSS terpisah untuk tiap ukuran layar, lebih baik gabungkan saja jadi satu berkas CSS. Tentu akan lebih sederhana bukan?
+
+
+
+## Breakpoint
+! Ketika menggunakan media query, kita perlu menentukan titik yang menjadi tolak ukur dalam menerapkan styling. Gunakanlah ukuran viewport dalam menentukan titik ini. Kita bisa gunakan min-width, max-width, ataupun min-height, dan max-height. Sebenarnya kita juga bisa menerapkannya pada nilai yang tetap seperti width dan height, namun pastikan kita tidak pernah menggunakannya. Karena akan tampak aneh jika styling hanya ditetapkan pada ukuran layar yang nilainya tetap bukan? Titik ini juga bisa kita sebut dengan istilah breakpoint. 
+
+
+## Grid Layout Module 
+! Dengan flexbox kita bisa saja menerapkan layout seperti yang ditampilkan grid. Hanya kita perlu menggunakan lebih dari satu flex container. Akibatnya, struktur HTML yang dituliskan akan lebih sulit dibaca. Dengan grid, layout kompleks seperti itu dapat dibuat dengan cara yang simpel.
+
+
+### GRID container
+! Sama seperti flex, untuk menyusun layout menggunakan grid kita perlu sebuah container atau wrapper. Dan wrapper tersebut harus menerapkan nilai grid atau inline-grid pada properti display di styling-nya.
+    // contoh : 
+        <div class="wrapper"></div>
+
+## Grid Tracks 
+! Setelah kita membuat grid container, selanjutnya kita perlu mengatur baris dan kolomnya. Sehingga akan membentuk sebuah grid tracks. Grid tracks merupakan ruang kosong antara garis pada grid.
+
+! Untuk menetapkan ukuran baris dan kolom pada grid, kita bisa menggunakan properti grid-template-columns dan grid-template-rows
+    // contoh : 
+        .wrapper {
+            display: grid;
+            grid-template-columns: 200px 200px 200px;
+            grid-template-rows: 100px 100px;
+        }
+
+## Fraction Unit dan Repeat Notation 
+
+### Fraction Unit 
+! Dalam menetapkan grid tracks kita dapat gunakan satuan apapun. Baik itu px, em, %, atau yang lainnya. Namun grid mengenalkan satuan khusus yang dapat digunakan dalam menentukan nilai tracks, yaitu fr. Satuan fr (fraction) merepresentasikan sebuah pecahan dari ruang kosong yang tersedia pada grid
+    // contoh : 
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+### repeat() notation
+! Alih-alih kita menuliskan nilai 1fr secara berjajar, sebaiknya kita gunakan repeat(). repeat() layaknya sebuah fungsi yang bisa kita gunakan dalam CSS, dan ia dapat menerima dua buah parameter. Parameter yang pertama merupakan jumlah perulangan, dan yang kedua merupakan pola yang akan diulangi. Contoh penggunaannya seperti ini:
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+    }
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr 2fr);
+    }
+
+
+
+## Grid Lines 
+! Setelah kita menetapkan tracks pada grid, secara otomatis akan terbentuk garis (semu) yang memisahkan antara tiap baris dan kolom
+
+! Untuk garis yang menyusun baris, diurutkan dari atas ke bawah. Namun untuk urutan garis kolom kita susun sesuai dengan standar penulisan bahasa pada dokumen HTML. Jika dokumen HTML menggunakan bahasa yang penulisannya dari kiri ke kanan,
+
+! Garis pada grid dapat membantu ketika kita ingin memperluas tracks. Baik memperluas secara kolom maupun baris. Karena garis pada grid digunakan sebagai titik acuan di mana sebuah grid track dimulai dan diakhiri
+
+// contoh : 
+    .wrapper{
+        grid-template-coloms: repeat(3, 1fr);
+    }
+    .box1 {
+        grid-column-start: 1; /* box1 akan dimulai dari kolom garis pertama */
+        grid-column-end: 3; /* dan berakhir di kolom garis ketiga */
+    }
+    box2 {
+        grid-column-start: 3; /* box2 akan dimulai dari kolom garis ketiga */
+        grid-row-start: 1; /* dan baris garis pertama */
+        grid-row-end: 3; /* kemudian berakhir di baris garis ketiga */
+    }
+
+    !! perhatikan start-end row dan column juga supaya tidak berantakan
+
+
+
+## Gutters
+! Ketika menyusun layout tak jarang kita membutuhkan jarak antara elemen atau komponen layoutnya. Jarak tersebut dikenal sebagai margin. Jika menggunakan grid, kita tidak perlu menetapkan margin satu per satu pada tiap itemnya. Margin pada tiap item grid dikenal sebagai gap.
+
+! Untuk menetapkan gap pada baris gunakanlah properti row-gap, dan untuk kolom gunakan properti column-gap
+
+// contoh : 
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 16px;
+        column-gap: 10px;
+    }
+
+    // shorhand :
+        - gap: 16px 10px; /* baris kolom */
+        - gap: 10px; /* value baris = value kolom */
+
+
+## Teks Optimasi 
+
+
+## Off Canvas Menu
+! Off Canvas menu merupakan teknik untuk menyembunyikan atau mengeluarkan navigation menu dari viewport pada tampilan layar kecil (mobile). Ini merupakan teknik yang sangat tepat untuk memberikan kesan responsif ketika menampilkan navigasi utama website. Terlebih jika website memiliki banyak navigasi yang ditampilkan. 
+
+
+# Aksesibilitas #ff0000 
+! Secara umum ada 4 (empat) kategori kebutuhan khusus dalam mengakses website, yakni:
+    - Penglihatan
+    - Motorik atau ketangkasan
+    - Pendengaran
+    - Kognitif
+
+
+## Mencoba Focus 
+! Gunakanlah tombol tab atau shift + tab  untuk berpindah antar fokus pada elemen input.Kemudian gunakan tombol arah panah bawah (↓) atau arah panah atas (↑) untuk mengubah nilai pada elemen input seperti radio button, atau select menu. Dan terakhir, gunakan spasi untuk melakukan aksi (klik) pada checkbox dan juga tombol. #ffd900
+
+! link website yang tidak bisa menggunaka cursor : https://219-03-experiencing-focus--dicodingacademy.repl.co/
+
+
+$ kata kunci : venus
+
+
+
+## Focusable Element 
+! Interaktif elemen seperti button, text input, radio button, select option, anchor, dan elemen yang diberi atribut contenteditable secara standar didesain untuk memiliki fokus. Fokus tersebut dapat diakses melalui tombol tab di keyboard. Untuk merasakan fokus pada beberapa elemen interaktif Anda bisa mengunjungi halaman : https://219-03-focusable-elements--dicodingacademy.repl.co/
+
+
+### Kesalahan Umum - Custom Button 
+! Inilah salah satu alasannya mengapa kita perlu menggunakan tag HTML yang sesuai. Jika kita ingin membuat elemen berfungsi sebagai tombol, pastikan kita gunakan elemen <button>. Dalam praktiknya tak jarang kita membuat sebuah tombol dari elemen <div> atau <span> yang dimodifikasi dan ditambahkan click handler hingga menyerupai tombol. Namun apakah tombol yang dibuat tersebut dapat memiliki sifat layaknya tombol asli? Ingat, dalam konteks aksesibilitas, tombol harus memiliki sifat:
+    - Dapat difokuskan menggunakan keyboard.
+    - Mudah untuk dinonaktifkan (disable).
+    - Dapat diinteraksikan menggunakan tombol “Space” atau “Enter” melalui keyboard.
+    - Harus diucapkan sebagai tombol oleh screen reader.
+
+
+### Kesalahan Umum - Penggunaan Anchor dan Button 
+! Kesalahan lain yang sering terjadi adalah penggunaan tombol (<button>) dan anchor (<a>).  Kedua elemen tersebut memang secara standar dapat diinteraksikan sehingga memiliki fokus. Namun kesalahan terjadi ketika kita menggunakan <a> dan membuatnya seolah-olah berfungsi sebagai <button>. Contohnya seperti ini:
+    <a href="#" onclick="clickHandler()">Submit</a>
+
+! Ketika menggunakan elemen <a> pastikan ia hanya digunakan untuk keperluan navigasi, karena penggunaannya perlu disertakan dengan atribut href. Tautan yang diakses melalui elemen <a> juga terintegrasi dengan History API, di mana kita dapat melakukan back dan forward pada browser. 
+
+
+
+## Focus Order 
+! Namun, apakah Anda tahu bagaimana urutan fokus pada halaman website tersusun? Apakah browser secara ajaib mengetahui bagaimana urutan fokus seharusnya disusun? Apakah browser menyusun urutannya berdasarkan tampilan elemen dari kiri ke kanan, dan dari atas ke bawah? Jika Anda beranggapan seperti itu, silakan akses halaman : https://219-03-illogical-tab-order--dicodingacademy.repl.co/
+
+!! urutan fokus (focus order/tab order) selalu sama dengan struktur elemen HTML atau DOM. #ffd900 
+    ! jadi tab pertama akan mengacu ke element teratas karena html membaca sintaks dari atas ke bawah
+
+! tapi apakah urutan focus bisa di ubah ? ya bisa dengan menerapkan attribute Tab Index dan kita bahas pada materi selanjutnya 
+
+
+## Tab Index 
+! Urutan fokus atau tab order secara standar mengikuti struktur DOM, namun mungkin ada kalanya kita perlu mengubah urutan tab order secara manual. Pada kasus ini, kita dapat menggunakan atribut tabindex pada elemen HTML untuk menetapkan urutan tab secara eksplisit.
+
+// contoh : 
+    <button tabindex="5">leon</div>
+    <button tabindex="4">scorpio</div>
+
+! Lebih kecil nilai tab index yang diberikan akan memiliki urutan tab lebih awal.
+
+! Nilai dari atribut ini merupakan sebuah angka, di mana angka tersebut menunjukkan urutan dari tab order.
+
+! Atribut tabindex dapat diberikan pada elemen HTML apapun, sehingga elemen yang secara standar tidak memiliki fokus (tab order), dapat memilikinya.
+    ! Dengan memberikan nilai tabindex=”0” pada elemen heading, paragraf, dan gambar, elemen tersebut akan dimasukkan dalam tab order sehingga dapat memiliki fokus.
+
+! Selain itu, tabindex juga dapat digunakan untuk menghapus elemen dari tab order. Yakni dengan memberikan nilai “-1”. Sehingga elemen yang secara standar memiliki tab order, akan dikeluarkan dari tab order. Walaupun begitu, elemen tersebut tetap dapat difokuskan melalui JavaScript.
+    // contoh : 
+        <button tabindex="-1" id="foo">Saya tidak memiliki tab order</button>
+        <button onclick="foo.focus()">Fokuskan ke tombol sebelah</button>
+
+
+## Styling Focus
+
+### Pseudo-class:focus 
+! Dengan pseudo-class :focus kita dapat mengubah tampilan indikator standar pada fokus. Contohnya seperti ini:
+
+// contoh : 
+    button:focus {
+    outline: 4px dashed orange;
+    }
+    
+    input:focus {
+    outline: 4px dashed orange;
+    }
+
+    div[tabindex="0"]:focus {
+        outline: 4px dashed orange;
+    }
+
+
+## Affordances dan Semantics
+! Sebelum kita membahas mengenai semantik, alangkah baiknya kita paham mengenai istilah affordances. Affordances? Apa itu? Istilah ini pertama kali digagas oleh Gibson (1979) yang artinya adalah bahwa setiap benda memiliki dan menyampaikan makna secara langsung kepada kita mengenai fungsi dan cara penggunaannya, tanpa harus memiliki pengetahuan khusus terlebih dahulu. Contohnya sebuah gagang pintu.
+
+! Kita wajib menerapkan affordances untuk meningkatkan aksesibilitas dan juga kenyamanan. Kita tidak boleh menggunakan <button> yang berfungsi sebagai <a>. Kita tidak bisa menggunakan text input yang berperan sebagai text area. Hal tersebut dapat membuat pengguna menjadi bingung.
+
+NOTES : “Sebenarnya dalam pengembangan website terdapat teknologi yang dapat memanipulasi tipe atau peran dari elemen. Teknologi tersebut dinamakan dengan ARIA. Dengan ARIA kita dapat membuat <div> sepenuhnya menyerupai check box, bahkan screen reader pun mengetahuinya. ARIA populer digunakan pada HTML4 untuk membuat elemen header, main, footer menggunakan <div>. 
+Seiring hadirnya banyak elemen baru di HTML5, developer lebih memilih menggunakan HTML elemen yang dianggap lebih tepat dibandingkan menggunakan ARIA. Namun jika Anda tertarik memahami ARIA lebih dalam, silakan mempelajarinya pada tautan berikut: https://developer.mozilla.org/en-US/docs/Web/Accessibility/An_overview_of_accessible_web_applications_and_widgets”
+
+
+! Secara umum setiap elemen HTML dapat memiliki beberapa properti yang membuatnya memiliki arti (semantic). Antara lain:
+    - role atau type
+    - name (content, label, title, placeholder)
+    - value (opsional)
+    - state (opsional)
+
+
+## Screen Reader 
+! Salah satu alat bantu yang paling populer digunakan adalah screen reader. Screen reader merupakan program yang membantu pengguna dengan gangguan penglihatan agar dapat menggunakan komputer. Screen reader akan menghasilkan suara (narasi) berdasarkan konten yang dipilih melalui keyboard.
+
+! Jika menggunakan Google Chrome Browser, Anda bisa menggunakan ChromeVox untuk screen reader. Caranya, silakan pasang extensions berikut:  
+https://chrome.google.com/webstore/detail/screen-reader/kgejglhpjiefppelpmljglcjbhoiplfn/related?hl=en
+
+!! Selain menggunakan ChromeVox, sebenarnya Anda juga bisa menggunakan screen reader yang tersedia secara langsung oleh sistem operasi yang Anda gunakan. Gunakan Narator jika Anda pada Windows, atau Anda bisa gunakan VoiceOver jika menggunakan MacOS.
+
+
+
+## Mencoba Screen Reader 
+! link website uji coba screen reader : https://219-03-screen-reader-experience.dicodingacademy.repl.co/
+
+
+$ kata kunci : capella
+
+
+## Skip to Content
+! Skip to content merupakan link tersembunyi yang dapat membuat fokus mengarah langsung ke konten utama.
+    
+
+! Untuk menerapkan skip to content website tidaklah sulit. Kita cukup menambahkan elemen anchor baru dengan atribut href yang mengarah pada konten utama. Kita juga bisa memberikan class agar mudah diberikan styling nantinya.
+    - <a href="#maincontent" class="skip-link">Menuju ke konten</a>
+
+    -> cara kerjanya adalah saat user pertama kali membuka website maka tekan tap (nanti muncul icon skip to main content ) kemudian tekan enter maka nanti akan langsung focus ke elemen utama
+
+
+! Karena skip to content perlu di akses pada tab order pertama, jadi kita perlu meletakannya pada struktur paling atas sebuah DOM. Contohnya tepat di bawah elemen body.
+    <body>
+    <a href="#maincontent" class="skip-link">Menuju ke konten</a>
+    <header>
+        ...
+    </header>
+
+
+
+## Heading dan Landmarks 
+
+### Jangat Lewati Tingkatan Heading
+! Terkadang dalam penggunaan heading kita malah berorientasi pada tampilan yang dihasilkan. Sebagai contoh, kita tidak gunakan elemen <h2> karena ukurannya terlalu besar. Kita lompati penggunaannya dengan langsung gunakan element <h3>. Praktek ini adalah salah dan akan merusak struktur dari konten pada halaman. 
+
+! Alih-alih mengandalkan ukuran standar yang diberikan browser, gunakanlah CSS font-size untuk menetapkan ukuran sesuai yang kita kehendaki. Yang penting jangan sampai kita melewati tingkatan penggunaan heading.
+
+
+### Gunakan Semantic HTML untuk Landmarking Konten
+
+
+
+## Label 
+! Agar screen reader dapat secara jelas memberitahu apa komponen UI yang ditampilkan, kita harus menyertakan label. Label dibutuhkan terutama pada komponen UI yang dapat diinteraksikan seperti text input, button, checkbox, dan lain sebagainnya. Dengan menetapkan label, itu berarti memberikan nilai aksesibilitas name seperti yang sudah dibahas pada materi Affordances and Semantics.
+
+! Bila penggunaan label dikombinasikan dengan elemen yang memiliki role (seperti button, input text, checkbox, dsb), screen reader akan memberitahu keduanya. Sehingga pengguna dapat mengetahui dengan jelas bagaimana ia harus berinteraksi dengannya.
+    // contoh : 
+        <input id="tosCheckbox" type="checkbox">
+        <label for="tosCheckbox">Do you agree with term of service?</label>
+        <!-- Screen Reader: "Do you agree with term of service? checkbox not check" -->
+
+    !  Jika kita tidak memberikan label pada checkbox, screen reader hanya akan mengucapkan “checkbox not check” tanpa konteks lain
+
+! Untuk memastikan suatu elemen memiliki nilai aksesibilitas name, kita bisa melihat nilai-nya melalui DevTools -> Elements -> Accessibility.
+
+! Pada elemen yang tidak memiliki konten berupa teks seperti gambar, atau objek lain, kita dapat menetapkan name dengan memberikan atribut alt (Akan dibahas pada materi selanjutnya). Untuk elemen yang mengandung yang dapat mengandung konten berupa teks, nilai name secara otomatis mengambil dari konten teks. Contohnya:
+    <button>Sign Up</button>
+
+! Namun tidak jarang juga kita temui elemen button tidak memiliki konten berupa teks. Sehingga nilai aksesibilitas name tidak tampak, contohnya seperti ini:
+    <button>
+        <i class="fa fa-heart"></i>
+    </button>
+
+! Dalam kasus seperti itu, berikan nilai name dengan cara lain. Salah satu caranya yaitu dengan memberikan nilai pada atribut aria-label.
+    <button aria-label="add to like">
+        <i class="fa fa-heart"></i>
+    </button>   
+
+
+## Teks Alternatif
+! Screen reader secara otomatis membaca konten dalam bentuk teks, sehingga penyandang tuna netra dapat mengetahui informasi dari konten yang kita berikan. Namun bagaimana jika konten yang ditampilkan tidak mengandung teks? Seperti gambar atau objek visual lainnya. Tentu permasalahan ini menjadi vital bila gambar yang ditampilkan menjadi bagian informasi yang penting. Nah, agar screen reader tahu konteks yang terdapat pada gambar, gunakanlah atribut alt (alternative text).
+
+! Namun bila gambar hanya sebatas dekorasi saja dan tidak menjadi bagian penting dari sebuah konten, kita bisa memberikan alternatif teks dengan nilai kosong alt=””.
+
+! WebAIM sudah membuat panduan mengenai Guide to Alternative Text untuk Anda yang ingin mempelajari bagaimana cara memberikan alternatif teks yang baik.
+    ! link : https://webaim.org/techniques/alttext/
+
+
+
+
+## Submission: Katalog Restoran 
+! Catatan:
+Anda juga akan menemukan berkas karma.conf.js serta folder specs dan berkas sampleTestSpec.js di dalamnya. Berkas-berkas tersebut adalah konfigurasi yang dibutuhkan untuk melakukan automate testing. Jika Anda belum mengetahui apa itu automate testing, hiraukan saja, namun jangan hapus berkas-berkas tersebut. Kita akan mempelajari automate testing pada modul mendatang.
+
+
+### Kriteria Submission
+! Fitur yang harus ada pada aplikasi: 
+1. App Bar (Navigation Bar)
+    Syarat:
+        - Menampilkan nama aplikasi atau brand logo dari aplikasi katalog restoran (tentukan sendiri nama aplikasi atau brand logonya).
+        - Terdapat navigation menu:
+            -> Home → mengarah ke root domain.
+            -> Favorite → target URL cukup bernilai “#” (Sebagai placeholder untuk digunakan pada submission selanjutnya).
+            -> About Us → arahkan ke profil LinkedIn/Github/Social Media Anda, atau boleh juga ke personal web/blog.
+            -> Terdapat fitur navigation drawer yang berfungsi dengan baik bila diakses pada layar seluler.
+
+2. Hero Element (Jumbotron Element)
+    Syarat:
+        - Menampilkan hero element dengan gambar yang sudah ditentukan, silakan pilih salah satu aset yang disediakan di dalam starter proyek, src → public → images → hero. Gambar yang tidak digunakan, bisa Anda hapus.
+        - Gambar hero element yang ditampilkan haruslah full-width atau memenuhi persyaratan sebagai berikut: 
+            -> Tampilkanlah minimal width 1000px pada  viewport width >= 1200px.
+            -> Jika ukuran viewport width < 1200px, maka hero element ditampilkan full-width.
+
+3. Daftar Restoran
+    Syarat:
+        - Menampilkan daftar restoran berdasarkan data yang sudah disediakan di dalam project starter (src → DATA.json), untuk menampilkannya boleh melalui cara hardcoded di berkas HTML, atau menggunakan DOM manipulation menggunakan JavaScript.
+        - Wajib menampilkan nama, gambar dan minimal salah satu diantara kota, rating, dan atau deskripsi pada restoran.
+
+4. Footer
+    Syarat:
+        - Terdapat footer yang ditampilkan di bawah halaman.
+        - Terdapat konten teks bebas sesuai dengan kreatifitas Anda. Misalnya, konten copyright yang mencangkup tahun dan nama aplikasi. Contoh: “Copyright © 2020 - Hunger Apps”.
+
+5. Responsibilitas Tampilan
+    Syarat:
+        - Tampilan web app harus responsif pada seluruh ukuran layar (mobile - tablet - desktop). Utamakan tampilan mobile terlebih dahulu.
+        - Gunakan teknik Grid CSS atau Flexbox dalam menyusun layout. Bila terdapat float, submission akan ditolak.
+        - Menetapkan ukuran viewport secara dinamis berdasarkan layar device yang digunakan.
+
+6. Aksesibilitas Website
+    Syarat:
+    - Seluruh fungsionalitas website dapat dilakukan dengan menggunakan keyboard. Contohnya mengakses tombol hamburger button, mengakses tautan yang ada.
+    - Menerapkan teknik skip to content untuk melewati focus pada menu navigasi.
+    - Terdapat alternative teks pada seluruh gambar yang ditampilkan. Bila hanya gambar tidak memiliki arti apapun, cukup berikan atribut alt dengan nilai kosong. 
+    - Dimensi touch target pada elemen yang diinteraksikan dengan touch harus memilliki ukuran minimal 44x44px. Adapun beberapa contoh elemen tersebut ialah button, anchor, input text, dan textarea.
+    - Pastikan juga terdapat jarak antar elemen tersebut supaya dimensi touch target tidak menumpuk.
+    - Menggunakan semantic element dalam menyusun struktur dan landmarking HTML.
+
+
+
+# Javascript Clean Code #ff0000 
+
+## Style Guide 
+
+### Apa itu Style Guide 
+! Style Guide: Apa itu? Style Guide merupakan kumpulan peraturan mengenai bagaimana cara penulisan kode yang baik bagi developer secara individu maupun tim. Pada style guide tertulis secara lengkap aturan yang harus diikuti oleh developer. Seperti penggunaan double atau single quote, indentasi, semicolon, penamaan variabel, dan lainnya.
+
+
+! Mengapa mengikuti style guide mutlak perlu bagi developer? Siebe Hiemstra seorang Engineer dari Belanda berbagi alasan mengapa style guide penting bagi developer: 
+    1. Konsistensi 
+    2. Membantu proses onboarding pada anggota tim baru
+    3. Menambah wawasan guna menjadi programmer yang lebih baik
+    4. Membantu proses Code Review
+
+
+## Code Conventions 
+! Style guide yang sudah disepakati dan direkomendasikan oleh banyak developer itulah yang disebut dengan Code Convention
+
+! Di JavaScript sendiri terdapat 3 (tiga) style guide terkenal yang direkomendasikan untuk Anda ikuti.
+    - AirBnB JavaScript Style Guide.
+    - Google JavaScript Style Guide.
+    - Standard JavaScript Style Guide.
+
+
+## ESlint 
+! Setelah menetapkan style guide yang ingin diikuti, langkah selanjutnya adalah gunakan tools yang dapat membantu Anda dalam mengikuti gaya penulisan. Tools tersebut dinamakan dengan Linter.
+
+! Setiap bahasa pemrograman popular memiliki linter-nya masing-masing. Pada JavaScript kita bisa menggunakan ESLint. Sebenarnya linter pada JavaScript bukan hanya ESLint, sebelumnya terdapat tools serupa yakni JSLint, dan JSHint. Namun saat ini ESLint lah yang populer digunakan oleh JavaScript developer.
+
+! Keunggulan lainnya dari ESLint adalah ia dapat diintegrasikan dengan Text Editor/IDE popular seperti VSCode, Atom, Bracket atau yang lainnya 
+
+
+## Prinsip Membuat Variables
+! berikut prinsip - prinsip dalam membuat variables :
+    1. niat 
+    2. memiliki arti
+    3. mudah diucap
+    4. mudah dicari 
+        // contoh : 
+            ! bad :
+            // Nilai apakah 86400000 ini?
+            setTimeout(blastOff, 86400000);
+
+            ! good : 
+            // Deklarasikan sebagai constant variabel (gunakan huruf kapital).
+            const MILLISECONDS_IN_A_DAY = 86_400_000;
+
+            setTimeout(blastOff, MILLISECONDS_IN_A_DAY);
+
+    5. Explisit 
+        ! Contohnya ketika melakukan iterasi pada array locations, hindari penamaan variabel tiap index-nya dengan “l”. Ini akan menjadi masalah di kemudian hari
+
+    6. Hindari Penambahan kata yang tidak perlu
+        // contoh : 
+            ! bad : 
+            const Car = {
+                carMake: 'Honda',
+                carModel: 'Accord',
+                carColor: 'Blue',
+            };
+            
+            const paintCar = (car) => {
+                car.carColor = 'Red';
+            };
+
+            ! good : 
+            const Car = {
+                make: 'Honda',
+                model: 'Accord',
+                color: 'Blue',
+            };
+            
+            
+            const paintCar = (car) => {
+                car.color = 'Red';
+            };            
+
+    7. Gunakan default argument
+
+
+
+## Membuat Function Dengan Baik
+
+### Argumen Fungsi
+! Memberikan batasan pada jumlah argumen fungsi merupakan hal yang sangat penting. Fungsi dengan argumen yang terlalu banyak akan sulit untuk diuji (testing). Karena kita perlu membuat skenario testing yang banyak guna mewakili seluruh kemungkinan yang ada pada penggunaan fungsi tersebut.
+
+! Berikut kelebihan ketika menggunakan destructuring objek pada function argument:
+    - Jelas terlihat nilai apa saja yang dibutuhkan pada parameter fungsi.
+    - Dapat mensimulasikan sebagai parameter bernama (named parameter), seperti di Python atau Kotlin.
+    - Mencegah terjadinya efek samping karena destructuring mengkloning nilai-nilai primitif yang ditentukan dari objek argumen yang diberikan pada fungsi.
+    - Linters seperti ESLint dapat menyarankan atau memberitahu properti yang tidak digunakan.
+
+
+### Melakukan Satu Hal 
+! Sejauh yang kita pelajari, aturan inilah yang paling penting untuk seorang developer perhatikan. Ketika fungsi melakukan banyak hal, maka fungsi tersebut akan sulit untuk disusun dan diuji. Fungsi yang melakukan banyak hal juga pasti tidak memiliki tujuan yang jelas.
+
+
+### Nama fungsi harus merespresentasikan tujuannya 
+! Tak hanya variabel, kita juga perlu memperhatikan penamaan pada fungsi. Pastikan nama yang diberikan merepresentasi tujuan atau tugas dari fungsi tersebut. 
+
+// contoh : 
+    const addMonthToDate = (month, date) => {
+        // ...
+    };
+    
+    const date = new Date();
+    addMonthToDate(1, date);
+
+
+### Fungsi harus memiliki satu tingkatan abstraksi
+! Ketika fungsi memiliki kode dengan tingkatan abstraksi yang berbeda, itu berarti fungsi yang dituliskan tidak melakukan satu hal. Cobalah untuk memecah kembali fungsi tersebut. Sehingga fungsi dapat lebih optimal, digunakan kembali (improve reusability) dan mudah untuk testing.
+
+// contoh : 
+    ! bad : 
+    function sendNotification(payload) {
+        const pushNotificationManager = new PushNotificationManager();
+        const tokens = [];
+        pushNotificationManager.getClients().forEach((client) => {
+        tokens.push(client.token);
+        });
+    
+        const payloadFormatter = new PayloadFormatter();
+        const formattedPayload = payloadFormatter.format(payload);
+        
+        const notificationBuilder = new NotificationBuilder(formattedPayload, tokens).build();
+        notificationBuilder.sendNotification();
+    }
+
+    ! good : 
+    function tokenize() {
+        const pushNotificationManager = new PushNotificationManager();
+        const tokens = [];
+        pushNotificationManager.getClients().forEach((client) => {
+        tokens.push(client.token);
+        });
+        return tokens;
+    }
+    
+    function formatPayload(payload) {
+        const payloadFormatter = new PayloadFormatter();
+        return payloadFormatter.format(payload);
+    }
+    
+    function sendNotification(payload) {
+        const tokens = tokenize();
+        const formattedPayload = formatPayload(payload);
+        const notificationBuilder = new NotificationBuilder(formattedPayload, tokens).build();
+        notificationBuilder.sendNotification();
+    }
+
+
+### Usahakan functional programming daripada imperative programming 
+! JavaScript memang bukan murni functional programming layaknya Haskell. Namun sebenarnya kita dapat merasakan functional programming pada JavaScript. Pendekatan functional programming dapat membuat kode menjadi bersih, mudah diuji, dan juga lebih asyik untuk dituliskan. 
+
+
+### Enkapsulasi kondisional
+! Tak jarang ketika mengevaluasi sebuah kode menggunakan if, kita banyak menetapkan kondisi sehingga penulisan if terlalu panjang.
+
+// contoh : 
+    const shouldShowLoading = (response, listNode) => {
+        return response.state === 'loading' && isEmpty(listNode);
+    };
+    
+    
+    if (shouldShowLoading(response, listNode)) {
+        // show loading.
+    } 
+
+
+### Hindari negasi kondisional 
+contoh : 
+    ! bad : 
+    const shouldNotShowLoading = (response, listNode) => {
+        return response.state !== 'loading' && !isEmpty(listNode);
+    };
+    
+    
+    if (!shouldNotShowLoading(response, listNode)) {
+        // show loading.
+    }
+
+
+### Minimalisir kondisional 
+! Dalam menuliskan kode, sulit rasanya untuk lepas dari kondisional. Namun sebenarnya pada kasus tertentu kita dapat meminimalisir penggunaan kondisional. Salah satunya dengan mengikuti konsep polymorphism.
+
+! Mungkin Anda bertanya-tanya, mengapa kita perlu meminimalisir kondisional di dalam fungsi? Ingat kan kondisional dapat membuat fungsi tidak melakukan satu hal? Nah ini adalah salah satu alasan kita perlu menghindari kondisional.
+
+// contoh : 
+    ! bad : 
+    class Car {
+    // ....
+        getActualMaxSpeed() {
+            switch (this.type) {
+                case 'sport':
+                return this.maximalSpeed + this.nitrosSpeed;
+                case 'freight':
+                return this.maximalSpeed - this.totalLoad;
+                default:
+                return this.maximalSpeed;
+            }
+        }
+    }    
+
+    ! good : 
+    class Car {
+    // .....
+        getActualMaxSpeed() {
+            return this.maxSpeed;
+        }
+    }
+    
+    class SportCar extends Car {
+        // ....
+        getActualMaxSpeed() {
+            return this.maxSpeed + this.nitrosSpeed;
+        }
+    }
+    
+    class FreightCar extends Car {
+        // ...
+        getActualMaxSpeed() {
+            return this.maxSpeed - this.totalLoad;
+        }
+    }    
+
+
+
+## Implementasi Function yang dihindari
+
+### Hindari Duplikasi Kode
+! link materi : https://www.dicoding.com/academies/219/tutorials/9356?from=9351
+
+
+
+### Hindari Flagging pada Parameter
+! Flagging pada fungsi dapat membuat fungsi melakukan banyak hal. Ini tentu menyalahi prinsip pada materi sebelumnya.
+
+// contoh : 
+    ! bad : 
+    function printCertificate(name, signature) {
+        if (signature) {
+            print(`Congrats! ${name}, signatured by: ${signature}`);
+        } else {
+            print(`Congrats! ${name}`);
+        }
+    }
+
+    ! good : 
+    function printCertificate(name) {
+        print(`Congrats! ${name}`);
+    }
+    
+    function printCertificateWithSignature(name, signature) {
+        print(`Congrats! ${name}, signatured by: ${signature}`);
+    }
+
+
+### Hindari efek samping 
+! Efek samping merupakan hal buruk pada fungsi. Sejatinya fungsi harus melakukan satu hal dan tidak menyebabkan apapun di luar dari cakupan fungsinya. Efek samping yang disebabkan bisa seperti mengubah nilai variabel pada cakupan global, menulis, menghapus, atau mengubah berkas secara tidak diharapkan.
+
+// contoh : 
+    ! bad : 
+    // Variabel pada cakupan global.
+    let ingredients = 'tomat;cabai;bawang merah;bawang putih';
+    
+    const stringSplitter = (splitChar) => {
+        ingredients = ingredients.split(splitChar);
+    };
+    
+    stringSplitter(';');
+    
+    // variabel ingredients berubah menjadi Array.
+    console.log(ingredients);
+    
+    /* output
+    ['tomat', 'cabai', 'bawang merah', 'bawang putih']
+    */
+
+    ! good : 
+    // Variabel pada cakupan global.
+    const ingredients = 'tomat;cabai;bawang merah;bawang putih';
+    
+    const stringSplitter = (splitChar, text) => text.split(splitChar);
+    
+    const newIngredients = stringSplitter(';', ingredients);
+    
+    console.log(ingredients); // tomat;cabai;bawang merah;bawang putih
+    console.log(newIngredients); // ['tomat', 'cabai', 'bawang merah', 'bawang putih']
+
+
+### Hindari penulisan fungsi global
+! Mengganggu variabel global merupakan praktek yang buruk pada JavaScript. Karena perubahan yang dilakukan dapat beririsan dengan library API yang digunakan
+
+! link : https://www.dicoding.com/academies/219/tutorials/9356?from=9351
+
+
+
+
+## Object dan Struktur Data 
+
+### Gunakan getters dan setters 
+! Pernahkah Anda terpikir mengapa sebaiknya variabel atau data di dalam sebuah objek bersifat private? Alasannya adalah untuk menghindari ketergantungan akan data yang ada di dalam objek. Kita tentu tidak ingin sesuatu hal dari luar objek sangat bergantung terhadap data yang berada di dalam objek. Karena jika terjadi perubahan data pada objek, diperlukan perubahan di luar dari objeknya.
+
+
+
+## Classes 
+! link : https://www.dicoding.com/academies/219/tutorials/9371?from=9366
+
+### Gunakan ES6 classes daripada ES5 Function 
+! Di JavaScript konsep Class dapat dibuat menggunakan function. Sebelum ES6, sulit sekali untuk membaca kode yang menerapkan inheritance, method definition, dan constructor. Karena kita harus terbiasa dengan konsep prototype. Bagi Anda yang terbiasa dengan class based, penerapan OOP pada JavaScript akan membuat sedikit pusing.
+
+
+### Method Chaining 
+// contoh : 
+    class Car {
+        constructor() {
+            this._color = null;
+            this._manufacture = null;
+            this._model = null;
+        }
+    
+    
+        setColor(color) {
+            this._color = color;
+        }
+        
+    
+        setManufacture(manufacture) {
+            this._manufacture = manufacture;
+        }
+    
+    
+        setModel(model) {
+            this._model = model;
+        }
+    
+    
+        save() {
+            console.log(this._color, this._manufacture, this._model);
+        }
+    }
+    
+    const car = new Car()
+    .setColor('White')
+    .setManufacture('Suzuki')
+    .setModel('Ignis')
+    .save();
+
+
+## SOLID: Single Responsibility Principle, Open/Closed Principle
+! link : https://www.dicoding.com/academies/219/tutorials/9376?from=9371
+
+! Clean Code memberikan banyak prinsip terhadap penulisan kode. Selain itu, di sana juga membahas mengenai Software Design Principle yang berguna untuk developer agar terhindar dari kebiasaan buruk dalam merancang sebuah pengembangan perangkat lunak. Untuk lebih jelasnya, berikut alasan dari Robert C. Martin mengapa Software Design Principle perlu diterapkan:
+    - Sebuah sistem yang sulit dipelihara karena setiap perubahan yang ada akan mempengaruhi bagian sistem yang telah ada.
+    - Saat melakukan perubahan, sangat berpotensi merusak sistem yang sudah berjalan.
+    - Sistem yang tidak bisa diterapkan pada aplikasi lain karena tidak dapat dipisahkan dari aplikasi saat ini.
+
+
+### Open/Closed Principle (OCP)
+! Pada Tahun 1988 seorang profesor asal Perancis, Bertrand Meyer menulis sebuah buku yang berjudul Object Oriented Software Construction. Di dalamnya terdapat sebuah kaidah yang mengatur di mana sebuah artefak perangkat lunak harus terbuka untuk ditambahkan tetapi tertutup untuk dimodifikasi. Aturan tersebut kemudian ditulis lagi pada sebuah artikel yang berjudul The Open-Closed Principle oleh Robert C. Martin pada tahun 1996.
+! Lantas apa yang dimaksud dengan terbuka untuk ditambahkan dan tertutup untuk dimodifikasi? Jangan bingung. Terbuka untuk ditambahkan adalah keadaan ketika sebuah sistem dapat ditambahkan dengan spesifikasi baru yang dibutuhkan. Sedangkan tertutup untuk dimodifikasi adalah agar ketika ingin menambahkan spesifikasi baru, kita tidak perlu mengubah atau memodifikasi sistem yang telah ada. Intinya, prinsip ini mengharuskan pengguna untuk menambahkan fungsionalitas baru tanpa mengubah kode yang sudah dituliskan.
+
+// contoh : 
+    ! good :
+    class Shipping {
+        constructor() {
+            if (this.constructor === Shipping) {
+                throw new TypeError(`Abstract class "${this.constructor.name}" cannot be instantiated directly.`);
+            }
+        }
+    
+    
+    /**
+    * Implementation required
+    */
+        calculate(product) {
+            throw new Error('You have to implement the method calculate!');
+        }
+    }
+    
+    
+    class JNEShipping extends Shipping {
+        calculate(product) {
+            return /** calculate amount of this type with product */;
+        }
+    }
+    
+    
+    class TIKIShipping extends Shipping {
+        calculate(product) {
+            return /** calculate amount of this type with product */;
+        }
+    }
+    
+    
+    class POSINDOShipping extends Shipping {
+        calculate(product) {
+            return /** calculate amount of this type with product */;
+        }
+    }
+
+    class SiCepatShipping extends Shipping {
+        calculate(product) {
+            return /** calculate amount of this type with product */;
+        }
+    }
+    
+    class ShippingOrderService {
+        checkout(product, shipping) {
+            const costShipping = shipping.calculate(product);
+            /** Code to do check */
+        }
+    }
+
+
+
+## SOLID: Liskov Substitution Principle (LSP), Interface segregation principle (ISP), dan Depedencies Inversion Principle (DIP)
+! link : https://www.dicoding.com/academies/219/tutorials/9381?from=9376
+! Sederhananya, Liskov’s Substitution adalah aturan yang berlaku untuk hirarki pewarisan. Hal ini mengharuskan kita untuk mendesain kelas-kelas yang kita miliki sehingga ketergantungan antar klien dapat disubstitusikan tanpa klien mengetahui tentang perubahan yang ada. Oleh karena itu, seluruh SubClass setidaknya dapat berjalan dengan cara yang sama seperti SuperClass-nya
+
+// contoh : 
+    ! good : 
+    class Vehicle {
+	 constructor() {
+	   if (this.constructor === Vehicle) {
+	     throw new TypeError(`Abstract class "${this.constructor.name}" cannot be instantiated directly.`);
+	   }
+	 }
+	 
+	 droveOff() {
+	   throw new TypeError('Abstract method, cannot be access directly.');
+	 }
+	}
+	 
+	class MotorVehicle extends Vehicle {
+	 constructor() {
+	   super();
+	   if (this.constructor === MotorVehicle) {
+	     throw new TypeError(`Abstract class "${this.constructor.name}" cannot be instantiated directly.`);
+	   }
+	 }
+	 
+	 turnOnEngine() {
+	   throw new TypeError('Abstract method, cannot be access directly.');
+	 }
+	}
+	 
+	class Car extends MotorVehicle {
+	 droveOff() {
+	   console.log('Mobil melaju!');
+	 }
+	 
+	 
+	 turnOnEngine() {
+	   console.log('Mesin Mobil dinyalakan');
+	 }
+	}
+	 
+	class Bicycle extends Vehicle {
+	 droveOff() {
+	   console.log('Sepeda melaju!');
+	 }
+	}    
+
+
+
+### Interface segregation principle (ISP)
+! Prinsip ini bertujuan untuk mengurangi jumlah ketergantungan sebuah class terhadap interface class yang tidak dibutuhkan. Namun JavaScript sendiri tidak memiliki interface, jadi prinsip ini tidak begitu ketat diterapkan seperti pada bahasa pemrograman lain. Walaupun tidak ketat, konsep ini penting dan relevan terhadap kekurangan JavaScript dalam menangani sebuah tipe data.
+
+
+! Contoh yang tepat untuk menjelaskan prinsip ini adalah pada kasus di mana sebuah class membutuhkan objek konfigurasi yang sangat besar. Hingga klien harus mempersiapkannya terlebih dahulu.
+
+// contoh : 
+    class ImageViewer {
+	 constructor(settings) {
+	   this._settings = settings;
+	   this._options = settings.options;
+	   this.setup();
+	 }
+	 
+	 setup() {
+	   this._image = this._settings.image;
+	   this.setupOptions();
+	 }
+	 
+	 setupOptions() {
+	   if (this._options.animationModule) {
+	     this._options.animationModule.setup();
+	   }
+	   // ...
+	 }
+	 
+	 show() {
+	   // ...
+	 }
+	}
+	 
+	const imageViewer = new ImageViewer({
+	 image: someImage,
+	 options: {
+	   animationModule: someAnimationModule, // Aman untuk dihapus.
+	 },
+	});
+
+
+### Depedencies Inversion Principle (DIP)
+! Prinsip terakhir dalam SOLID adalah Dependencies Inversion. Dalam prinsip ini terdapat 2 pernyataan penting:
+    - Modul high-level tidak boleh memiliki ketergantungan terhadap modul low-level. Keduanya harus bergantung pada abstractions.
+    - Abstractions tidak boleh bergantung terhadap detail. Detail harus bergantung pada abstractions.
+
+// contoh : 
+    ! good :
+    class SQLDatabase {
+	 constructor() {
+	   this.connection = 'SQLConnection';
+	 }
+	 
+	 requestItem(item) {
+	   // ....
+	 }
+	}
+	 
+	class MongoDatabase {
+	 constructor() {
+	   this.connection = 'MongoConnection';
+	 }
+	 
+	 
+	 requestItem(item) {
+	   // ...
+	 }
+	}
+	 
+	class ProductTracker {
+	 constructor(items, database) {
+	   this._items = items;
+	   this._database = database;
+	 }
+	 
+	 
+	 requestItems() {
+	   this._items.forEach((item) => {
+	     this._database.requestItem(item);
+	   });
+	 }
+	}
+	 
+	const productTracker = new ProductTracker(
+	 ['A011', 'B032', 'F311'],
+	 new MongoDatabase(), // Good! Sekarang kita bisa gunakan modul low-level apa saja.
+	);
+	 
+	productTracker.requestItems();
+
+
+## Concurrency 
+
+### Gunakan promise daripada callback 
+! Saat ini untuk menangani kode secara asynchronous manfaatkanlah Promise. Pada ES6, promise sudah menjadi fitur built-in pada JavaScript. Dengan menggunakan promise, kita dapat terhindar dari callback hell.
+
+
+### Menggunakan Async/Await lebih bersih dari promises 
+! Promise menjadi alternatif yang sangat baik bagi callback. Tapi ES8 membawa fitur async dan await yang dapat membuat kode lebih baik dan lebih mudah dimengerti dari Promise. Dengan async/await kita dapat menuliskan asynchronous process layaknya synchronous process.
+
+! Fitur async/await sebenarnya hanya syntactic sugar. Itu berarti secara fungsionalitas bukan merupakan sebuah fitur baru dalam JavaScript. Namun hanya gaya penulisan baru yang dikembangkan dari kombinasi penggunaan Promise dan generator (pembahasan mengenai generator bisa Anda pelajari di : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator). Sehingga async/await ini tidak dapat digunakan jika tidak ada Promise.
+
+
+## Error Handling
+! Mengabaikan sinyal eror yang diberikan itu berarti kita tidak pernah peduli untuk memperbaiki dan membuat kode kita lebih baik lagi. Menangani eror yang baik, bukan hanya sekedar menampilkannya pada log console saja.
+    ! Namun dari eror tersebut kita dapat berikan feedback pada pengguna, dan melaporkan detail eror agar kesalahan atau bug dapat diperbaiki nantinya.
+
+// contoh : 
+    sendRequest()
+        .then((response) => {
+        // ...
+    })
+    .catch((error) => {
+        console.log(error);
+        notifyUserOfError(error);
+        reportErrorToService(error);
+    });
+
+
+## Comments
+! Komentar pada sebuah kode dapat dimanfaatkan sebagai dokumentasi dalam menjelaskan kode yang kita tulis. Namun jangan sampai kita terlalu disibukkan dengan menjelaskan alur kode yang dituliskan dalam bahasa sehari-hari. Ingat, penulisan kode yang baik tentu dapat mudah dimengerti ketika hanya dengan membaca kodenya saja. Tidak perlu ada komentar apapun.
+
+
+### Hanya beri komentar pada logika yang kompleks
+! Komentar ibarat sebuah permintaan maaf. Ia hanya dibutuhkan jika terjadi kesalahan. Orang akan kesal bila kita selalu meminta maaf namun tidak ada sebab akibatnya. Begitu juga ketika menuliskan kode. Tidak perlu susah payah memberikan komentar jika kode yang kita tuliskan sudah jelas artinya.
+
+
+### Hapus kode yang tidak diperlukan 
+! Selalu buat codebase yang kita tuliskan bersih. Sebaiknya hapus kode yang sudah tidak digunakan daripada mematikan kode tersebut dengan komentar. 
+
+
+
+!! NOTE !! #ff0000
+
+! Saat menambahkan link ke luar aplikasi kamu dengan menggunakan target="_blank", sebaiknya tambahkan atribut rel="noopener" atau rel="noreferrer". Hal ini bertujuan dapat improve performa website (karena tidak berjalan pada proses yang sama) dan meminimalkan masalah keamanan. Referensi https://web.dev/external-anchors-use-rel-noopener/?utm_source=lighthouse&utm_medium=devtools.
+
+! Sebaiknya tambahkan meta tag Description pada berkas html kamu untuk memberikan penjelasan singkat mengenai isi dari halaman web yang dibangun. Kamu bisa pelajari di https://web.dev/meta-description/?utm_source=lighthouse&utm_medium=devtools.
+
+! tidak perlu menuliskan kata "picture" atau "gambar" pada nilai alt image. Karena screen reader otomatis menambahkan kata tersebut pada elemen gambar. 
+
+! Screen reader seperti ChromeVox memiliki fitur sticky content. Ia bisa menjelajahi element yang memiliki konten walaupun tak memiliki tab order. Jadi tab index/order sebaiknya diterapkan pada element yang sifatnya interaktif, misalkan Kamu membuat custom checkbox, maka terapkan tab index padanya, agar dapat diakses melalui TAB button.
+
+
+
+
