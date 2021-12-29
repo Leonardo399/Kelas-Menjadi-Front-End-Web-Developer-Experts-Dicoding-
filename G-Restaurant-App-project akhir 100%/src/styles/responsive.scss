@@ -1,0 +1,69 @@
+$large: 1000px;
+$medium: 760px;
+$small: 480px;
+
+@media (max-width: $large) {
+  nav {
+    width: 90%;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 76px;
+    overflow: hidden;
+    transition: 1s;
+  }
+
+  nav ul {
+    display: flex;
+    opacity: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: 1s;
+  }
+
+  nav ul li {
+    margin-top: 16px;
+  }
+
+  nav .icon-toggler {
+    display: block;
+    cursor: pointer;
+  }
+
+  .jumbotron {
+    .caption-text {
+      width: 80%;
+    }
+  }
+
+  .card {
+    width: 48%;
+  }
+
+
+}
+
+@media (max-width: $medium) {
+  .card {
+    width: 90%;
+  }
+
+  .detail-restaurant {
+    grid-template-columns: 1fr;
+
+    h3 {
+      margin-top: 60px;
+    }
+
+    .detail-image {
+      width: 80%;
+      margin: auto;
+    }
+  }
+}
+
+@media (max-width: $small) {
+  .jumbotron {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/images/heros/hero-image_2-small.jpg');
+  }
+}

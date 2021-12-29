@@ -1,0 +1,803 @@
+# Automation Testing #ff0000 
+
+## Test Drive Development (TDD)
+! disini kita test studi kasus mengenali sebuah segitia apakah sama sisi, sama kaki, sembarang, atau error jika inputan user salah 
+
+! Di Javascript, ada banyak tes framework. Yang akan kita gunakan sekarang adalah Jasmine.
+
+! Anda bisa segera latihan testing tanpa pakai repot. Mari melihatnya di jsfiddle ini https://jsfiddle.net/ash_shiddiqul/7x65dkLs.
+
+
+
+! mari kita uji studi kasus segitiganya #f00
+  -> ! keyword 'it'. Keyword ini menjelaskan tes apa yang mau kita jalankan
+     ! Setiap tes sebaiknya dibungkus oleh describe. Ini membantu kita mengetahui kasus besar yang hendak dipecahkan.
+     ! pada testing dengan jasmine jika output berwarna hijau itu berarti test kita sudah benar 
+
+  -> pertama buat uji coba dari yang paling spesifik yaitu jika error 
+    describe('Detect the triangle', () => {
+      it('Should fail if the sides are less than 1', () => {
+        expect(() => detectTriangle(-1, 2, 2))
+          .toThrowError('Strange Triangle');
+      })
+    });
+
+    ! Perhatikan penggunaan kata should yang diterjemahkan ke sebaiknya. Kita tidak menggunakan kata must atau harus. Ini sebuah pendekatan di mana spesifikasi yang kita buat itu bisa dipertanyakan kembali kebenarannya
+
+    ! pada test tersebut masih error karena function detectTriangle blm kita buat 
+
+    ! cara bacanya pada kode expect(..) adalah 'ekspetasi jika di jalankan function detectTriangle(-1,2,2) maka akan mengembalikan nilai object Error('Strange Triangle')'
+
+  -> selanjutnya kita buat kode non-test( function detecTrianglenya) 
+      const detectTriangle = (sideA, sideB, sideC) => {
+        if (sideA < 1 || sideB < 1 || sideC < 1) {
+          throw new Error('Strange Triangle');
+        }
+      };
+
+      describe('Detect the triangle', () => {
+        it('Should fail if the sides are less than 1', () => {
+          ...
+          expect(() => detectTriangle(1, -2, 2))
+            .toThrowError('Strange Triangle');
+          expect(() => detectTriangle(1, 2, -2))
+            .toThrowError('Strange Triangle');
+        });
+      });
+
+  -> cek apakah sudah berwarna hijau di test jasminenya
+
+  ! Sejauh ini, kita sudah menerapkan 2 alur TDD:
+    - Write a test : buat tes untuk menetapkan logika apa yang mau kita terapkan. Tes ini pasti gagal. Karena kita belum membuat kode untuk logika tersebut.
+    - Make it run : tulis kode secukupnya sehingga tes sukses.
+
+  -> Tahapan berikutnya adalah make it right, Salah satu cara sederhana untuk menjaga kode bersih adalah berupaya untuk menghilangkan duplikasi kode.
+
+  -> ubah function detectTriangle untuk membuat lebih sederhana(tidak redundand)
+      const detectTriangle = (sideA, sideB, sideC) => {
+        [sideA, sideB, sideC].forEach((side) => {
+          if (side < 1) {
+            throw new Error('Strange Triangle');
+          }
+        });
+      };  
+
+
+  -> lanjut kita tambahkan logika jika inputan user tidak bertipe number 
+      const detectTriangle = (sideA, sideB, sideC) => {
+        ...
+
+        if (!Number.isInteger(sideA) || !Number.isInteger(sideB) || !Number.isInteger(sideC)) {
+          throw new Error('Sides have to be Integer');
+        }
+      };  
+
+      describe('Detect the triangle', () => {
+        ...
+      
+        it('Should fail if the sides are not integer', () => {
+          expect(() => detectTriangle('a', 2, 2))
+            .toThrowError('Sides have to be Integer');
+          expect(() => detectTriangle(1, 'a', 2))
+            .toThrowError('Sides have to be Integer');
+          expect(() => detectTriangle(1, 2, 'a'))
+            .toThrowError('Sides have to be Integer');
+        });
+      });
+
+  -> kemudian kita buat kode supaya tidak redundand (ubah di kode function detectTriangle)
+      const detectTriangle = (sideA, sideB, sideC) => {
+        [sideA, sideB, sideC].forEach((side) => {
+          if (!Number.isInteger(side)) {
+            throw new Error('Sides have to be Integer');
+          }
+      
+          if (side < 1) {
+            throw new Error('Strange Triangle');
+          }
+        });
+      };  
+      ...
+
+  -> lalu kita masuk ke logika berikutnya yaitu jika segitiga sama sisi 
+      const detectTriangle = (sideA, sideB, sideC) => {
+        ...
+      
+        if (sideA === sideB && sideA === sideC && sideB === sideC) {
+          return 'Equilateral Triangle';
+        }
+      };
+
+      describe('Detect the triangle', () => {
+        ...
+
+        it('Should detect Equilateral Triangle if all sides are equal', () => {
+          expect(detectTriangle(1, 1, 1))
+            .toEqual('Equilateral Triangle');
+          expect(detectTriangle(1, 2, 2))
+            .not
+            .toEqual('Equilateral Triangle'); 
+        });
+
+      });
+
+
+  -> kemudian kita buat kodenya menjadi clean (mengurangi redundand) dengan mengubah kode di function detectTriangle 
+    const detectTriangle = (sideA, sideB, sideC) => {
+      ...
+
+      if (sideA === sideB && sideA === sideC) {
+        return 'Equilateral Triangle';
+      }
+    };
+
+    ...
+
+  -> lanjut kita uji coba logika segitiga sama kaki 
+  -> tambahkan kode berikut 
+      const detectTriangle = (sideA, sideB, sideC) => {
+        ...  
+        if (sideA === sideB || sideA === sideC || sideB === sideC) {
+          return 'Isosceles Triangle';
+        }
+        ...
+      };
+
+      describe('Detect the triangle', () => {      
+        ...
+        it('Should detect Isosceles Triangle if only two sides are equal', () => {
+
+        expect(detectTriangle(1, 1, 2))
+          .toEqual('Isosceles Triangle');
+        expect(detectTriangle(1, 2, 1))
+          .toEqual('Isosceles Triangle');
+        expect(detectTriangle(1, 2, 2))
+          .toEqual('Isosceles Triangle');
+        expect(detectTriangle(4, 1, 4))
+          .toEqual('Isosceles Triangle');
+
+        });
+      });
+
+  -> cek apakah hijau 
+
+  -> kemudian kita buat code kita menjadi clean, ubah kode di function detectTriangle 
+      const detectTriangle = (sideA, sideB, sideC) => {
+        [sideA, sideB, sideC] = [sideA, sideB, sideC].map((side) => {
+          if (!Number.isInteger(side)) {
+            throw new Error('Sides have to be Integer');
+          }
+      
+          if (side < 1) {
+            throw new Error('Strange Triangle');
+          }
+      
+          return side;
+        })
+          .sort();
+      
+        if (sideA === sideB && sideA === sideC) {
+          return 'Equilateral Triangle';
+        }
+      
+        if (sideA === sideB || sideB === sideC) {
+          return 'Isosceles Triangle';
+        }
+      };   
+      ...
+
+  -> cek apakah hijau atau tidak
+
+  -> lanjut logika terakhir yaitu logika segitiga sembarang 
+    -> tambahkan kode berikut : 
+      const detectTriangle = (sideA, sideB, sideC) => {
+          ...
+          return 'Scalene Triangle';
+      };
+
+
+      describe('Detect the triangle', () => {      
+      ...
+      it('Should detect Scalene Triangle if no sides are the same', () => {
+        expect(detectTriangle(1, 2, 3))
+          .toEqual('Scalene Triangle');
+      });
+
+      });
+
+  -> oh ternyata ada satu logika lagi dalam hal mendeteksi suatu segitiga atau bukan yaitu logika jika sisi A + B <= C maka itu bukan segitiga melainkan hanya garis lurus maka dari itu mari kita tambahkan logika itu kedalam testing 
+
+  -> ok, Tambahkan skenario testingnya, letakan sebelum skenario mendeteksi segitiga.
+      describe('Detect the triangle', () => {
+        ..... 
+        it('Should fail if the sides are not integer', () => {
+          ....  
+        });
+        
+        it('Should detech inequality problem', () => {
+            expect(() => detectTriangle(4, 1, 2))
+                  .toThrowError('Triangle does not conform inequality principle');
+            expect(() => detectTriangle(5, 1, 3))
+                  .toThrowError('Triangle does not conform inequality principle');
+        });
+      
+        .....
+      });
+
+    -> jika dijalankan maka error 
+    -> kemudian tambahkan kode berikut di function detectTriangle setelah sort()
+      const detectTriangle = (sideA, sideB, sideC) => {
+      ...
+        if (sideA + sideB <= sideC) {
+            throw new Error('Triangle does not conform inequality principle');
+        }    
+      };
+      ..
+
+    -> jika dijalankan maka error juga karena penerapan expect ada yang bentrok 
+    -> maka dari itu kita gunakan method fit terlebih dahulu untuk meresolve satu problem 
+      ! Jika di dalam berkas test terdapat skenario yang menggunakan method fit, Jasmine hanya akan menjalankan skenarionya tersebut. Metode ini cocok untuk kasus di mana kita ingin fokus memperbaiki suatu skenario tertentu saja.
+  
+    ! link : https://www.dicoding.com/academies/219/tutorials/11267?from=9835
+
+  -> di lihat dari errornya kita ketahui bahwa ada 2 bentrol
+  -> kita uji di logika pertama terlebih dahulu 
+      fit('Should detect Scalene Triangle if no sides are the same', () => {
+          expect(detectTriangle(1, 2, 3))
+            .toEqual('Scalene Triangle');
+      });
+
+  -> ternyata error di parameter yang diberikan maka kita ubah 
+      fit('Should detect Scalene Triangle if no sides are the same', () => {
+          expect(detectTriangle(2, 4, 3))
+            .toEqual('Scalene Triangle');
+      });
+  -> kemudian kita jalankan jasmine ternyata hijau
+  -> jangan jika sudah berhasil ubah fit menjadi it 
+  -> lanjut ke problem kedua Perbaiki kondisi pada skenario mendeteksi Isosceles Triangle. Ubah parameternya :
+      it('Should detect Isosceles Triangle if only two sides are equal', () => {
+          expect(detectTriangle(2, 2, 3))
+            .toEqual('Isosceles Triangle');
+          expect(detectTriangle(4, 2, 4))
+            .toEqual('Isosceles Triangle');
+          expect(detectTriangle(1, 2, 2))
+            .toEqual('Isosceles Triangle');
+          expect(detectTriangle(4, 1, 4))
+              .toEqual('Isosceles Triangle');
+        });
+
+  -> jalankan jasminenya maka akan berwarna hijau 
+  -> hasil smua kodenya : 
+      const detectTriangle = (sideA, sideB, sideC) => {
+        [sideA, sideB, sideC] = [sideA, sideB, sideC].map((side) => {
+          if (!Number.isInteger(side)) {
+            throw new Error('Sides have to be Integer');
+          }
+      
+          if (side < 1) {
+            throw new Error('Strange Triangle');
+          }
+      
+          return side;
+        })
+          .sort();
+          if (sideA + sideB <= sideC) {
+            throw new Error('Triangle does not conform inequality principle');
+        }
+      
+        if (sideA === sideB && sideA === sideC) {
+          return 'Equilateral Triangle';
+        }
+      
+        if (sideA === sideB || sideB === sideC) {
+          return 'Isosceles Triangle';
+        }
+        
+        return 'Scalene Triangle';
+      };
+      
+      describe('Detect the triangle', () => {
+        it('Should fail if the sides are less than 1', () => {
+          expect(() => detectTriangle(-1, 2, 2))
+            .toThrowError('Strange Triangle');
+          expect(() => detectTriangle(1, -2, 2))
+            .toThrowError('Strange Triangle');
+          expect(() => detectTriangle(1, 2, -2))
+            .toThrowError('Strange Triangle');
+        });
+        
+        it('Should fail if the sides are not integer', () => {
+          expect(() => detectTriangle('a', 2, 2))
+            .toThrowError('Sides have to be Integer');
+          expect(() => detectTriangle(1, 'a', 2))
+            .toThrowError('Sides have to be Integer');
+          expect(() => detectTriangle(1, 2, 'a'))
+            .toThrowError('Sides have to be Integer');
+          expect(() => detectTriangle(' ', 2, 2))
+            .toThrowError('Sides have to be Integer');
+        });
+        
+        it('Should detech inequality problem', () => {
+            expect(() => detectTriangle(4, 1, 2))
+                  .toThrowError('Triangle does not conform inequality principle');
+            expect(() => detectTriangle(5, 1, 3))
+                  .toThrowError('Triangle does not conform inequality principle');
+        });
+        
+        it('Should detect Equilateral Triangle if all sides are equal', () => {
+          expect(detectTriangle(1, 1, 1))
+            .toEqual('Equilateral Triangle');
+          expect(detectTriangle(1, 2, 2))
+            .not
+            .toEqual('Equilateral Triangle');
+        });
+        
+        it('Should detect Isosceles Triangle if only two sides are equal', () => {
+          expect(detectTriangle(2, 2, 3))
+            .toEqual('Isosceles Triangle');
+          expect(detectTriangle(4, 2, 4))
+            .toEqual('Isosceles Triangle');
+          expect(detectTriangle(1, 2, 2))
+            .toEqual('Isosceles Triangle');
+          expect(detectTriangle(4, 1, 4))
+              .toEqual('Isosceles Triangle');
+        });
+          
+          it('Should detect Scalene Triangle if no sides are the same', () => {
+          expect(detectTriangle(2, 4, 3))
+            .toEqual('Scalene Triangle');
+      });
+        
+      }); 
+
+Ringkasan Kasus 1 : https://www.dicoding.com/academies/219/tutorials/9837?from=11267
+
+
+
+
+## Kasus 2 #F00
+! Pada TDD kasus pertama kita mempelajari dasar dari TDD. Nah di kesempatan ini kita akan menerapkan testing otomatis pada aplikasi Movie Catalogue.
+
+! Berkaca pada aplikasi yang sudah ada, kurang lebih alur Use Case-nya adalah sebagai berikut:
+  1. Tampilkan halaman film.
+  2. Bila film ini belum disukai, tampilkan widget untuk menyukai film. Widget ini berbentuk hati kosong.
+  3. Bila fim sudah disukai, tampilkan widget berbentuk hati penuh. Pengguna dapat membatalkan kesukaannya pada film ini.
+
+
+! Skenario Menyukai Film:
+  1. Film belum disukai.
+  2. Widget untuk menyukai film ditampilkan
+  3. Widget menyukai film ditekan oleh pengguna.
+  4. Film ditambahkan ke daftar film yang disukai:
+    - Ternyata film sudah disukai:
+      -Tidak perlu menyimpan kembali.
+    - Data film tidak memiliki ID:
+      - Sistem tidak memproses penyimpanan.
+      - SIstem tidak gagal.
+
+
+! Skenario Batal Menyukai Film:
+  1. Film sudah disukai.
+  2. Widget untuk batal menyukai film ditampilkan.
+  3. Widget pembatalan ditekan oleh pengguna.
+  4. Film dihapus dari daftar film yang disukai:
+      - Ternyata film tidak ada dalam daftar film yang disukai.
+
+! Untuk project ini, kita menggunakan alat bernama Karma. Alat ini membantu kita untuk:
+  - Menjalankan kode tes menggunakan browser tertentu sesuai pilihan kita.
+  - Menjalankan tes secara otomatis ketika ada perubahan pada kode yang ada.
+
+! Konfigurasi untuk Karma dapat dilihat pada berkas karma.conf.js. Jangan merasa khawatir bila kebingungan membaca konfigurasi yang ada. Yang perlu Anda perhatikan adalah konfigurasi browsers.
+  - browsers: [‘Firefox’, 'Chrome'] 
+  // saran pilih salah satu saja
+
+! Di dunia testing otomatis, ada beberapa level testing: #f9d000
+  - Unit testing
+  - Integration testing
+  - End-To-End testing
+
+! Unit testing adalah testing yang fokus menguji perilaku dari sebuah unit. Apa itu unit? Unit itu bisa jadi adalah sebuah metode. Ia juga bisa jadi adalah sebuah object. Sebuah module pun bisa menjadi sebuah unit.
+
+! Ketika membuat unit tes, kita tidak fokus pada perilaku object lain yang berkolaborasi dengan object yang sedang diuji. Kita lebih fokus pada perilaku unit yang diuji. Sehingga bila ada kegagalan dalam unit tesnya, kita tahu bahwa penyebabnya adalah unit yang sedang diuji.
+
+! Tes mendeteksi segitiga adalah contoh dari unit tes. Ia dibuat khusus menguji cara kerja dari metode detectTriangle. Ketika tesnya gagal, maka kemungkinan besar kegagalan itu disebabkan oleh kode yang ada di dalam detectTriangle.
+
+! Sementara itu, tes Liking A Movie di atas adalah contoh dari integration test. Tes yang dibuat tidak hanya fokus pada perilaku object LikeButtonInitiator. Ia juga peduli dengan bagaimana objek-objek lain bekerja, semisal DOM dan FavoriteMovieIdb. Ketika ada eror di integration test, maka error bisa disebabkan oleh beragam object yang ikut terlibat dalam tes.
+
+! End-to-end test adalah jenis tes di mana perilaku pengguna disimulasikan semuanya dari depan hingga belakang. Maksud depan adalah ketika dia mengetikkan url-nya, dia melihat halamannya, berinteraksi dengan UI-nya. Sementara maksud dari bagian belakang adalah proses ajax atau fetch dijalankan.
+
+
+
+
+
+! ok mari kita mulai testingnya 
+1. Mari kita uji coba tahap pertama pada skenario Menyukai Film, yaitu menampilkan widget menyukai film. #bff 
+  -> ! metode beforeEach. Metode ini telah disediakan oleh Jasmine. berguna Agar kode didalam method ini selalu dijalankan untuk tiap tes yang kita buat(it) sebelum dijalankan, 
+     ! kita bisa menonaktifkan kode tes(it) dengan mengubah metode it menjadi xit
+     ! methode afterEach. Metode ini berguna Agar kode didalam method ini selalu dijalankan untuk tiap tes yang kita buat(it) setelah dijalankan, 
+  -> pertama jalankan testing : npm run test (liat di package.json)
+  -> Buat berkas likeMovieSpec.js pada folder /specs.
+    - likeMovieSpec.js 
+      import LikeButtonInitiator from './../src/scripts/utils/like-button-initiator';
+      import FavoriteMovieIdb from '../src/scripts/data/favorite-movie-idb';
+
+
+      describe('Liking A Movie', () => {
+        const addLikeButtonContainer = () => {
+          document.body.innerHTML = '<div id="likeButtonContainer"></div>';
+        };
+
+        beforeEach(() => {
+          addLikeButtonContainer();
+        });
+
+
+        it('should show the like button when the movie has not been liked before', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          expect(document.querySelector('[aria-label="like this movie"]'))
+            .toBeTruthy();
+        });
+
+        it('should not show the unlike button when the movie has not been liked before', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          expect(document.querySelector('[aria-label="unlike this movie"]'))
+            .toBeFalsy();
+        });
+
+        it('should be able to like the movie', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          document.querySelector('#likeButton').dispatchEvent(new Event('click'));
+          const movie = await FavoriteMovieIdb.getMovie(1);
+
+          expect(movie).toEqual({
+            id: 1
+          });
+
+          FavoriteMovieIdb.deleteMovie(1);
+        });
+        it('should not add a movie again when its already liked', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          // Tambahkan film dengan ID 1 ke daftar film yang disukai
+          await FavoriteMovieIdb.putMovie({
+            id: 1
+          });
+          // Simulasikan pengguna menekan tombol suka film
+          document.querySelector('#likeButton').dispatchEvent(new Event('click'));
+          // tidak ada film yang ganda
+          expect(await FavoriteMovieIdb.getAllMovies()).toEqual([{
+            id: 1
+          }]);
+
+          FavoriteMovieIdb.deleteMovie(1);
+        });
+        // menggunakan metode xit, bukan it
+        xit('should not add a movie when it has no id', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {},
+          });
+
+          document.querySelector('#likeButton').dispatchEvent(new Event('click'));
+
+          expect(await FavoriteMovieIdb.getAllMovies()).toEqual([]);
+        });
+
+      });
+
+      // TODO:
+
+      // Memberi nama yang lebih berbeda untuk createLikeButtonTemplate dan createLikedButtonTemplate.
+      // Alur negatif menyimpan movie tanpa ID tidak boleh menyebabkan kegagalan.
+
+
+2. kita uji coba tahap kedua yaitu pada skenario batal Menyukai film  #bff
+  -> buat file di specs/unlikeMovieSpec.js 
+    - unlikeMovieSpec.js 
+      import LikeButtonInitiator from '../src/scripts/utils/like-button-initiator';
+      import FavoriteMovieIdb from '../src/scripts/data/favorite-movie-idb';
+
+      const addLikeButtonContainer = () => {
+        document.body.innerHTML = '<div id="likeButtonContainer"></div>';
+      };
+
+      describe('Unliking A Movie', () => {
+        beforeEach(async () => {
+          addLikeButtonContainer();
+          await FavoriteMovieIdb.putMovie({
+            id: 1
+          });
+        });
+
+        afterEach(async () => {
+          await FavoriteMovieIdb.deleteMovie(1);
+        });
+
+        it('should display unlike widget when the movie has been liked', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          expect(document.querySelector('[aria-label="unlike this movie"]'))
+            .toBeTruthy();
+        });
+
+        it('should not display like widget when the movie has been liked', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          expect(document.querySelector('[aria-label="like this movie"]'))
+            .toBeFalsy();
+        });
+
+        it('should be able to remove liked movie from the list', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          document.querySelector('[aria-label="unlike this movie"]').dispatchEvent(new Event('click'));
+
+          expect(await FavoriteMovieIdb.getAllMovies()).toEqual([]);
+        });
+
+        it('should not throw error if the unliked movie is not in the list', async () => {
+          await LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: 1,
+            },
+          });
+
+          // hapus dulu film dari daftar film yang disukai
+          await FavoriteMovieIdb.deleteMovie(1);
+
+          // kemudian, simulasikan pengguna menekan widget batal menyukai film
+          document.querySelector('[aria-label="unlike this movie"]').dispatchEvent(new Event('click'));
+
+          expect(await FavoriteMovieIdb.getAllMovies()).toEqual([]);
+        });
+      });    
+
+  -> jalankan npm run test 
+  -> cek apakah berhasil (hijau)
+
+3. selesaikan TODO pertama di likeMovieSpec yaitu Alur negatif menyimpan movie tanpa ID tidak boleh menyebabkan kegagalan.
+  -> mari ubah kode di src/scripts/data/favorite-movie-idb.js di bagian : 
+      ...
+      const FavoriteMovieIdb = {
+        async getMovie(id) {
+          if (!id) {
+            return;
+          }
+
+          return (await dbPromise).get(OBJECT_STORE_NAME, id);
+        },
+        ...
+        async putMovie(movie) {
+          if (!movie.hasOwnProperty('id')) {
+            return;
+          }
+
+          return (await dbPromise).put(OBJECT_STORE_NAME, movie);
+        },
+        ...
+      };  
+      ...
+
+
+## Ringkasan Testing Aplikasi (Kasus 2)
+
+Apa yang kita pelajari selama pembuatan jaring pengaman ini?
+  1. Kita memprioritaskan menyelesaikan tes terlebih dahulu. Kita menjaga agar kode yang ada tidak diubah selama jaring pengaman dibangun.
+  2. Setelah jaring pengaman dibangun, kita mulai memperbaiki kode:
+    - Yang paling prioritas untuk diperbaiki adalah bug.
+    - Setelah bug diperbaiki, kita memperbaiki architecture dari bagian menyukai film.
+  3. Kita mencari tahu sumber masalah melalui tes. Kita tidak perlu melakukan debugging pada aplikasi secara manual.
+  4. Belajar menerapkan integration test.
+  5. Menjaga kualitas dari kode tes dengan mengurangi duplikasi kode pada kode test.
+
+! Dengan adanya jaring pengaman, maka kita bisa dengan aman mengubah bagian dari kode yang dirasa bisa dioptimalkan. Sebagai contoh, sadarkah Anda bahwa LikeButtonPresenter memiliki keterikatan yang kuat terhadap sebuah object eksternal?
+
+! Pada kesempatan berikutnya, kita akan belajar menerapkan salah satu prinsip SOLID ke dalam alur menyukai film, Tentu saja, dengan dipandu oleh tes.
+
+
+
+
+
+## Kasus 3 : Berkolaborasi dengan Benar 
+
+! Semakin erat ketergantungan sebuah object terhadap object lain, semakin sulit bagi tiap object untuk berubah.
+
+! Pembahasan tentang peluang perubahan di atas bukan berarti kita menebak perubahan apa yang akan terjadi nantinya.
+
+! Kita tidak perlu menebak masa depan. Namun yang perlu disiapkan adalah ruang untuk berubah. Ketika perlu melakukan perubahan, maka kita bisa melakukannya semudah mungkin.
+
+! link : https://www.dicoding.com/academies/219/tutorials/9874?from=9869
+
+
+
+## Ringkasan Berkolaborasi dengan Benar (Kasus 3)
+
+! Di kasus ketiga ini kita mencoba menerapkan salah satu prinsip yang penting dalam desain, yaitu mengurangi pengetahuan antar object. Caranya dengan menerapkan Dependency Inversion. Ketika yang diketahui oleh suatu object hanyalah sebatas pengetahuan bahwa object lain dapat memahami pesan yang diberikan kepadanya, maka perubahan pada object-object yang saling berkolaborasi tadi menjadi lebih mudah.
+
+! Lebih bagus lagi ketika ada bukti bahwa object tersebut memahami pesan yang diterimanya dan menjalankannya dengan benar. Bukti ini dapat kita lihat pada Contract Test yang diterapkan.
+
+! Kita juga belajar menerapkan prinsip di atas dengan cara mengubah kode secara bertahap dan tidak merusak tes. Perubahan yang harus diterapkan tidaklah sederhana, karena mengubah bagaimana object saling berkenalan dengan object lain. Namun, dengan adanya tes, perubahan tersebut dapat dilakukan dengan aman tanpa harus mencobanya secara manual. Tentu saja yang harus diuji coba secara manual adalah bagian yang belum ada tesnya.
+
+
+
+## Kasus 4 : Mencari Film Yang Disukai 
+
+! Di kasus sebelumnya (skenario menyukai film), kita menerapkan testing setelah kode dibuat. Nah, pada kasus keempat ini, kita akan menerapkan testing sebelum kode ditulis. Kita akan mencoba menerapkan Test Driven Development (TDD) untuk kebutuhan menambahkan fitur baru: mencari film yang telah disukai.
+
+! Seperti biasa, kita tentukan terlebih dahulu spesifikasinya:
+  1. Pengguna  memasukkan judul film yang dicari.
+  2. Film yang dicari ditampilkan.
+    - Bila film tidak ada, tampilkan informasi bahwa tidak ada film yang ditemukan.
+
+! Untuk fitur ini, kita akan menggunakan architecture MVP. Dalam architecture ini object yang memiliki peran besar dalam mengatur alur interaksi pengguna dengan aplikasi adalah si Presenter. Jadi, kita bisa mencoba mulai menerapkan tes dari object tersebut.
+
+
+! metode tes menerima parameter 'done'. Ini adalah fasilitas yang disediakan oleh Jasmine untuk menghadapi tes yang berjalan secara async (tidak menunggu object yang ditest selesai). Tes akan dianggap selesai ketika done() sudah dijalankan, atau ketika terkena timeout.
+  // contoh : 
+    fit('should show the movies found by Favorite Movies', (done) => {
+        document.getElementById('movie-search-container')
+          .addEventListener('movies:searched:updated', () => {
+            expect(document.querySelectorAll('.movie').length).toEqual(3);
+            done();
+          });
+    ...
+
+! di dalam sebuah berkas tes, kita bisa memiliki lebih dari satu metode describe.
+  // contoh 
+   - filetest.js 
+      describe('...',()=>{
+        describe('...',()=>{
+          action..
+        })
+      })
+
+      describe('...', ()=>{
+        action..
+      })
+
+
+! Dengan menggunakan xdescribe, kita meminta Jasmine untuk tidak menjalankan semua tes yang ada di dalamnya. Hal yang sama bisa juga kita terapkan untuk it. Dalam hal ini, kita menggunakan xit.
+
+
+
+## Ringkasan Mencari Film yang Disukai
+! Di kasus keempat ini, kita telah belajar:
+  1. Menggunakan teknik mata-mata (atau juga pemalsuan) sehingga kita dapat fokus menerapkan TDD untuk membangun fitur mencari film yang disukai
+    - Implementasi object yang dimata-matai baru dikerjakan ketika tahapan TDD untuk object utama sudah selesai dikerjakan
+  2. Menerapkan architecture MVP
+  3. Menghapus tes yang tidak perlu
+  4. Tidak bergantung pada metode private
+  5. Belajar bagaimana secara bertahap mempertemukan dua skenario yang sedikit berbeda dengan cara memaksimalkan code reuse.
+    - Yang tak kalah pentingnya, kita belajar melakukannya dengan cara yang tidak merusak tes yang sudah ada
+
+Bagaimana bila kita menghubungkan semua yang sudah kita garap ke aplikasi Movie Catalogue? Apakah benar-benar bisa berjalan lancar? Ataukah kita akan terkena keringat dingin gelombang kedua?
+
+
+
+## Kasus 5 : End to End Testing 
+
+! Tentu ada! Mari kita berkenalan dengan sebuah alat bernama Codecept (https://codecept.io). Alat ini memungkinkan kita melakukan End-to-End (E2E) testing. Jadi kita bisa menguji perilaku pengguna secara otomatis.
+
+! Untuk menggunakan Codecept, instal terlebih dahulu menggunakan perintah:
+  - npm install codeceptjs puppeteer --save-dev
+
+  -> Pada perintah di atas kita juga menginstall puppeteer. Alat ini memungkinkan tes disimulasikan di browser. Setelah proses instalasi berhasil, jalankan perintah berikut:
+    - npx codeceptjs init
+
+  -> Codecept akan mengajukan beberapa pertanyaan. Jawaban Anda akan digunakan untuk mengonfigurasi tesnya.
+    1. Where are your tests located?, kita ingin meletakkan berkas tes kita di dalam folder khusus e2e. Oleh karena itu jawablah dengan: e2e/**/*.spec.js
+    2. Pertanyaan berikutnya meminta kita memilih “helpers” yang akan digunakan untuk menjalankan tes. Ada beberapa opsi. Karena kita sudah memasang puppeteer, maka kita pilih saja tawaran puppeteer.
+    3. Berikutnya codecept meminta kita menentukan lokasi penyimpanan hasil tes : “Where should logs, screenshots, and reports to be stored?” Silakan jawab dengan e2e/outputs, karena kita ingin menaruhnya di dalam folder tes E2E.
+    4. Pertanyaan berikutnya adalah pertanyaan terkait localization. Jawablah dengan memilih tawaran English (no localization).
+    5. Codecept akan mengajukan pertanyaan lagi, [Puppeteer] Base url of site to be tested. Kita jawab : http://localhost:8080. Ini adalah alamat dasar dari aplikasi yang akan diuji.
+    6. Show browser window? Tentu iya. Tekan enter.
+    7. Browser viewport size? Langsung saja tekan enter.
+    -> codecept membuat beberapa folder dan berkas
+    8. codecept: Feature which is being tested (ex: account, login, etc). Jawab saja: Liking Movies. Tekan enter. Tekan enter juga untuk pertanyaan berikutnya. Selesai.
+
+! Mari kita lihat apa yang telah dibuat oleh codecept:
+  - Berkas steps_file.js. Kita tidak akan menggunakan berkas ini di pembelajaran kita kali ini.
+  - Berkas codecept.conf.js. Berkas ini berisikan konfigurasi yang akan digunakan oleh codecept untuk menjalankan tesnya.
+  - Folder e2e dan e2e/outputs. Di dalam folder e2e terdapat tes E2E pertama kita: e2e/Liking_Movies.spec.js.
+  - Ada beberapa berkas yang ditujukan untuk editor. Untuk saat ini, kita tidak perlu terlalu memperhatikannya.
+
+
+! Silakan buka berkas codecept.conf.js. Secara garis besar, berkas tersebut berisikan jawaban yang kita ketikkan di awal tadi. Namun ada yang menarik. Coba perhatikan bagian plugins. Misalnya keterangan screenshotOnFail.
+
+! lugin screenshotOnFail memungkinkan codecept untuk mengambil screenshot dari aplikasi ketika tesnya mengalami kegagalan. Ini memudahkan kita untuk mengetahui apa yang ditampilkan di browser ketika tesnya gagal.
+
+! Kemudian buka berkas tes E2E pertama kita: e2e/Liking_Movies.spec.js. Berkas tersebut berisikan:
+  Feature('Liking Movies');
+  
+  Scenario('test something', ({ I }) => {
+  
+  });
+
+  ! disinilah kita melakukan testing
+
+! cara menjalankan testingnya :
+  1. jalankan local server terlebih dahulu : npm run start-dev 
+  2. jalankan perintah : npx codeceptjs run --steps
+
+! Hal berbeda terjadi ketika kita menggunakan codecept. Kode tes kita dijalankan secara serial, atau berurutan. Codecept hanya akan menjalankan perintah berikutnya apabila ia sukses menjalankan perintah yang sedang dikerjakan.
+
+! Codecept akan “menyembunyikan” dari kita beragam proses asynchronous yang berjalan di browser. Codecept memudahkan kita untuk fokus pada alur testing yang memang menjadi perhatian utama kita.
+
+! Oleh karena itu, untuk beragam perintah yang dijalankan oleh codecept, ia akan memberikan waktu tunggu hingga perintah itu benar, atau hingga ia mengalami timeout. Dengan pola seperti ini, tes kita menjadi lebih mudah dibaca. Kode tes menjadi lebih berurutan.
+
+
+! Bagaimana bila kita mensimulasikan aktifitas pengguna menyukai sebuah film? Alurnya kurang lebih seperti ini:
+  1. Buka halaman utama
+  2. Pilih salah satu film, misalnya film pertama
+  3. Click film tersebut
+  4. Aplikasi membawa kita ke halaman detail film
+  5. Kita menekan tombol menyukai film
+  6. Kita buka halaman daftar film yang disukai
+  7. Kita melihat film yang telah disukai
+
+
+## Membekukan waktu 
+! link : https://www.dicoding.com/academies/219/tutorials/9954?from=9949
+
+
+// untuk megambil element pertama di testing codecept 
+  - locate('.movie__title a').first(); // seperti querySelector('.movie__title a'); maka akan mengambil element pertama dengan class tersebut
+
+
+! Setelah film disukai, maka kita ingin memastikan bahwa film sudah disimpan sebagai film yang disukai. Kita sudah pernah menguji hal ini menggunakan unit tes. Jadi kita tahu bahwa logika penyimpanan berjalan dengan benar. Namun yang ingin kita pastikan adalah interaksi UI-nya juga berjalan dengan benar. Itulah gunanya E2E tes.
+
+
+
+## Sebuah Pencarian 
+! link : https://www.dicoding.com/academies/219/tutorials/9959?from=9955
+
+
+## Ringkasan Testing Automatis 
+! link : https://www.dicoding.com/academies/219/tutorials/9964?from=9959
+
+
+
+
+!! NOTES !! 
+
+
+

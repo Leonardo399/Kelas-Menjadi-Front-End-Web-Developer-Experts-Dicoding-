@@ -1,7 +1,7 @@
 # langkah langkah membuat pwa 
-1. buat folder project
-2. npm init 
-3. install package yang diperlukan (di materi pke versi ini)
+1. buat folder project #ff0000
+2. npm init #ff0000
+3. install package yang diperlukan (di materi pke versi ini) #ff0000
     "devDependencies": {
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
@@ -23,8 +23,8 @@
   -> kemudian jalankan perintah 'npm install'
 
 
-4. configurasi eslint (opsional)
-5. buat struktur folder berikut : 
+4. configurasi eslint (opsional) #ff0000
+5. buat struktur folder berikut : #ff0000
   src
   ├── public // untuk menyimpan assets (gambar,dll)
   ├── scripts
@@ -39,7 +39,7 @@
   └── templates // berisi template html
 
 
-6. buat configurasi webpack 
+6. buat configurasi webpack #ff0000
   - webpack.common.js 
       const HtmlWebpackPlugin = require('html-webpack-plugin');
       const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -120,14 +120,14 @@
       });
 
 
-7. tambahkan script di file package.json 
+7. tambahkan script di file package.json #ff0000
     "scripts": {
       "start-dev": "webpack-dev-server --config webpack.dev.js",
       "build": "webpack --config webpack.prod.js"
     },
 
 
-8. buat file di src -> scripts -> index.js , dan src -> templates -> index.html
+8. buat file di src -> scripts -> index.js , dan src -> templates -> index.html #ff0000
   - index.js 
     import 'regenerator-runtime';
     
@@ -148,12 +148,12 @@
     </body>
     </html>
 
-9. cari dan simpan gambar favicon.png di folder public
+9. cari dan simpan gambar favicon.png di folder public #ff0000
 
-10. coba npm run start-dev 
+10. coba npm run start-dev  #ff0000
     ! jika sebelumnya telah mencoba service worker maka unregister dulu service workernya di tab application -> service workers, cache storage, dan indexedDB
 
-11. mari mulai membuat application shell nya
+11. mari mulai membuat application shell nya #ff0000
     -> pertama kita buat tampilan websitenya terlebih dahulu 
       - src/templates/index.html 
         <!DOCTYPE html>
@@ -264,7 +264,7 @@
 
         -> done seharusnya fungsi humberger menu(drawer) sudah berjalan 
 
-12. Membuat URL Router 
+12. Membuat URL Router  #ff0000
     -> pertama kita buat file detail.js, now-playing.js, dan upcoming.js di folder src/scritps/views/pages 
       - now-playing.js 
         const NowPlaying = {
@@ -388,7 +388,7 @@
       ! tanda hash disini penting untuk membuat url mati sehingga tidak melakukan reload browser, dan untuk dapat mengambil url selanjutnya setelah slash(/) dengan menggunakan object window.location.hash
 
 13. disini dalam menampilkan content kita akan fetch data API themoviedb
-  -> buat file di src/scripts/globals/config.js untuk menyimpan configurasi data
+  -> buat file di src/scripts/globals/config.js untuk menyimpan configurasi data #ff0000
     - config.js 
       const CONFIG = {
         KEY: 'YOUR_API_KEY', // 7705cf962c57d72269442a0a9d1ce641
@@ -499,7 +499,7 @@
 
 
 
-14. membuat template html content
+14. membuat template html content #ff0000
   -> buat file di src/scripts/templates/template-creator.js untuk menyimpan view template content 
     - template-creator.js
       import CONFIG from '../../globals/config';
@@ -583,6 +583,795 @@
         },
       ...
 
+15. Menambahkan manifest ke project agar aplikasi dapat di sematkan di homescreen pada smartphone  #ff0000
+  -> siapkan icon untuk gambar yang akan tampil di homescreen
+    - icon-72x72.png 
+    - icon-96x96.png 
+    - icon-128x128.png 
+    - icon-144x144.png 
+    - icon-152x152.png 
+    - icon-192x192.png 
+    - icon-384x384.png 
+    - icon-512x512.png 
+
+  -> kemudian buat file web app manifest di src/public/manifest.json 
+    - manifest.json 
+      {
+        "name": "Movie Catalogue Lite",
+        "short_name": "Movie Lite",
+        "description": "Free Catalogue Movie for you",
+        "start_url": "/index.html",
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#d84315",
+        "icons": [
+          {
+            "src": "/icons/icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/icons/icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/icons/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/icons/icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/icons/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "any maskable"
+          },
+          {
+            "src": "/icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+          }
+        ]
+      }    
+
+  -> lalu daftarkan berkas manifest.json pada src/templates/index.html 
+    - index.html 
+      ...
+      <head>
+      ...
+        // karena disini menggunakan CopyWebpackPlugin maka sesuaikan href dengan yang ada di folder dist 
+        <link rel="manifest" href="manifest.json">      
+      ...
+      </head>
+      ...
+
+  -> cek di tab application -> manifest di devtool apakah sudah tampil iconnya 
+
+  -> ! sampai sini aplikasi kita masih belum bisa di sematkan di homescreen (popup belum muncul)
+    ! belum bisa di sematkan di homescreen karena aplikasi kita masih belum bisa berjalan secara offline, untuk bisa berjalan secara offline maka harus ada service worker
+
+    ! untuk mewarnai warna application shell tambahkan tag berikut di dalam tag head pada src/templates/index.html 
+      - <meta name="theme-color" content="#db0000"/>
+
+    ! untuk perangkat iphone kita dapat optimasi icon homescreen(pastikan icon tidak memiliki background transparan) dengan menambahkan tag berikut di dalam tag head di src/templates/index.html 
+      - <link rel="apple-touch-icon" href="/icons/icon-192x192.png">    
+
+    ! Berikut beberapa tools yang dapat Anda manfaatkan untuk membantu membuat Web App Manifest secara otomatis.
+      - https://app-manifest.firebaseapp.com/ : Web App Manifest generator.
+      - webpack-pwa-manifest (Webpack Plugin) : Web App Manifest generator untuk pengguna Webpack.
+
+16. Menambahkan service worker ke application untuk bisa memonitoring dan mengatur request dan response yang terjadi di aplikasi serta nanti akan bisa membuat aplikasi berjalan secara offline jika ditambahkan dengan cache API, jadi website akan request ke service worker terlebih dahulu baru ke web server #ff0000
+  -> ! dengan service worker kita dapat menyimpan response yang didapat dari web server ke dalam Cache API sebelum datanya ditampilkan pada jendela browser
+     ! dengan service worker kita bisa mengevaluasi sebuah request apakah sudah terdapat pada cache atau belum, sebelum dikirimkan ke server.
+     ! dengan service worker kita bisa melakukan apapun terhadap request dan response yang terjadi pada browser
+     !! service worker hanya dapat dijalankan pada protokol HTTPS
+     ! Service Worker tidak bisa memodifikasi elemen yang ada di sebuah halaman web (mengakses DOM)
+     ! service worker membutuhkan setidaknya 2 API lain, yakni Fetch API dan Cache API. Fetch API digunakan oleh service worker untuk mengambil konten dari internet, dan Cache API digunakan untuk penyimpanan konten yang telah diakses oleh pengguna
+
+     ! siklus penerapan service worker : registration -> installation -> activation -> idle 
+
+     ! Karena Service Worker terpisah dari DOM, untuk menambahkan event kita bisa gunakan self, bukan window ataupun document
+
+     ! untuk proses aktivasi Service Worker baru (karena terdapat perubahan kode pada service worker), tak akan langsung dieksekusi bila terdapat Service Worker lama sedang aktif mengontrol browser. Service Worker baru akan menunggu (waiting) diaktivasi setelah Service Worker lama sudah tidak lagi mengontrol browser. Service Worker lama akan berhenti mengontrol ketika tab atau browser web ditutup. Setelah web dibuka kembali, barulah Service Worker baru akan diaktivasi. Namun proses menunggu bisa kita lewati bila menambahkan kode self.skipWaiting() pada proses instalasi
+
+     ! Setelah Service Worker berhasil dipasang dan diaktifkan, maka status Service Worker akan mengalami idle atau bisa kita sebut bersiap.
+
+     ! event-event pada service worker :
+        - install // untuk saat instalasi service worker 
+        - activate 
+        - fetch 
+        - message 
+        - sync 
+        - push 
+
+        // contoh : 
+            - self.addEventListener('install',(event)=>{doSomething})
+
+
+  -> mari kita mulai menambahkan service worker pada aplikasi kita
+  -> pertama install package serviceworker-webpack-plugin untuk menciptakan runtime yang dapat diakses oleh service worker (karena kita pke webpack)
+      - npm install serviceworker-webpack-plugin 
+  
+  -> kemudian tambahkan code berikut di webpack.common.js 
+      ...
+      const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin');
+      ...
+      plugins: [
+          ...,
+          new ServiceWorkerWebpackPlugin({
+            entry: path.resolve(__dirname, 'src/scripts/sw.js'),
+          }),
+        ],  
+      ...
+
+  -> buat file di src/scripts/sw.js untuk file entry dari service worker (sudah tertera di configurasi webpack.common.js tadi)
+      - sw.js 
+        self.addEventListener('install', (event) => {
+          console.log('Installing Service Worker ...');
+        
+          // TODO: Caching App Shell Resource
+        });
+        
+        self.addEventListener('activate', (event) => {
+          console.log('Activating Service Worker ...');
+        
+          // TODO: Delete old caches
+        });
+        
+        self.addEventListener('fetch', (event) => {
+          console.log(event.request);
+        
+          event.respondWith(fetch(event.request));
+          // TODO: Add/get fetch request to/from caches
+        });      
+
+  -> buat file di src/scripts/utils/sw-register.js untuk menbuat fungsi - fungsi registrasi service worker menggunakan runtime package serviceworker-webpack-plugin
+    - sw-register.js 
+      import runtime from 'serviceworker-webpack-plugin/lib/runtime';
+      
+      const swRegister = async () => {
+        if ('serviceWorker' in navigator) {
+          await runtime.register();
+          return;
+        }
+        console.log('Service worker not supported in this browser');
+      };
+      
+      export default swRegister; 
+
+  -> panggil fungsi swRegsiter(src/scripts/utils/sw-register.js) pada entry point(src/scripts/index.js), lebih tepatnya di dalam callback event load.
+    - index.js 
+      import swRegister from './utils/sw-register';
+      ...
+      window.addEventListener('load', () => {
+        app.renderPage();
+        swRegister();
+      });          
+
+  -> cek console apakah sudah berhasil instalasi service worker atau belum
+  -> Karena kita dalam masa pengembangan, jangan lupa untuk mengaktifkan “Update on Reload” pada DevTools -> Application -> Service Worker.
+  -> cek seharusnya saat membuka website ada notifikasi untuk add to homescreen
+
+  -> ! cara aktivasi service worker di sini, file sw.js digunakan untuk konfigurasi atau inisialisasi service worker di aplikasi kita, kemudian file sw-register.js digunakan untuk registrasi service worker di aplikasi kita 
+
+  -> ! jika ada error d console tentang 'serviceworker-webpack-plugin/lib/runtime' without using the plugin maka restart aj start-dev nya
+
+  -> ! ingat service worker di jalankan melalui thread yg berbeda dengan jalannya aplikasi, contoh disini sw.js nya di jalankan menggunakan package serviceworler-webpack-plugin. Sedangkan untuk register sw nya (swRegister.js) dijalankan satu thread dengan aplikasi 
+
+
+17. Menambahkan Cache API untuk bisa menjalankan aplikasi secara offline #ff0000
+  -> ! Cache API dapat diakses melalui window, iframe, worker, ataupun service worker.
+
+     ! Untuk membuat dan membuka Cache, kita dapat menggunakan method caches.open(name)
+
+     ! untuk menambahkan resource ke cache bisa menggunakan method cache.add(url), dan cache.addAll(url)
+
+     ! untuk mengambil resource dari cache bisa menggunakan method cache.match(request, options)
+
+     ! untuk mencari cache bisa menggunakan method caches.keys()
+
+     ! untuk menghapus cache bisa menggunakan method caches.delete(cacheName)
+
+     ! macam - macam jenis caching strategies
+        - cache only : page -> sw -> cache -> page
+          // contoh : 
+              self.addEventListener('fetch', (event) => {
+                  event.respondWith(caches.match(event.request));
+              });          
+
+        - network only : page -> sw -> network -> page 
+          // contoh : 
+              self.addEventListener('fetch', (event) => {
+                event.respondWith(fetch(event.request));
+              });
+
+        - cache first (sering dipakai pwa): page -> sw -> cache(jika tidak ada teruskan ke network) -> network -> page
+          // contoh : 
+              self.addEventListener('fetch', (event) => {
+                event.respondWith(
+                    caches.match(event.request).then((response) => {
+                      return response || fetch(event.request);
+                    })
+                );
+              });
+
+        - network first : page -> sw -> network(jika network gagal ambil lewat cache, dan jika berhasil maka simpan di cache) -> cache -> page 
+          // contoh : 
+              self.addEventListener('fetch', (event) => {
+                event.respondWith(
+                    fetch(event.request)
+                    .catch(() => {
+                      return caches.match(event.request);
+                    })
+                );
+              });        
+
+        - stale while revalidate (data cache selalu update dari network tetapi data selalu berasal dari cache ) : page -> sw(mengirim 2 request ke cache dan network)
+            -> cache -> page
+            -> network -> cache
+
+          // contoh :
+              self.addEventListener('fetch', (event) => {
+                event.respondWith(revalidateCache(event.request));
+              });
+              
+              const revalidateCache = async (request) => {
+                const response = await caches.match(request);
+              
+                if (response) {
+                  _fetchRequest(request);
+                  return response;
+                }
+                return _fetchRequest(request);
+              };
+              
+              const _fetchRequest = async (request) => {
+                const response = await fetch(request);
+              
+                if (!response || response.status !== 200) {
+                  return response;
+                }
+                _addToCache(request);
+                return response;
+              };
+              
+              const _addToCache = async (request) => {
+                const cache = await caches.open(CACHE_NAME);
+                cache.add(request);
+              };
+
+  -> oke mari kita mulai menambahkan cache api ke aplikasi kita 
+  -> pertama buat config baru di src/scrips/globals/config.js 
+      - config.js 
+        ...
+        CACHE_NAME: 'MovieCatalogue-V1',      
+        ...
+
+  -> kemudian buat file di src/scripts/utils/cache-helper.js untuk kumpulan fungsi cache (disini kita akan memakai strategi stale while revalidate)
+    - cache-helper.js 
+      import CONFIG from '../globals/config';
+      
+      const CacheHelper = {
+        async cachingAppShell(requests) {
+          const cache = await this._openCache();
+          cache.addAll(requests);
+        },
+      
+        async deleteOldCache() {
+          const cacheNames = await caches.keys();
+          cacheNames
+            .filter((name) => name !== CONFIG.CACHE_NAME)
+            .map((filteredName) => caches.delete(filteredName));
+        },
+      
+        async revalidateCache(request) {
+          const response = await caches.match(request);
+      
+          if (response) {
+            return response;
+          }
+          return this._fetchRequest(request);
+        },
+      
+        async _openCache() {
+          return caches.open(CONFIG.CACHE_NAME);
+        },
+      
+        async _fetchRequest(request) {
+          const response = await fetch(request);
+      
+          if (!response || response.status !== 200) {
+            return response;
+          }
+      
+          await this._addCache(request);
+          return response;
+        },
+      
+        async _addCache(request) {
+          const cache = await this._openCache();
+          cache.add(request);
+        },
+      };
+      
+      export default CacheHelper;
+
+  -> ! Kode berikut berguna untuk mendapatkan seluruh aset yang membentuk keseluruhan aplikasi (app shell).
+      - const { assets } = global.serviceWorkerOption; 
+      -> Jika kita lihat di belakang layar, nilai inilah yang akan didapatkan:
+          var serviceWorkerOption = {
+            "assets": [
+              "/favicon.png",
+              "/manifest.json",
+              "/icons/icon-128x128x.png",
+              ... dst icons 
+              "/bundle.js",
+              "/index.html"
+            ]
+          }
+      -> Kode tersebut adalah kumpulan assets statis yang digunakan oleh web app kita. Karena kita menggunakan Webpack dan dibantu dengan serviceworker-webpack-plugin, kita tak perlu menuliskan aset yang digunakan secara manual lagi.
+
+
+  -> kemudian kita terapkan cache di file sw.js 
+    - sw.js
+      import 'regenerator-runtime';
+      import CacheHelper from './utils/cache-helper';
+      
+      const { assets } = global.serviceWorkerOption;
+      
+      self.addEventListener('install', (event) => {
+        event.waitUntil(CacheHelper.cachingAppShell([...assets, './']));
+      });
+      
+      self.addEventListener('activate', (event) => {
+        event.waitUntil(CacheHelper.deleteOldCache());
+      });
+      
+      self.addEventListener('fetch', (event) => {
+        event.respondWith(CacheHelper.revalidateCache(event.request));
+      });      
+
+  -> cek apakah aplikasi sudah bisa berjalan saat offline dengan mematikan network lewat tab network devtool
+  -> cek di menu cache apakah sudah ada cache yang tersimpan atau belum
+  -> jika berhasil disini perubahan cache tidak terlihat di browser karena kita mengupdate dengan nama cache yang sama oleh karena itu bisa di akali dengan memberi nama cache yang dinamis menggunakan instansiasi date. tetapi ada cara lain yang lebih efektif yaitu memakai event update yang akan kita pelajari di materi berikutnya
+
+  -> jika ada error tentang ' Request scheme 'chrome-extension' is unsupported' maka ubah code di sw.js di bagian : 
+    - sw.js
+      self.addEventListener('fetch', (event) => {
+        if (!(event.request.url.indexOf('http') === 0)) return; // skip the request. if request is not made with http protocol
+
+        event.respondWith(CacheHelper.revalidateCache(event.request));
+
+      });
+
+
+18. Menambah IndexedDB pada aplikasi #ff0000
+  -> ! IndexedDB adalah built-it database yang terdapat di dalam web browser modern saat ini.
+     ! untuk memanfaatkan IndexedDB kita tidak membutuhkan koneksi internet 
+     ! IndexedDB merupakan database basis NoSQL
+     ! meskipun IndexedDb tersedia dalam lokal pada browser tetapi untuk mengaksesnya harus memiliki domain yang sama, jadi IndexedDB ini aman 
+     ! pada dasarnya untuk menggunakan IndexedDB ini harus melakukan cara manual yaitu menggunakan callback, tetapi untungnya ada package bernama idb yang membuat IndexedDB bisa di pakai menggunakan promise 
+
+     ! cara memakai package idb : 
+      -> install package idb : npm install idb 
+      -> import package : import * as idb from 'idb'; || import {openDB, deleteDB, dll } from 'idb' 
+
+     ! Untuk membuat object store baru, kita gunakan method database.createObjectStore(OBJECT_STORE_NAME, { keyPath: 'id' }). 
+        ! Properti keyPath mirip seperti primary key bila pada SQL
+
+     ! Untuk membuat atau membuka database, kita dapat melakukannya dengan method openDB. Contohnya seperti berikut:
+      import { openDB } from 'idb';
+      
+      const DATABASE_NAME = 'my-pwa-database';
+      
+      const dbPromise = openDB(DATABASE_NAME, 1, {
+        upgrade(database) {
+          // do something with database
+        },
+      });
+     ! untuk operasi crud pada IndexedDB kita bisa gunakan nilai dbPromise yang sudah kita buat sebelumnya. kemudian kita sambungkan method crud yang menanganinya. 
+       // contoh : const movie = (await dbPromise).get(OBJECT_STORE_NAME, id);
+     ! mengambil data dari IndexedDB kita bisa gunakan method get(OBJECT_STORE_NAME, id) atau getAll(OBJECT_STORE_NAME)
+
+     ! untuk meninput data kita bisa gunakan method add(OBJECT_STORE_NAME, valueObject)
+
+     ! untuk melakukan update data kita bisa gunakan method put(OBJECT_STORE_NAME, valueObject)
+
+     ! untuk menghapus data kita gunakan method delete(OBJECT_STORE_NAME, id)
+
+  -> ok mari kita mulai penerapan IndexedDB pada aplikasi kita, disini kita akan membuat fitur like  
+  -> pertama kita tambahkan configurasi di src/scripts/globals/config.js 
+    - config.js 
+      ...
+      DATABASE_NAME: 'movie-catalogue-database',
+      DATABASE_VERSION: 1,
+      OBJECT_STORE_NAME: 'movies',
+      ...
+
+  -> kemudian install package idb 
+    - npm install idb 
+
+  -> lalu buat file di src/scripts/data/favoritemovie-idb.js untuk helper dari operasi crud IndexedDB 
+    - favoritemovie-idb.js 
+      import { openDB } from 'idb';
+      import CONFIG from '../globals/config';
+      
+      const { DATABASE_NAME, DATABASE_VERSION, OBJECT_STORE_NAME } = CONFIG;
+      
+      const dbPromise = openDB(DATABASE_NAME, DATABASE_VERSION, {
+        upgrade(database) {
+          database.createObjectStore(OBJECT_STORE_NAME, { keyPath: 'id' });
+        },
+      });
+      
+      const FavoriteMovieIdb = {
+        async getMovie(id) {
+          return (await dbPromise).get(OBJECT_STORE_NAME, id);
+        },
+        async getAllMovies() {
+          return (await dbPromise).getAll(OBJECT_STORE_NAME);
+        },
+        async putMovie(movie) {
+          return (await dbPromise).put(OBJECT_STORE_NAME, movie);
+        },
+        async deleteMovie(id) {
+          return (await dbPromise).delete(OBJECT_STORE_NAME, id);
+        },
+      };
+      
+      export default FavoriteMovieIdb;    
+
+  -> menambahkan tampilan tombol like pada halaman detail 
+    -> sematkan fontawesome di src/templates/index.html
+      - index.html
+        <head>
+        ...
+          <script src="https://use.fontawesome.com/b070c8f1df.js"></script>
+        ...
+        </head>
+
+    -> buat styling css nya di src/styles/style.css 
+    -> Lanjut kita buat fungsi baru pada src/scripts/views/templates/ template-creator.js
+      - template-creator.js 
+        ...
+        const createLikeButtonTemplate = () => `
+          <button aria-label="like this movie" id="likeButton" class="like">
+            <i class="fa fa-heart-o" aria-hidden="true"></i>
+          </button>
+        `;
+        
+        const createLikedButtonTemplate = () => `
+          <button aria-label="unlike this movie" id="likeButton" class="like">
+            <i class="fa fa-heart" aria-hidden="true"></i>
+          </button>
+        `;
+
+        export {
+          ...
+          createLikeButtonTemplate,
+          createLikedButtonTemplate,
+        }
+
+    -> Kemudian buka berkas src -> scripts -> views -> pages -> detail.js, pada fungsi render, tambahkan container untuk menampung tombol like.
+      - detail.js 
+        import { createMovieDetailTemplate, createLikeButtonTemplate } from '../templates/template-creator';
+        ...
+        async render() {
+            return `
+              ...
+              <div id="likeButtonContainer"></div>
+            `;
+          },
+        async afterRender() {
+            ...
+            const likeButtonContainer = document.querySelector('#likeButtonContainer');
+            likeButtonContainer.innerHTML = createLikeButtonTemplate();
+          },
+        ...
+
+  -> memberikan fungsionalitas pada tombol like 
+    -> buat file di src/scripts/utils/like-button-initiator.js untuk menampung fungsi-fungsi operasi fitur like 
+      - like-button-initiator.js 
+        import FavoriteMovieIdb from '../data/favorite-movie-idb';
+        import { createLikeButtonTemplate, createLikedButtonTemplate } from '../views/templates/template-creator';
+        
+        const LikeButtonInitiator = {
+          async init({ likeButtonContainer, movie }) {
+            this._likeButtonContainer = likeButtonContainer;
+            this._movie = movie;
+        
+            await this._renderButton();
+          },
+        
+          async _renderButton() {
+            const { id } = this._movie;
+        
+            if (await this._isMovieExist(id)) {
+              this._renderLiked();
+            } else {
+              this._renderLike();
+            }
+          },
+        
+          async _isMovieExist(id) {
+            const movie = await FavoriteMovieIdb.getMovie(id);
+            return !!movie;
+          },
+        
+          _renderLike() {
+            this._likeButtonContainer.innerHTML = createLikeButtonTemplate();
+        
+            const likeButton = document.querySelector('#likeButton');
+            likeButton.addEventListener('click', async () => {
+              await FavoriteMovieIdb.putMovie(this._movie);
+              this._renderButton();
+            });
+          },
+        
+          _renderLiked() {
+            this._likeButtonContainer.innerHTML = createLikedButtonTemplate();
+        
+            const likeButton = document.querySelector('#likeButton');
+            likeButton.addEventListener('click', async () => {
+              await FavoriteMovieIdb.deleteMovie(this._movie.id);
+              this._renderButton();
+            });
+          },
+        };
+        
+        export default LikeButtonInitiator;    
+
+    -> selanjutnya kita gunakan LikeButtonInitiator ini pada src/scripts/views/pages/detail.js pada method afterRender.
+      - detail.js 
+        ...
+        import LikeButtonInitiator from '../../utils/like-button-initiator';
+        ...
+        async afterRender() {
+          const url = UrlParser.parseActiveUrlWithoutCombiner();
+          const movie = await TheMovieDbSource.detailMovie(url.id);
+          const movieContainer = document.querySelector('#movie');
+          movieContainer.innerHTML = createMovieDetailTemplate(movie);
+
+          LikeButtonInitiator.init({
+            likeButtonContainer: document.querySelector('#likeButtonContainer'),
+            movie: {
+              id: movie.id,
+              title: movie.title,
+              overview: movie.overview,
+              backdrop_path: movie.backdrop_path,
+              vote_average: movie.vote_average,
+            },
+          });
+        },
+        ...
+
+  -> cek apakah tombol like sudah berfungsi 
+
+  -> selanjutnya kita akan membuat menu likes 
+  -> mari menampilkan data dari indexedDB 
+    -> buat file di src/scripts/views/pages/like.js
+      - like.js 
+        import FavoriteMovieIdb from '../../data/favorite-movie-idb';
+        import { createMovieItemTemplate } from '../templates/template-creator';
+        
+        const Like = {
+          async render() {
+            return `
+              <div class="content">
+                <h2 class="content__heading">Your Liked Movie</h2>
+                <div id="movies" class="movies">
+        
+                </div>
+              </div>
+            `;
+          },
+        
+          async afterRender() {
+            const movies = await FavoriteMovieIdb.getAllMovies();
+            const moviesContainer = document.querySelector('#movies');
+            movies.forEach((movie) => {
+              moviesContainer.innerHTML += createMovieItemTemplate(movie);
+            });
+          },
+        };
+        
+        export default Like;
+
+    -> tambahkan route di file src/scripts/routes/routes.js 
+      - routes.js 
+        ...
+        import Like from '../views/pages/like';
+        
+        const routes = {
+          ...
+          '/like': Like,
+        };
+        
+        export default routes;      
+
+    -> tambahkan link navigasi menu likes di file src/templates/index.html 
+      - index.html 
+        <nav id="navigationDrawer" class="app-bar__navigation">
+              <ul>
+                ...
+                <li><a href="#/like">Liked Movies</a></li>
+              </ul>
+        </nav>
+
+  -> cek apakah berhasil menampilkan data movie yang sudah di like 
+
+19. Menambahkan webSocket
+  -> ! websocket adalah teknologi komunikasi antar client dan server secara full duplex
+     ! WebSocket cocok untuk digunakan pada kasus real-time chatting, live feed, multiplayer gaming, live progress.
+     ! membuka koneksi dengan webSocket 
+        - const webSocket = new WebSocket(url, protocols(default: ''));
+     ! mengirim data ke webSocket Server 
+        - webSocket.onopen = (event) => {
+            webSocket.send('Some text that the server is urgently awaiting!');
+          };
+     ! untuk menangkap response dari webSocket server kita gunakan event 'onmessage'
+        - webSocket.onmessage = (event) => {
+            console.log(event.data); // response berupa string 
+          };
+     ! untuk menutup webSocket kita gunakan method close()
+          const closeWebSocket = (webSocket) => {
+          if (!webSocket.bufferedAmount) {
+            webSocket.close();
+            return;
+          }
+            throw new Error('Pending data is still available');
+          };
+
+  -> disini kita akan menggunakan webSokcet dari sisi client bukan server 
+
+  -> ok mari kita mulai, disini Kita akan memanfaatkan WebSocket server dari wss://movies-feed.dicoding.dev untuk menampilkan live feeds terkait movie yang sedang tayang tiap 10 detik sekali. 
+
+  -> pertama tambahkan property configurasi di src/scripts/globals/config.js
+    - config.js 
+      const CONFIG = {
+        ...
+        WEB_SOCKET_SERVER: 'wss://movies-feed.dicoding.dev',
+      };
+      ...
+
+
+  -> kemudian buat file di src/scripts/utils/websocket-initiator.js 
+    - websocket-initiator.js 
+      const WebSocketInitiator = {
+        init(url) {
+          const webSocket = new WebSocket(url);
+          webSocket.onmessage = this._onMessageHandler;
+        },
+      
+        _onMessageHandler(message) {
+          console.log(message.data);
+        },
+      };
+      export default WebSocketInitiator;
+
+  -> lalu kita gunakan WebSocketInitiator di entry point (src/scripts/index.js), lebih tepatnya di dalam event load.
+    - index.js
+      ...
+      import WebSocketInitiator from './utils/websocket-initiator';
+      ...
+      
+      window.addEventListener('load', () => {
+        app.renderPage();
+        swRegister();
+        WebSocketInitiator.init(CONFIG.WEB_SOCKET_SERVER);
+      });
+
+  -> cek di console apakah setiap 10 detik muncul info 
+
+20. Menambahkan Notifikai di aplikasi website kita 
+  -> ! Pada materi kali ini kita akan belajar cara penggunaan Notification API mulai dari meminta izin, hingga menampilkan notifikasi dengan fungsi yang berbeda.
+     ! untuk meminta izin menampilkan notifikasi kita gunakan method requestPermission() dari global object Notification.
+     ! Karena untuk menampilkan notifikasi dilakukan melalui nilai registration dari Service Worker yang aktif, dan menggunakan method showNotification() dari nilai registration tersebut.
+        - navigator.serviceWorker.ready.then((registration) => {
+            registration.showNotification(title, options);
+          });   
+  
+  -> ok mari kita mulai menerapkan notifikasi pada aplikasi kita 
+  -> buat file di src/scripts/utils/notification-helper.js 
+      - notification-helper.js 
+        const NotificationHelper = {
+          sendNotification({ title, options }) {
+            if (!this._checkAvailability()) {
+              console.log('Notification not supported in this browser');
+              return;
+            }
+        
+            if (!this._checkPermission()) {
+              console.log('User did not yet granted permission');
+              this._requestPermission();
+              return;
+            }
+        
+            this._showNotification({ title, options });
+          },
+        
+          _checkAvailability() {
+            return !!('Notification' in window);
+          },
+        
+          _checkPermission() {
+            return Notification.permission === 'granted';
+          },
+        
+          async _requestPermission() {
+            const status = await Notification.requestPermission();
+        
+            if (status === 'denied') {
+              console.log('Notification Denied');
+            }
+        
+            if (status === 'default') {
+              console.log('Permission closed');
+            }
+          },
+        
+          async _showNotification({ title, options }) {
+            const serviceWorkerRegistration = await navigator.serviceWorker.ready;
+            serviceWorkerRegistration.showNotification(title, options);
+          },
+        };
+        
+        export default NotificationHelper;
+
+  -> kemudian kita ubah penerapan console.log pada websocket-initiator.js dengan menggunakan fungsi NotificationHelper.sendNotification()
+    - websocket-initiator.js 
+      import NotificationHelper from './notification-helper';
+      import CONFIG from '../globals/config';
+      
+      const WebSocketInitiator = {
+        init(url) {
+          const webSocket = new WebSocket(url);
+          webSocket.onmessage = this._onMessageHandler;
+        },
+      
+        _onMessageHandler(message) {
+          const movie = JSON.parse(message.data);
+          NotificationHelper.sendNotification({
+            title: `${movie.title} is on cinema!`,
+            options: {
+              body: movie.overview,
+              image: `${CONFIG.BASE_IMAGE_URL + movie.poster_path}`,
+            },
+          });
+        },
+      };
+      ..
+
+-> cek apakah ada popup notification
+
+
+
+
+
+
+
 
 
 
@@ -631,3 +1420,71 @@
         selesai
         hello world
     */
+
+! ada perubahan code di penerapan strategi cache dibagian : 
+  - cache-helper.js
+    async revalidateCache(request) {
+        const response = await caches.match(request);
+
+        if (response) {
+          this._fetchRequest(request);
+          return response;
+        }
+        return this._fetchRequest(request);
+      },
+
+
+! daftar fungsi bagian - bagian pwa : 
+  1. manifest : untuk aplikasi dapat di add ke homescreen atau membuat application shell 
+  2. service worker : bisa untuk monitoring atau mengatur request dan response yang terjadi, jika ditambahkan cache API maka bisa membuat aplikasi berjalan secara offline 
+  3. cache API : untuk menyimpan data sementara di cache browser 
+    max size: setiap browser berbeda" , chrome: 33% dari storage komputer
+  4. IndexedDB : untuk menyimpan data di database local browser 
+      max size: 250MB per domain (default)
+  
+  5. webSocket : membuat komunikasi client-server secara full duplex, contoh bisa digunakan untuk membuat real-time chatting, live feed, multiplayer gaming, live progress.
+
+
+! event hashchange berfungsi ketika identifier fragmen dari URL telah berubah (bagian dari URL dimulai dengan dan mengikuti '#' simbol
+
+
+// isi response add review 
+Response {type: 'cors', url: 'https://restaurant-api.dicoding.dev/review', redirected: false, status: 201, ok: true, …}
+body: (...)
+bodyUsed: false
+headers: Headers {}
+ok: true
+redirected: false
+status: 201
+statusText: "Created"
+type: "cors"
+url: "https://restaurant-api.dicoding.dev/review"
+
+// isi add review setelah responseJson 
+{error: false, message: 'success', customerReviews: Array(3)}
+customerReviews: Array(3)
+0: {name: 'Gilang', review: 'Harganya murah sekali!', date: '14 Agustus 2018'}
+1: {name: 'anonim', review: 'harga lumayan murah', date: '14 November 2021'}
+2: {name: 'riyan', review: 'cocok untuk bersantai', date: '14 November 2021'}
+length: 3
+[[Prototype]]: Array(0)
+error: false
+message: "success"
+[[Prototype]]: Object
+
+
+// isi responseJson restaurantDetails 
+{id: 'rqdv5juczeskfw1e867', name: 'Melting Pot', description: 'Lorem ipsum dolor sit amet, consectetuer adipiscin… Phasellus viverra nulla ut metus varius laoreet.', city: 'Medan', address: 'Jln. Pandeglang no 19', …}
+address: "Jln. Pandeglang no 19"
+categories: (2) [{…}, {…}]
+city: "Medan"
+customerReviews: (24) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet."
+id: "rqdv5juczeskfw1e867"
+menus: {foods: Array(4), drinks: Array(13)}
+name: "Melting Pot"
+pictureId: "14"
+rating: 4.2
+[[Prototype]]: Object
+
+

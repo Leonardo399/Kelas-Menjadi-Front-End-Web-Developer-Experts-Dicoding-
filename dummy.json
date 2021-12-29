@@ -1,0 +1,125 @@
+{
+  "status": 200,
+  "hospitals": [{
+    "id": "3214011",
+    "name": "RS Umum Daerah Bayu Asih",
+    "address": "Jl. Veteran No. 39 Purwakarta",
+    "phone": "0264200100",
+    "available_beds": [{
+      "available": 2,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang BOUGENVILE, FLAMBOYAN, TERATAI",
+      "info": "Diupdate kurang dari 1 menit yang lalu"
+    }]
+  }, {
+    "id": "3214031",
+    "name": "RS Umum Siloam Purwakarta",
+    "address": "Jl. Bungursari No.1, Purwakarta",
+    "phone": "02648628911",
+    "available_beds": [{
+      "available": 1,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang Maternity",
+      "info": "Diupdate 12 jam yang lalu"
+    }]
+  }, {
+    "id": "3214032",
+    "name": "RS Umum dr. Abdul Radjak",
+    "address": "Jl. Raya Bungur Sari No. 36 Purwakarta",
+    "phone": "087715167888",
+    "available_beds": [{
+      "available": 0,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang DIAMOND - SHAFIRE - EMERALD - CRYSTAL - OLIVINE -AMETHYS",
+      "info": "Diupdate 14 jam yang lalu"
+    }]
+  }, {
+    "id": "3214033",
+    "name": "RS Umum Asri Purwakarta",
+    "address": "Jl. Veteran No. 15",
+    "phone": "0264211680",
+    "available_beds": [{
+      "available": 1,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang nifas",
+      "info": "Diupdate 10 jam yang lalu"
+    }]
+  }, {
+    "id": "3214034",
+    "name": "RS Umum Rama Hadi",
+    "address": "Kp. Cimaung RT 17/04 Desa Ciwangi Kec. Bungursari Kab. Purwakarta",
+    "phone": "0264202136",
+    "available_beds": [{
+      "available": 2,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang JAMBU 2",
+      "info": "Diupdate 53 menit yang lalu"
+    }]
+  }, {
+    "id": "3214035",
+    "name": "RS Umum Amira",
+    "address": "Jl. Ipik Gandamanah RT 35 / 03 Munjul Jaya Kab. Purwakarta",
+    "phone": "02648221191",
+    "available_beds": [{
+      "available": 1,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang 203",
+      "info": "Diupdate 11 jam yang lalu"
+    }]
+  }, {
+    "id": "3214036",
+    "name": "RS Ibu dan Anak Dian",
+    "address": "Jl. Raya Cibogo Hilir Kec. Plered Kab. Purwakarta",
+    "phone": "087812653989",
+    "available_beds": [{
+      "available": 0,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang Kelas I",
+      "info": "Diupdate 12 jam yang lalu"
+    }]
+  }, {
+    "id": "3214037",
+    "name": "RS Umum Holistic Purwakarta",
+    "address": "Jl. Terusan Kapten Halim KM.09 Salamulya, Pondoksalam, Purwakarta",
+    "phone": "0817225165",
+    "available_beds": [{
+      "available": 8,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang Ruang Rawat Kelas I",
+      "info": "Diupdate 10 jam yang lalu"
+    }]
+  }, {
+    "id": "3214038",
+    "name": "RS Umum Bhakti Husada II Purwakarta",
+    "address": "Jl. Raya Sadang-Subang KM 5 RT 01/01 Cikumpay Campaka Purwakarta",
+    "phone": "02648225255",
+    "available_beds": [{
+      "available": 5,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang ARJUNA",
+      "info": "Diupdate 34 jam yang lalu"
+    }]
+  }, {
+    "id": "3214040",
+    "name": "RS Umum Karina Medika",
+    "address": "JL Baru Kp. Krajan RT 01 RW 01 Kec. Babakancikao Kab. Purwakarta 41151",
+    "phone": "02648301768",
+    "available_beds": [{
+      "available": 0,
+      "bed_class": "Kelas I",
+      "room_name": "Ruang Kelas I",
+      "info": "Diupdate 10 jam yang lalu"
+    }]
+  }, {
+    "id": "3214041",
+    "name": "RS Ibu dan Anak Bunda Fathia",
+    "address": "Jl. Ibrahim Singadilaga No. 95-97 Purwakarta",
+    "phone": "02648309596",
+    "available_beds": [{
+      "available": -11,
+      "bed_class": "Kelas III",
+      "room_name": "Ruang Lawu",
+      "info": "Diupdate 10 jam yang lalu"
+    }]
+  }]
+}

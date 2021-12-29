@@ -1,0 +1,635 @@
+# Web Performance #f00 
+
+## Pengenalan Web Performance 
+! saat ini kita tak perlu melakukan pengujian ke pengguna secara manual, cukup memanfaatkan tools seperti Lighthouse.Lighthouse bisa dikatakan sebagai web auditor yang dapat memeriksa website, baik dalam masa pengembangan atau telah terpublikasi. Lighthouse akan memberitahu poin kurang dan lebih yang terdapat pada website kita. Spesialnya tools ini ia memeriksa bukan hanya dari segi performa, melainkan aksesibilitas, SEO, best practice, dan Progressive Web Apps.
+
+
+## Mengapa Kecepatan Penting
+
+! Google mengatakan “Mobile experience yang lambat dapat menyebabkan pelanggan pergi. Namun bila kita dapat menawarkan pengalaman yang cepat, hal tersebut dapat menarik dan mempertahankan pelanggan.” Itu lah mengapa kecepatan (terutama di perangkat seluler) dapat memperlambat atau menumbuhkan bisnis kita.
+
+! Sebagai developer sebisa mungkin kita dapat mengurangi waktu tunggu pada tiap tahapannya, tentu lebih cepat akan lebih baik. Bila memang membutuhkan waktu tunggu contohlah pada tahap FMP, munculkanlah indikator loading. Tentu indikator loading juga harus bersifat progressive agar pengunjung mengetahui secara jelas bahwa konten yang ia request sedang dalam proses.
+
+
+! Di tahun 2020 ini Google memperkenalkan Web Vitals sebagai panduan terpadu dan matriks terbaru untuk memberikan pelayanan yang prima pada experience pengguna dalam mengakses website. Google menginisiasikan Web Vitals dengan tujuan untuk menyederhanakan lanskap, dan membantu web untuk fokus terhadap hal yang paling vitals (Core Web Vitals) menurut Google. Jadi pemilik website tak perlu menjadi sosok yang “ahli” terhadap performa web untuk menyajikan website dengan experience yang baik.
+
+! link doc web vitals : https://web.dev/vitals/
+
+! catatan : Pada 2021 matriks baru ini juga yang akan digunakan dalam mengurutkan peringkat hasil pencarian Google Search Engine. Tujuannya tidak lain agar pengguna selalu mendapatkan experience terbaik ketika membuka hasil pencarian.
+
+
+! Dari halaman Web Vitals Google menyebutkan, untuk saat ini terdapat 3 (tiga) pilar yang membentuk experience dalam mengakses halaman web, yakni:
+  - Loading Performance - Seberapa cepat komponen UI tampil di layar?
+  - Responsiveness - Seberapa cepat halaman bereaksi terhadap input pengguna?
+  - Visual Stability - Apakah komponen UI bergeser ketika terdapat konten baru muncul?
+
+! Untuk mengukur aspek-aspek penting dari experience pengguna ini, Google memilih 3 (tiga) metrik yang sesuai yakni Largest Contentful Paint (LCP), First Input Delay (FID), Cumulative Layout Shift (CLS).
+
+
+## Largest Contentful Paint (LCP)
+
+! LCP atau Largest Contentful Paint mengukur titik di mana elemen konten terbesar muncul di layar. Elemen konten terbesar bukan berarti matrik ini mengukur waktu untuk memuat seluruh elemen UI tampil, namun ia hanya mengukur konten terbesar saja. Lebih jelasnya, bila website kita menampilkan beberapa teks saja namun memiliki konten gambar yang besar, maka gambar itulah yang dianggap LCP.
+
+! LCP menjadi matrik penting dalam membangun experience pengguna. Karena ketika konten terbesar tampil pada layar, pengguna akan mengalami impresi yang baik untuk pertama kali (First Impression). Semakin cepat LCP muncul di layar, semakin baik impresi yang didapatkan pengguna.
+
+! -- ilustrasi load movie catalogue web --
+  ! Dari ilustrasi di atas bisa disimpulkan bahwa LCP muncul pada detik 3.5, dan nilai ini dianggap kurang baik. Untuk memberikan pengalaman yang baik, halaman website harus dapat menampilkan LCP maksimal pada 2.5 detik ketika halaman website diakses.
+
+
+! Lantas apa sih faktor yang menyebabkan lambatnya LCP? Terdapat empat faktor utama yang mempengaruhi LCP yakni, kecepatan server menanggapi permintaan, proses render yang terblokir oleh JavaScript/CSS, ukuran resource, dan proses rendering pada sisi klien. Tentu untuk melakukan improvisasi LCP kita perlu melakukan optimasi pada faktor yang sudah disebutkan tadi.
+
+! link LCP : https://web.dev/lcp/
+
+
+
+## First Input Delay 
+! FID atau First Input Delay mengukur delay ketika pengguna pertama kali berinteraksi dengan komponen pada halaman hingga browser memproses event handler yang ditetapkan di komponen tersebut. Interaksi yang dilakukan pengguna bisa seperti menekan tautan, tombol, navigasi, atau komponen interaktif lainnya.
+
+! FID menjadi matriks yang vital karena delay dapat membuat pengguna frustasi, terutama bila itu terjadi pada interaksi pertama ia lakukan. Kesan pertama adalah segalanya,
+
+! Agar memberikan kesan yang baik, semaksimal mungkin halaman website harus menanggapi interaksi pertama dalam kurang dari 100 miliseconds. Bila lebih dari itu, improvisasi sangatlah disarankan.
+
+! link doc FID : https://web.dev/fid/
+
+
+
+## Comulative Layout Shift 
+
+! CLS atau Cumulative Layout Shift mengukur kestabilan layout yang ditampilkan. Sebisa mungkin elemen UI yang sudah tampil tidak terjadi pergeseran secara signifikan. Google memperbolehkan pergeseran terjadi bila tidak lebih dari 10% dari ukuran layar, namun jika lebih dari itu sebaiknya lakukan improvisasi.
+
+! Mengapa kestabilan layout menjadi vital? Tentu! Layout yang tidak stabil sangat mengganggu kenyamanan pengguna. Pernahkah Anda membaca artikel online ketika itu tiba-tiba elemen UI muncul secara tiba-tiba? Tentu Anda merasa terganggu kan?
+
+! sebaiknya sediakan placeholder untuk konten yang tampil secara asynchronous. Sehingga dari awal, elemen UI yang sudah muncul tidak akan bergeser apabila elemen lain tampil secara tiba-tiba.
+
+! link doc CLS : https://web.dev/cls/
+
+
+
+## Cara Mengukur LCP, FID, dan CLS 
+
+! Google memperkenalkan Web Vitals tentu ia juga mengembangkan tools untuk melakukan pengukuran terhadap matriks yang ada di dalamnya. Beruntung kita dapat menggunakan tools tersebut secara gratis, sehingga kita tidak perlu melakukan pengukuran secara manual.
+
+
+
+### PageSpeed Insight 
+
+! Cara yang paling mudah adalah dengan menggunakan PageSpeed Insight. Google Developers menyediakan satu halaman khusus yang digunakan untuk mengukur performa website yang sudah aktif (tidak bisa dilakukan pada localhost). Cara menggunakannya sangat mudah, cukup kunjungi halaman PageSpeed Insight dan masukkan alamat website yang ingin Anda analisa.
+
+! link : https://pagespeed.web.dev/?utm_source=psi&utm_medium=redirect
+
+! pengujian menggunakan PageSpeed Insight menghasilkan dua tipe data, yakni Lab Data dan Field Data. Lab Data merupakan data yang dapat dianalisa tanpa harus ada pengguna langsung berinteraksi dengan website tersebut. Sedangkan Field Data merupakan data yang didapatkan dari pengguna nyata, Sehingga datanya akurat berdasarkan pengalaman pengguna secara nyata. Untuk lebih jelasnya simak Cara Berpikir Speed Tools(https://developers.google.com/web/fundamentals/performance/speed-tools).
+
+
+
+### web.dev/measure
+
+! Cara kedua yang tak kalah mudah dilakukan yaitu menggunakan web.dev/measure. Sama seperti PageSpeed Insight, kita dapat melakukan uji performa secara mudah melalui halaman Measure yang disediakan oleh web.dev. Kelebihannya adalah tak hanya nilai performa yang diuji, kita bisa melihat seberapa baik aksesibilitas, SEO, dan best practice yang kita terapkan pada website kita.
+
+
+### Lighthouse
+
+! Cara yang ketiga yakni dengan menggunakan Lighthouse yang ada pada DevTools. Berbeda dengan kedua cara yang sudah disebutkan, untuk menganalisa website menggunakan Lighthouse kita perlu membuka website tersebut terlebih dahulu, kemudian membuka DevTools -> Lighthouse/Audits.
+
+! Untuk memulai menganalisa website yang sedang dikunjungi, tinggal tekan tombol “generate report” yang ada di samping. Kemudian Lighthouse akan mulai melakukan audit website.
+
+! Laporan yang dihasilkan melalui cara ini relatif lengkap sama seperti laporan yang terdapat pada Measure bila Anda melihat laporan detailnya.
+
+! Cara ini juga bisa digunakan pada website yang dijalankan di localhost, jadi cara ini cocok untuk mengukur performa website sebelum di-deploy ke web hosting.
+
+### Lainnya 
+
+
+! Cara lain untuk mengukur performa website Anda bisa gunakan extensions Web Vitals(https://chrome.google.com/webstore/detail/web-vitals/ahfhijdlegdabablpippeagghigmibma?hl=en).
+
+! Sebenarnya masih terdapat tools lain yang bisa dimanfaatkan dalam mengukur Web Vitals, seperti Chrome UX Report, Search Console, webpagetest.org, ataupun yang lainnya.
+
+
+## Image Optimization 
+
+! Optimisasi gambar dapat meliputi pemilihan format, resolusi, atau kompresi yang tepat. Tujuannya tidak lain untuk membuat ukuran gambar yang digunakan kecil namun tetap memberikan visual yang baik. Optimasi gambar dilakukan sesuai kasus yang dihadapi. Kualitas gambar terlalu tinggi? Lakukanlah kompresi gambar. Gambar gif berukuran besar? Gantilah gif dengan video. Gambar yang ditampilkan banyak? Gunakanlah teknik Lazyload.
+
+
+## Kompresi Gambar
+
+! Imagemin(https://www.npmjs.com/package/imagemin) merupakan tools yang tepat bagi pada web developer. Imagemin dapat mengkompresi berbagai tipe gambar dan cukup mudah diintegrasikan dengan build scripts dan build tools seperti webpack. 
+
+! Untuk memperkaya kompatibilitas, Imagemin bekerja dengan memanfaatkan plugin. Plugin merupakan npm module yang berfungsi untuk menkompresi tipe gambar tertentu. Contoh untuk gambar bertipe JPEGs kita bisa menggunakan plugin imagemin-mozjpeg(https://www.npmjs.com/package/imagemin-mozjpeg), jika PNG gunakanlah imagemin-pngquant(https://www.npmjs.com/package/imagemin-pngquant). Beberapa tipe gambar yang popular digunakan mungkin memiliki banyak pilihan plugin yang dapat digunakan.
+
+! Hal yang paling penting ketika memilih plugin adalah kita harus tahu plugin tersebut mengkompresi secara lossy atau lossless. Lossless merupakan teknik kompresi yang dapat menjaga kualitas dan data sama seperti aslinya, namun ukuran gambar tidak berubah atau bahkan bisa lebih besar. Sedangkan lossy merupakan teknik kompresi yang dapat mengurangi kualitas gambar, begitu pula dengan ukuran gambarnya.
+
+! Untuk kebanyakan orang, lossy merupakan pilihan yang tepat. Karena dapat menghemat storage. Dengan teknik lossy juga kita dapat menentukan kualitas gambar sesuai yang kita butuhkan.
+
+! Berikut plugin yang dapat kita gunakan pada beberapa tipe gambar yang populer digunakan:
+
+format : Tipe Gambar	- Lossy Plugin	- Lossless Plugin
+JPEG	- imagemin-mozjpeg - imagemin-jpegtran
+PNG -	imagemin-pngquant - imagemin-optipng
+GIF	- imagemin-giflossy - imagemin-gifscale
+SVG	- imagemin-svgo
+WebP	- imagemin-webp
+
+
+
+
+## Latihan : Kompresi Gambar 
+
+1. unduh starter template 
+2. install package : npm install 
+3. npm run build 
+4. npm run start 
+5. buka http://localhost:5000.
+6. uji performance web di devtool -> lighthouse
+7. mari kompress gambar 
+  -> npm install imagemin-webpack-plugin imagemin-mozjpeg --save-dev
+  -> konfigurasi di webpack
+      ...
+      const ImageminWebpackPlugin = require('imagemin-webpack-plugin').default;
+      const ImageminMozjpeg = require('imagemin-mozjpeg');
+
+      module.exports = {
+      /* ... Other webpack configuration  ... */,
+      plugins: [
+        /* ... Other webpack plugins configuration  ... */,
+        new ImageminWebpackPlugin({
+          plugins: [
+            ImageminMozjpeg({
+              quality: 50,
+              progressive: true,
+            }),
+          ],
+      ...
+
+  -> npm i -D clean-webpack-plugin (cek d note sublime)
+
+! catatan : Bila Anda poin tersebut masih belum terpenuhi padahal sudah melakukan kompresi gambar, cobalah untuk menghapus folder dist sebelum build ulang. Jika belum berpengaruh, coba hapus cache pada alamat localhost:5000. Anda juga bisa memanfaatkan plugin clean-webpack-plugin agar folder dist otomatis terhapus ketika proses build pada webpack dijalankan.
+
+
+## Ubah Gif ke Video 
+! link : https://www.dicoding.com/academies/219/tutorials/9761?from=9756
+! Ada banyak cara untuk mengubah gif menjadi video, termasuk menggunakan tools online seperti ezgif(https://ezgif.com/). Untuk offline tools yang andal gunakanlah FFmpeg(https://ffmpeg.org/download.html). Tools ini tersedia hanya pada CLI, namun jangan khawatir terdapat node package fluent-ffmpeg yang dapat mempermudah penggunaannya pada JavaScript.
+
+
+! perbandingan gif, mp4, dan webm 
+14mb, 1.1mb, 298kb
+
+! Tidak semua browser dapat menampilkan video dalam format WebM, jadi solusinya gunakan format mp4 untuk browser lama, dan WebM untuk browser modern.
+
+! animasi pada gif memiliki sifat:
+  - Dijalankan otomatis
+  - Selalu berjalan terus menerus (looping)
+  - Tak memiliki suara
+
+  -> Maka kita perlu menetapkan juga perilaku tersebut pada elemen video. Caranya, tambahkan atribut autoplay, loop, muted, dan playsinline pada tag <video>
+    // contoh : 
+      <video autoplay loop muted playsinline>
+        <source src="./path/to/image/animation-footage.webm" type="video/webm">
+        <source src="./path/to/image/animation-footage.mp4" type="video/mp4">
+      </video>
+
+
+
+## Latihan : Ubah Gif ke Video 
+! disini kita pake aplikasi FFmpeg, maka dari itu install dulu di komputer
+
+1. instalasi ffmpeg di komputer
+  1. donwload ffmpeg : https://ffmpeg.org/download.html
+    -> klik donwload windows 
+  2. extract ke drive c: 
+  3. tambahkan variabel environment pada folder bin ffmpeg 
+  4. cek apakah sudah terinstall (ketik di cmd) : ffmpeg -version
+
+2. install package fluent-ffmpeg 
+  - npm install fluent-ffmpeg --save-dev 
+
+3. Setelah berhasil memasangnya, buat berkas baru dengan nama build-video.js pada root directory proyek, kemudian tuliskan kode berikut di dalamnya.
+  - build-video.js 
+    const path = require('path');
+    const FFmpeg = require('fluent-ffmpeg');
+    
+    
+    const gify = new FFmpeg({ source: path.resolve(__dirname, 'src/images/animation-footage.gif') });
+    
+    
+    gify.clone()
+    .withVideoCodec('libx264')
+    .withFps(25)
+    .toFormat('mp4')
+    .saveToFile(path.resolve(__dirname, 'src/images/animation-footage.mp4'));
+    
+    
+    gify.clone()
+    .withFps(25)
+    .toFormat('webm')
+    .saveToFile(path.resolve(__dirname, 'src/images/animation-footage.webm'));
+
+
+4. tambahkan npm runner 
+  -  "scripts": {
+        "build-video": "node build-video.js",
+        "start": "node server.js"
+      },
+
+5. jalankan perintah npm run build-video 
+  -> akan terbentuk dua berkas baru yakni animation-footage.mp4 dan animation-footage.webm di dalam src -> images.
+
+6. sesuaikan dengan file htmlnya (memakai tag video bkn img)
+7. restart cmd jika perlu 
+
+
+
+## Image Responsive 
+! link : https://www.dicoding.com/academies/219/tutorials/9770?from=9766
+
+! Semenjak HTML5 ada elemen baru yang tersedia untuk menyajikan beberapa pilihan asset gambar sesuai dengan ukuran yang dikehendaki. Yaitu dengan menggunakan elemen <picture> seperti pada kode di bawah ini. 
+  <picture>
+      <source media="(max-width: 600px)" srcset="./path/to/images/image-small.jpg">
+      <img 
+          src="./path/to/images/image-large.jpg" 
+          alt=""></img>
+  </picture>
+
+
+! Penting untuk diingat, elemen <source> bisa Anda definisikan berapapun yang Anda mau. Namun pastikan kondisi media atau mime type-nya berbeda pada tiap elemen <source>.
+
+! tips penerapan : 
+  ! Manfaatkanlah atribut type, dengan menyediakan kedua variasi tipe gambar. Satu, yang bisa digunakan oleh semua browser (JPG/PNG) dan satunya lagi mempunyai sistem kompresi yang baik (WEBP). Sehingga bisa support di semua browser. Pastikan urutannya berada diatas dari gambar JPG (yang support di semua browser).
+
+! Untuk menghasilkan aset gambar dengan variasi ukuran kita bisa gunakan tools yang bernama sharp(https://www.npmjs.com/package/sharp). Tools tersebut merupakan node package yang mana penggunaan dan konfigurasinya dapat dilakukan menggunakan JavaScript. Tools tersebut cocok untuk mengubah ukuran gambar yang banyak dalam sebuah folder.
+
+
+## Latihan Image Responsive 
+// persiapan 
+1. unduh starter template 
+2. npm install 
+3. npm run build 
+4. npm run start 
+5. test di lighthouse -> centang mobile 
+
+// oke mari kita mulai
+1. install package sharp 
+  - npm install sharp --save-dev
+
+2. buat berkas baru bernama sharp.js. Dan tuliskan kode berikut di dalamnya:
+  - sharp.js 
+      const sharp = require('sharp');
+      const fs = require('fs');
+      const path = require('path');
+      
+      const target = path.resolve(__dirname, 'src/public/images');
+      const destination = path.resolve(__dirname, 'dist/images');
+      
+      if (!fs.existsSync(destination)) {
+      fs.mkdirSync(destination);
+      }
+      
+      fs.readdirSync(target)
+      .forEach(image => {
+      
+      // mengubah ukuran gambar dengan lebar 800px, dengan prefix -large.jpg
+        sharp(`${target}/${image}`)
+          .resize(800)
+      .toFile(path.resolve(__dirname, `${destination}/${image.split('.')
+            .slice(0, -1)
+            .join('.')}-large.jpg`));
+      
+      // mengubah ukuran gambar dengan lebar 480px, dengan prefix -small.jpg
+        sharp(`${target}/${image}`)
+          .resize(480)
+      .toFile(path.resolve(__dirname, `${destination}/${image.split('.')
+            .slice(0, -1)
+            .join('.')}-small.jpg`));
+      });  
+
+3. tambahkan npm runner “build-image” dengan nilai “node sharp.js” pada package.json.
+    "scripts": {
+      "build": "webpack --config webpack.config.js",
+      "build-image": "node sharp.js",
+      "start": "node server.js"
+    },
+
+4. Jangan lupa sesuaikan kembali tag <img> pada src -> templates -> index.html, dengan menerapkan beberapa  elemen seperti <picture>, dan <source>.
+  ...
+  <picture>
+      <source media="(max-width: 600px)" srcset="./images/dirt-rally-20-small.jpg">
+      <img 
+          src='./images/dirt-rally-20-large.jpg' 
+          alt="dirt rally poster"></img>
+
+  </picture>
+  ..dll
+
+5. Karena sebelumnya kita menggunakan webpack untuk memproses berkas gambar yang ada pada folder images, nah dengan menerapkan sharp.js tadi, CopyWebpackPlugin tidak perlu menyalin gambar pada folder images lagi. Karena berkas asli sudah tidak digunakan lagi pada folder dist. Silakan buka berkas webpack configuration, sesuaikan konfigurasi pada plugin CopyWebpackPlugin seperti ini:
+  new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src/public'),
+          to: path.resolve(__dirname, 'dist'),
+          globOptions: {
+            ignore: ['**/images/**'], // CopyWebpackPlugin mengabaikan berkas yang berada di dalam folder images
+          },
+        },
+      ],
+  }),
+
+6. Setelah itu, silakan coba build ulang proyek dengan cara:
+  - Hapus folder dist.
+  - Jalankan perintah npm run build.
+  - Jalankan perintah npm run build-image.
+  - Jalankan perintah npm run start (bila server belum berjalan).
+
+7. Refresh halaman proyek pada browser, dan lakukan audit kembali. Seharusnya poin “Properly size images” sudah terpenuhi.
+
+
+
+## WebP Image 
+
+! JPEG dan PNG merupakan format gambar yang paling populer digunakan, format tersebut dapat mengkompresi gambar dengan baik. Namun terdapat format gambar baru yakni, WebP yang mampu mengurangi ukuran gambar sebesar 25 hingga 35% dari format JPEG atau PNG. Semakin kecil ukuran gambar tentu akan meningkatkan performa website.
+
+! Khusus konversi ke WebP ini kita bisa gunakan package imagemin-webp-webpack-plugin, di mana package tersebut dibelakang layar menggunakan imagemin dan imagemin-webp. Dengan menggunakan package imagemin-webp-webpack-plugin, konversi WebP menjadi lebih mudah, ditambah ia juga tidak menghilangkan gambar berformat aslinya agar bisa kita gunakan sebagai fallback image ketika browser tidak mendukung WebP.
+
+! Agar gambar dapat ditampilkan pada browser secara luas, sediakan fallback image dengan memanfaatkan penggunaan elemen <picture>, <source>, dan <img>.
+  <picture>
+  <source type="image/webp" srcset="./images/some-image.webp">
+  <source type="image/jpeg" srcset="./images/some-image.jpg">
+  <img src="./images/some-image.jpg" alt="">
+  </picture>
+
+
+## Latihan : WebP Image 
+
+// persiapan : 
+  - unduh starter template
+  - npm run build, kemudian
+  - npm run start, kemudian
+  - Buka browser dan akses http://localhost:5000.
+  - cek di devtool -> lighthouse 
+
+
+// mari kita mulai 
+1. install package imagemin-webp-webpack-plugin
+  - npm install imagemin-webp-webpack-plugin --save-dev
+
+2. lakukan konfigurasi imagemin-webp-webpack-plugin pada webpack konfigurasi (webpack.config.js).
+  - webpack.config.js 
+    ...
+    const ImageminWebpWebpackPlugin = require('imagemin-webp-webpack-plugin');
+    ...
+    plugins: [
+    /* Other plugins configuration */,
+    new ImageminWebpWebpackPlugin({
+      config: [
+        {
+          test: /\.(jpe?g|png)/,
+          options: {
+            quality: 50
+          }
+        }
+      ],
+      overrideExtension: true,
+    })
+    ],
+
+3. Selanjutnya kita ubah penggunaan gambar pada HTML pada src -> templates -> index.html dengan mengubah kode berikut:
+
+
+4. Setelah itu, silakan coba build ulang proyek dengan cara:
+  - Hapus folder dist.
+  - Jalankan perintah npm run build.
+  - Jalankan perintah npm run start (bila server belum berjalan).
+
+5. Refresh halaman proyek pada browser, dan lakukan audit kembali. Seharusnya poin “Serve images in next-gen formats” sudah terpenuhi.
+
+
+
+## Menggunakan Lazy Loading Image
+! initinya lazy loading membuat gambar akan dimuat jika dibutuhkan
+! Mengubah dan mengkompresi gambar sebelum digunakan pada tahap produksi adalah hal yang wajib dilakukan untuk menghasilkan performa baik. Namun setelah kita melakukan segalanya, adakah optimisasi lain agar mempercepat load time pada website setelah gambar berada pada server? Ada kok!
+
+! Saat ini Google Chrome (versi 76+)  dan Mozilla Firefox (versi 75+) sudah mendukung fitur lazy loading untuk gambar dan iframe secara native. Cara menerapkannya sangatlah mudah, cukup dengan menambahkan atribut loading dengan nilai lazy pada elemen <img> seperti ini:
+  - <img loading="lazy" width="400" height="400" src="./path/to/images.jpg" alt="">
+
+! Agar native lazy loading dapat berjalan optimal kita perlu menetapkan nilai width dan height pada gambar secara eksplisit.
+
+! Namun bila Anda cukup khawatir terkait kompatibilitasnya pada browser versi lama, atau browser vendor lain. Tenang, terdapat node package yang dapat membantu menerapkan lazy loading dengan cara yang tak kalah mudah layaknya native. Ditambah dengan teknik ini, dipastikan dapat berjalan pada browser versi lama.
+
+! Lazysizes merupakan tools yang andal dan banyak digunakan developer untuk menerapkan lazy load pada gambar. Kita dapat memasang package lazysizes melalui npm kemudian impor package tersebut pada entry point JavaScript kita.
+  import 'lazysizes';
+  // import a plugin
+  import 'lazysizes/plugins/parent-fit/ls.parent-fit';
+  
+  
+  // Note: Never import/require the *.min.js files from the npm package.
+
+
+! Untuk menetapkan lazy load pada elemen gambar cukup mudah. Tinggal gunakan class dengan nilai lazyload dan tetapkan path gambar melalui atribut data-src. Contohnya seperti ini:
+  - <img data-src="image.jpg" class="lazyload" alt="" />
+
+! Kita juga dapat menggunakan atribut src sebagai placeholder sebelum gambar asli berhasil ditampilkan.
+  - <img src="placeholder.jpg" data-src="image.jpg" class="lazyload" alt="" />
+
+
+## Latihan : Lazy Loading Image 
+
+// persiapan : 
+  - unduh starter template
+  - npm run build, kemudian
+  - npm run start, kemudian
+  - Buka browser dan akses http://localhost:5000.
+  - cek di devtool -> lighthouse 
+
+
+// ok mari kita mulai 
+1. install package lazysizes
+  - npm install lazysizes
+
+2. Setelah proses instalasi selesai, buka entry point (src -> index.js) dan import package lazysizes berserta plugin-nya.
+  - src/index.js 
+    import 'lazysizes';
+    import 'lazysizes/plugins/parent-fit/ls.parent-fit';
+
+3. Selanjutnya tinggal kita terapkan lazyload pada elemen <img>, Masih pada berkas entry point, kita ganti kode di dalam fungsi generateImage menjadi:
+  document.body.innerHTML += `<img class="lazyload" data-src="https://picsum.photos/id/${i}/400/400" alt="dummy images"><br>`;
+
+
+4. Penerapan lazyload pada gambar selesai! Silakan coba build ulang proyek dengan cara:
+  - Hapus folder dist.
+  - Jalankan perintah npm run build.
+  - Jalankan perintah npm run start (bila server belum berjalan).
+
+
+5. Refresh halaman proyek pada browser, dan lakukan audit kembali. Seharusnya poin “Minimizes main-thread work” sudah terpenuhi.
+
+! Di sana terlihat bahwa gambar yang belum tampil di layar memiliki class “lazyload”. Begitu ia akan muncul di layar, nilai tersebut berubah menjadi “lazyloading”, dan setelah gambar muncul di layar nilainya berubah lagi menjadi “lazyloaded”.
+
+
+
+## Optimasi Bundle 
+
+! Gambar memang faktor terbesar yang membuat ukuran website kita “bengkak”. Selain gambar JavaScript juga bisa memiliki ukuran yang tak kalah besar seperti gambar. Walaupun hanya terdiri dari teks, bila kita menggunakan banyak module dan dibundel dalam satu berkas saja maka berkas tersebut akan menjadi monster besar yang bisa menghancurkan performa web. Selain muatan yang berat, browser juga harus mengeksekusi kode yang begitu banyak sekaligus.
+
+! tanpa melakukan optimisasi apapun. Bila kita inspeksi source code dari moment.js, kita akan melihat bahwa besarnya library disebabkan oleh sistem lokalisasi yang ada di dalamnya. Bila aplikasi kita tidak ingin mencakup lokalisasi yang luas, maka penggunaan library tersebut sangatlah tidak efektif karena sebagian besar kode yang ada di dalam bundle nyatanya tidak digunakan.
+
+! Untunglah terdapat teknik optimisasi momentjs menggunakan webpack sehingga kita membundel sistem lokalisasi berdasarkan yang digunakan saja. Teknik dalam optimasi pada bundel sebenarnya sangat beragam, tergantung kasus yang dihadapi. Namun pada webpack terdapat optimasi di mana kita dapat memisahkan vendor code dari kode yang kita tuliskan sendiri. Teknik tersebut dinamakan dengan Code Splitting.
+
+! Sebelum kita membahas code splitting lebih dalam, ada baiknya kita tahu cara menganalisa ukuran bundle dengan menggunakan Bundle Analyzer.
+
+
+
+
+## Bundle Analyzer 
+
+! Menggunakan vendor code memang asyik, namun kita juga harus sadar terhadap ukuran ketika kita menggunakannya. Jangan sampai website menjadi lambat karena mengorbankan user experience demi mencapai development experience yang baik. Untuk itu pintar-pintarlah dalam menganalisa modul yang digunakan.
+
+
+! Agar mudah menganalisa bundle yang dihasilkan webpack, gunakanlah plugin dari webpack-bundle-analyzer. Webpack Bundle Analyzer membantu kita untuk menunjukan apa yang sebenarnya ada di dalam bundel, sehingga kita bisa mencari tahu library atau module yang membuat bundle menjadi besar. Tak jarang kita juga menemukan module yang seharusnya tidak berada di dalam bundle melalui tools ini.
+
+! Yang menjadi spesial dari tools ini adalah ia dapat membaca module walaupun ia sudah di-minified. Webpack Bundle Analyzer akan dapat menguraikan minified bundle ke bentuk dan ukuran aslinya. Canggih bukan?
+
+
+
+## Latihan : Bundle Analyzer 
+
+// persiapan : 
+  - unduh starter template
+  - npm run build, kemudian
+  - npm run start, kemudian
+  - Buka browser dan akses http://localhost:5000.
+
+
+// mari kita mulai cek 
+1. Perhatikan output yang dihasilkan oleh console ketika proses build dijalankan. Di sana terlihat berapa ukuran bundle yang dihasilkan.78 Kib merupakan ukuran yang cukup besar loh untuk membuat aplikasi sederhana seperti yang sudah dicontohkan. Apa sih yang menyebabkan bundle.js memiliki ukuran besar? Penasaran? Untuk mengetahui jawabannya, mari kita pasang plugin webpack-bundle-analyzer.
+
+2. mari kita install package webpack-bundle-analyzer
+  - npm install webpack-bundle-analyzer --save-dev 
+
+
+3. Setelah itu gunakan plugin pada webpack configuration. Pertama buka berkas webpack.config.js, lakukan import plugin dengan menuliskan sintaks berikut:
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  ...
+  module.exports = {
+    /* other webpack configuration */,
+    plugins: [
+    /* other webpack plugins configuration */,
+    new BundleAnalyzerPlugin(),
+    ],
+  };
+
+
+4. jalankan npm run build
+
+5. Bila kita berhasil memasang BundleAnalyzerPlugin, maka kita dapat menganalisa bundle melalui http://localhost:8888.
+
+! link : https://www.dicoding.com/academies/219/tutorials/9806?from=9801
+
+
+
+## Code Splitting
+
+! Untunglah webpack memiliki fitur andalan yakni code splitting yang dapat memecah modul menjadi beberapa berkas bundle. Walaupun kita banyak menggunakan vendor code (hindari!), takan khawatir lagi ukurannya membengkak.
+
+! Terdapat 3 (tiga) metode untuk memecah modul di webpack, yakni:
+  - Entry Point : Menetapkan lebih dari satu entry point secara manual.
+  - Dynamic Import (Lazy load module) : Memecah module melalui fungsi import pada baris kode.
+  - Prevent Duplication (Split Chunks): Memecah vendor code dengan SplitChunksPlugins.
+
+
+### Split Chunks
+
+! Metode ini adalah cara aman dan cara paling mudah dalam memecah module. Kita tidak perlu mengubah kode apapun pada level aplikasi seperti cara sebelumnya. Seluruh optimasi kita lakukan pada konfigurasi webpack. Caranya dengan menambahkan properti optimization beserta nilainya seperti ini:
+  const path = require('path');
+  
+  module.exports = {
+  entry: path.resolve(__dirname, 'src/scripts/index.js'),
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      minSize: 20000,
+      maxSize: 70000,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      automaticNameDelimiter: '~',
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
+    },
+  /* other configuration */
+  };
+
+
+! Cara kerjanya ialah ia akan memisahkan seluruh module yang berasal dari folder node_modules. Module-module tersebut dipisahkan berdasarkan package masing-masing. Tiap package yang dipasang melalui NPM, ia akan menghasilkan satu berkas bundel.
+
+! link SplitChunksPlugins : https://webpack.js.org/plugins/split-chunks-plugin/
+
+
+
+## Latihan : Code Splitting 
+
+! link : https://www.dicoding.com/academies/219/tutorials/9816?from=9811
+
+! Teknik yang kedua dengan menggunakan SplitChunksPlugin. Berbeda dengan plugin biasanya, SplitChuncksPlugin sudah tersedia pada Webpack dan dapat diakses melalui optimization -> splitChunks.
+
+! Dengan teknik Split Chunks, vendor code yang berada pada node_modules dapat dipisahkan dari bundle utama ketika proses build. Kelebihan dari teknik ini kita dapat menentukan sendiri minimal dan maksimal berkas bundel yang dihasilkan. Yang perlu kita perhatikan adalah:
+  - Semakin besar ukuran pecahan bundel, semakin sedikit pecahan yang dihasilkan. Dampaknya dapat meminimalisir jumlah request pada awal muatan halaman, namun besar muatannya pada tiap pecahan bundelnya.
+  - Semakin kecil ukuran pecahan bundel, semakin banyak pecahan yang dihasilkan. Dampaknya dapat memperkecil muatan pada tiap pecahan bundelnya, namun jumlah request relatif banyak.
+
+  !! Atur sesuai kebutuhan yah!
+
+! Mari buka berkas webpack.config.js, dan tambahkan nilai optimizations berikut:
+  module.exports = {
+  // ... other configuration
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      minSize: 20000,
+      maxSize: 70000,
+      minChunks: 1,
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      automaticNameDelimiter: '~',
+      enforceSizeThreshold: 50000,
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
+    }
+  },
+  // ... other configuration
+  };
+
+! Lihat konfigurasi di atas. Fokus terhadap nilai minSize dan maxSize, di sanalah kita dapat menentukan ukuran bundel yang dihasilkan. Dari konfigurasi di atas, itu berarti bundel vendor harus memiliki ukuran minimal 20kb (bisa lebih kecil jika ukuran modul kurang dari itu) dan maximal 70kb. Kita tidak perlu membagi secara manual lagi, biar Webpack yang menjalankan tugasnya.
+
+
+
+
+
+
+
+
+
+
+!! NOTES !!
+! MIME (media type), link: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types.
+
+
